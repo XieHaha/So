@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_title" />
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/layout_public_hint"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <include layout="@layout/public_hint" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_disagree"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="14dp"
+            android:layout_weight="1"
+            android:background="@drawable/corner28_stroke1_1491fc"
+            android:gravity="center"
+            android:textColor="@color/color_1491fc"
+            android:textSize="@dimen/text_16" />
+
+        <TextView
+            android:id="@+id/tv_agree"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:gravity="center"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16" />
+    </LinearLayout>
+
+
+</LinearLayout>

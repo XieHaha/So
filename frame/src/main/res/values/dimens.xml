@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--title bar 高度-->
+    <dimen name="app_title_bar_height">44dp</dimen>
+    <!--图片库  图片大小-->
+    <dimen name="app_picture_size">120dp</dimen>
+    <dimen name="app_hei_line">0.5dp</dimen>
+
+    <dimen name="text_24">24sp</dimen>
+    <!--数字、金额等-->
+    <dimen name="text_20">20sp</dimen>
+    <!--导航栏文字-->
+    <dimen name="text_18">18sp</dimen>
+
+    <!--正文、按钮文字-->
+    <dimen name="text_16">16sp</dimen>
+    <!--提示文字-->
+    <dimen name="text_15">15sp</dimen>
+
+    <!--辅助文字-->
+    <dimen name="text_13">13sp</dimen>
+    <dimen name="text_12">12sp</dimen>
+
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_17">17sp</dimen>
+    <dimen name="text_11">11sp</dimen>
+
+    <dimen name="image_width">86dp</dimen>
+    <dimen name="image_padding">20dp</dimen>
+    <dimen name="image_space">15dp</dimen>
+
+    <!-- 顶部按钮栏高度 -->
+    <dimen name="pickerview_topbar_height">44dp</dimen>
+
+    <!-- 顶部按钮padding -->
+    <dimen name="pickerview_topbar_padding">20dp</dimen>
+
+    <!-- 顶部按钮文字大小 -->
+    <dimen name="pickerview_topbar_btn_textsize">17sp</dimen>
+    <dimen name="pickerview_topbar_title_textsize">18sp</dimen>
+    <!-- 选项文字大小 -->
+    <dimen name="pickerview_textsize">20sp</dimen>
+
+</resources>

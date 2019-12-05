@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">frame</string>
+
+    <!--loadview-->
+    <string name="brvah_loading">加载中&#8230;</string>
+    <string name="brvah_load_failed">加载失败，点击重试</string>
+    <string name="brvah_load_end">到底了</string>
+
+    <!--permission-->
+    <string name="dialog_no_camera_permission_tip">无法打开摄像头，请检查是否已经打开摄像头权限</string>
+    <string name="dialog_no_storage_permission_tip">无法访问存储空间，请检查是否已经打开存储权限</string>
+    <string name="dialog_no_audio_permission_tip">无法启用录音，请检查是否已经打开录音权限</string>
+    <string name="dialog_no_location_permission_tip" translatable="false">无法获取位置信息，请检查是否已经打开位置信息权限</string>
+    <string name="dialog_no_audio_camera_permission_tip">无法启用相机和录音，请检查是否已经打开相机和录音权限</string>
+    <string name="dialog_no_read_phone_state_tip">无法获取手机信息，请检查是否已经打开电话权限</string>
+    <string name="dialog_no_camera_tip">无法打开摄像头</string>
+    <string name="dialog_no_storage_tip">无法访问存储空间</string>
+    <string name="dialog_no_audio_tip">无法启用录音</string>
+    <string name="dialog_no_permission_tip">，请检查是否打开相关权限</string>
+    <string name="dialog_no_record_tip">无法录像，请检查是否打开相机和录音权限</string>
+    <string name="dialog_no_notify_tip">设置通知权限</string>
+    <string name="dialog_discard_before_vedio">确认将丢弃之前已拍摄的视频</string>
+
+
+    <!--环信-->
+    <string name="txt_login_ease_error">登录聊天服务器失败</string>
+    <string name="txt_login_ease_success">登录聊天服务器成功</string>
+    <string name="txt_update_ease_nick_fail">更新用户昵称失败!</string>
+    <string name="txt_receive_ease_message">收到新的消息</string>
+    <string name="txt_delete_chat_item_hint">删除后，将清空该聊天的消息记录</string>
+    <string name="txt_delete_chat_item">删除该聊天</string>
+</resources>

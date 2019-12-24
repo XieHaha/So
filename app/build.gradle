@@ -28,7 +28,6 @@ android {
             applicationId "com.cn.lv"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071/\""
             resValue "string", "APP_NAME", "\"社交\""
-            manifestPlaceholders = [ease_appkey        : "1110180330253249#dpappproject"]
         }
     }
 
@@ -83,7 +82,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':frame')
-    implementation project(':easeui')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

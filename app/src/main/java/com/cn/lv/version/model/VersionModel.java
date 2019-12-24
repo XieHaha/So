@@ -10,7 +10,7 @@ import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.VersionBean;
 import com.cn.frame.http.listener.AbstractResponseAdapter;
 import com.cn.frame.http.retrofit.RequestUtils;
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 
 import java.io.File;
 
@@ -43,7 +43,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
         File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
-                HuiZhenLog.e(TAG, "delete error");
+                SocialLog.e(TAG, "delete error");
             }
         }
     }
@@ -55,7 +55,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
         File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
-                HuiZhenLog.e(TAG, "delete error");
+                SocialLog.e(TAG, "delete error");
             }
         }
         FileTransferServer.getInstance(context)

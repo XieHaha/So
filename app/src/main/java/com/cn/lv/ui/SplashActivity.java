@@ -4,15 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
-import com.cn.frame.data.CommonData;
 import com.cn.frame.ui.BaseActivity;
-import com.cn.lv.BuildConfig;
 import com.cn.lv.R;
-import com.cn.lv.ZycApplication;
 import com.cn.lv.ui.login.LoginActivity;
-import com.hyphenate.chat.EMClient;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -51,12 +46,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        EMClient.getInstance().groupManager().loadAllGroups();
-        EMClient.getInstance().chatManager().loadAllConversations();
-        if (loginBean != null) {
-            // update current user's display name for APNs
-            EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
-        }
         try {
             GifDrawable gifDrawable = new GifDrawable(getResources(), R.mipmap.pic_splash_gif);
             initScheduledThread(gifDrawable.getDuration());
@@ -69,13 +58,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        //自定义url 只在调试模式下
-        if (ZycApplication.getInstance().debugMode) {
-            String url = sharePreferenceUtil.getAlwaysString(CommonData.KEY_BASE_URL);
-            if (!TextUtils.isEmpty(url) && !TextUtils.equals(url, BuildConfig.BASE_BASIC_URL)) {
-                ZycApplication.getInstance().updateBaseUrl(url);
-            }
-        }
     }
 
 

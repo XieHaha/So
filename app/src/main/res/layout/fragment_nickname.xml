@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="25dp"
+        android:text="@string/txt_your_nickname"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/text_20" />
+
+    <EditText
+        android:id="@+id/et_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/txt_nickname_hint"
+        android:maxLength="20"
+        android:minHeight="30dp"
+        android:singleLine="true"
+        android:textColor="@color/color_ffffff"
+        android:textColorHint="@color/color_ffffff"
+        android:textSize="@dimen/text_14" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/et_nickname"
+        android:background="@color/color_ffffff" />
+
+
+</RelativeLayout>

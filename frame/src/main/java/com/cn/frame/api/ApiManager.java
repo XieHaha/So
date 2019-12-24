@@ -3,7 +3,7 @@ package com.cn.frame.api;
 import android.content.Context;
 
 import com.cn.frame.api.notify.NotifyChangeListenerManager;
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 
 /**
  * SDK 初始化
@@ -34,12 +34,12 @@ public class ApiManager {
     public void init(Context context, boolean isEnable) {
         sContext = context;
         isLogEnable = isEnable;
-        HuiZhenLog.setIsEnableLog(isEnable);
+        SocialLog.setIsEnableLog(isEnable);
     }
 
     public Context getContext() {
         if (null == sContext) {
-            HuiZhenLog.w(TAG, "api Context is null, must be initial!");
+            SocialLog.w(TAG, "api Context is null, must be initial!");
         }
         return sContext;
     }

@@ -44,10 +44,10 @@
     </style>
 
     <style name="FadeWindowAnimTheme" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenEnterAnimation">@anim/anim_fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/keep</item>
         <item name="android:activityCloseEnterAnimation">@anim/keep</item>
-        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseExitAnimation">@anim/anim_fade_out</item>
     </style>
 
     <!-- 自定义仿IOS的ActionSheet底部Dialog的样式 ，有模糊效果 -->

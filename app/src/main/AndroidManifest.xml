@@ -63,10 +63,7 @@
             android:name="com.cn.lv.ui.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name="com.cn.lv.ui.main.MainActivity"
@@ -77,7 +74,12 @@
             android:name="com.cn.lv.ui.login.LoginActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.cn.lv.ui.WebViewActivity"
             android:launchMode="singleTask"
@@ -93,55 +95,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTransDialog"
             android:windowSoftInputMode="adjustPan" />
-        <!--环信消息点击事件处理-->
-        <receiver
-            android:name="com.cn.lv.chat.receive.EaseMsgClickBroadCastReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <!--通知栏消息点击-->
-                <action android:name="ease.msg.android.intent.CLICK" />
-            </intent-filter>
-        </receiver>
-
-        <!--环信配置-->
-        <!-- 设置环信应用的AppKey -->
-        <meta-data
-            android:name="EASEMOB_APPKEY"
-            android:value="${ease_appkey}" />
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="SU2qor7P14g8RhgfiuNWctt2Xa7MBNx4">
-
-        </meta-data>
-
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote">
-
-        </service>
-        <!-- 声明SDK所需的service SDK核心功能-->
-        <service
-            android:name="com.hyphenate.chat.EMChatService"
-            android:exported="true" />
-        <service
-            android:name="com.hyphenate.chat.EMJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <!-- 声明SDK所需的receiver -->
-        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <data android:scheme="package" />
-            </intent-filter>
-            <!-- 可选filter -->
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-        <!--环信配置 end-->
+        <activity
+            android:name=".ui.login.RegisterAndModifyPwdActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.login.RegisterInfoActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <!--登出-->
         <receiver
             android:name="com.cn.lv.receiver.LoginOutBroadcastReceiver"

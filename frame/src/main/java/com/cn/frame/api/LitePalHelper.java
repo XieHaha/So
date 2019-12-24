@@ -16,7 +16,7 @@ public class LitePalHelper<T extends LitePalSupport> {
     /**
      * 数据库
      */
-    public static final String DATA_BASE_NAME = "yhtd";
+    public static final String DATA_BASE_NAME = "Social";
     /**
      * 存储医院
      */

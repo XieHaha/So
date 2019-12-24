@@ -1,10 +1,10 @@
 package com.cn.lv.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.EditText;
 
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseResponse;
@@ -14,12 +14,7 @@ import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.lv.R;
 
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -28,24 +23,15 @@ import butterknife.OnClick;
  * @description
  */
 public class LoginActivity extends BaseActivity {
-    private ScheduledExecutorService executorService;
+    @BindView(R.id.et_phone)
+    EditText etPhone;
+    @BindView(R.id.et_pwd)
+    EditText etPwd;
     private String phone, verifyCode;
-    /**
-     * 验证码计时
-     */
-    private int time = 0;
-    /**
-     * 协议更新时间
-     */
-    private String ptotocolUpdateTime;
-    /**
-     * 是否获取过验证码
-     */
-    private boolean isSendVerifyCode = false;
 
     @Override
-    protected boolean isInitBackBtn() {
-        return true;
+    protected boolean isInitStatusBar() {
+        return false;
     }
 
     @Override
@@ -53,35 +39,15 @@ public class LoginActivity extends BaseActivity {
         return R.layout.act_login;
     }
 
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            if (time <= 0) {
-            } else {
-            }
-            return true;
-        }
-    });
-
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (getIntent() != null) {
-            ptotocolUpdateTime = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
-        }
         phone = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_ACCOUNT);
     }
 
     @Override
     public void initListener() {
         super.initListener();
-    }
-
-    /**
-     * 获取验证码
-     */
-    private void getVerifyCode() {
-        RequestUtils.getVerifyCode(this, phone, BaseData.ADMIN, this);
     }
 
     /**
@@ -92,31 +58,16 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    /**
-     * 验证码再次获取倒计时
-     */
-    private void startVerifyCodeTimer() {
-        time = BaseData.BASE_MAX_RESEND_TIME;
-        executorService = new ScheduledThreadPoolExecutor(1,
-                new BasicThreadFactory.Builder().namingPattern(
-                        "yht-thread-pool-%d").daemon(true).build());
-        executorService.scheduleAtFixedRate(() -> {
-            time--;
-            if (time < 0) {
-                time = 0;
-                executorService.shutdownNow();
-            } else {
-                handler.sendEmptyMessage(0);
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-    }
-
-    @OnClick({R.id.tv_login_obtain_code, R.id.tv_login_next})
+    @OnClick({R.id.tv_forgot_pwd, R.id.tv_register, R.id.layout_login_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_login_obtain_code:
+            case R.id.tv_forgot_pwd:
+                startActivity(new Intent(this, RegisterAndModifyPwdActivity.class));
                 break;
-            case R.id.tv_login_next:
+            case R.id.tv_register:
+                startActivity(new Intent(this, RegisterInfoActivity.class));
+                break;
+            case R.id.layout_login_next:
                 break;
             default:
                 break;
@@ -129,14 +80,6 @@ public class LoginActivity extends BaseActivity {
         switch (task) {
             default:
                 break;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (executorService != null) {
-            executorService.shutdownNow();
         }
     }
 }

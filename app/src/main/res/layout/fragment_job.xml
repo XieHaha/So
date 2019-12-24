@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="25dp"
+        android:text="@string/txt_your_job"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/text_20" />
+
+    <EditText
+        android:id="@+id/et_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/txt_select_job"
+        android:maxLength="20"
+        android:minHeight="30dp"
+        android:singleLine="true"
+        android:textColor="@color/color_ffffff"
+        android:textColorHint="@color/color_ffffff"
+        android:textSize="@dimen/text_14" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_ffffff" />
+
+
+</LinearLayout>

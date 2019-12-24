@@ -22,7 +22,7 @@ public final class DirHelper {
     /**
      * 程序根目录
      */
-    private static final String PATH_APP_ROOT = "YHT";
+    private static final String PATH_APP_ROOT = "Social";
     /**
      * 头像、图片缓存目录 universalimageloader中使用
      */

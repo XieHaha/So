@@ -29,7 +29,7 @@ import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.permission.OnPermissionCallback;
 import com.cn.frame.permission.Permission;
 import com.cn.frame.permission.PermissionHelper;
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 import com.cn.frame.utils.SharePreferenceUtil;
 import com.cn.frame.utils.StatusBarUtil;
 import com.cn.frame.utils.ToastUtil;
@@ -125,7 +125,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
             tvTitle = findViewById(R.id.public_title_bar_title);
         }
         catch (Exception e) {
-            HuiZhenLog.e(getClass().getSimpleName(), e.getMessage());
+            SocialLog.e(getClass().getSimpleName(), e.getMessage());
         }
     }
 
@@ -143,7 +143,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
             tvTitle.setText(getTitle().toString());
         }
         catch (Exception e) {
-            HuiZhenLog.e(getClass().getSimpleName(), e.getMessage());
+            SocialLog.e(getClass().getSimpleName(), e.getMessage());
         }
     }
 

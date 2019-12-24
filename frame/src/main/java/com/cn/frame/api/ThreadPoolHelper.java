@@ -1,6 +1,6 @@
 package com.cn.frame.api;
 
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -45,12 +45,15 @@ public class ThreadPoolHelper {
         }
 
         private void initThreadPool() {
-            executorSingle = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
-                    "yht-thread-pool-%d").daemon(true).build());
-            executorCached = new ScheduledThreadPoolExecutor(0, new BasicThreadFactory.Builder().namingPattern(
-                    "yht-thread-pool-%d").daemon(true).build());
-            executorFixed = new ScheduledThreadPoolExecutor(THREAD_NUM, new BasicThreadFactory.Builder().namingPattern(
-                    "yht-thread-pool-%d").daemon(true).build());
+            executorSingle = new ScheduledThreadPoolExecutor(1,
+                    new BasicThreadFactory.Builder().namingPattern(
+                            "social").daemon(true).build());
+            executorCached = new ScheduledThreadPoolExecutor(0,
+                    new BasicThreadFactory.Builder().namingPattern(
+                            "social").daemon(true).build());
+            executorFixed = new ScheduledThreadPoolExecutor(THREAD_NUM,
+                    new BasicThreadFactory.Builder().namingPattern(
+                            "social").daemon(true).build());
         }
 
         /**
@@ -68,46 +71,46 @@ public class ThreadPoolHelper {
 
         public void execInSingle(Runnable r) {
             if (executorSingle == null || executorSingle.isShutdown() || executorSingle.isTerminated()) {
-                executorSingle = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
-                        "yht-thread-pool-%d").daemon(true).build());
+                executorSingle = new ScheduledThreadPoolExecutor(1,
+                        new BasicThreadFactory.Builder().namingPattern(
+                                "social").daemon(true).build());
             }
             try {
                 executorSingle.execute(r);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 if (e instanceof RejectedExecutionException) {
                     execInSingle(r);
                 }
-                HuiZhenLog.w(TAG, "Exception error!", e);
+                SocialLog.w(TAG, "Exception error!", e);
             }
         }
 
         public void execInCached(Runnable r) {
             if (executorCached == null || executorCached.isShutdown() || executorCached.isTerminated()) {
-                executorCached = new ScheduledThreadPoolExecutor(0, new BasicThreadFactory.Builder().namingPattern(
-                        "yht-thread-pool-%d").daemon(true).build());
+                executorCached = new ScheduledThreadPoolExecutor(0,
+                        new BasicThreadFactory.Builder().namingPattern(
+                                "social").daemon(true).build());
             }
             try {
                 executorCached.execute(r);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 if (e instanceof RejectedExecutionException) {
                     execInCached(r);
                 }
-                HuiZhenLog.w(TAG, "Exception error!", e);
+                SocialLog.w(TAG, "Exception error!", e);
             }
         }
 
         public <V> Future<V> submitInCached(Callable<V> c) {
             if (executorCached == null || executorCached.isShutdown() || executorCached.isTerminated()) {
-                executorCached = new ScheduledThreadPoolExecutor(0, new BasicThreadFactory.Builder().namingPattern(
-                        "yht-thread-pool-%d").daemon(true).build());
+                executorCached = new ScheduledThreadPoolExecutor(0,
+                        new BasicThreadFactory.Builder().namingPattern(
+                                "social").daemon(true).build());
             }
             try {
                 return executorCached.submit(c);
-            }
-            catch (Exception e) {
-                HuiZhenLog.e(TAG, "ThreadPoolHelper submitInCached Exception", e);
+            } catch (Exception e) {
+                SocialLog.e(TAG, "ThreadPoolHelper submitInCached Exception", e);
             }
             return null;
         }
@@ -115,17 +118,16 @@ public class ThreadPoolHelper {
         public void execInFixed(Runnable r) {
             if (executorFixed == null || executorFixed.isShutdown() || executorFixed.isTerminated()) {
                 executorFixed = new ScheduledThreadPoolExecutor(THREAD_NUM,
-                                                                new BasicThreadFactory.Builder().namingPattern(
-                                                                        "yht-thread-pool-%d").daemon(true).build());
+                        new BasicThreadFactory.Builder().namingPattern(
+                                "social").daemon(true).build());
             }
             try {
                 executorFixed.execute(r);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 if (e instanceof RejectedExecutionException) {
                     execInFixed(r);
                 }
-                HuiZhenLog.w(TAG, "Exception error!", e);
+                SocialLog.w(TAG, "Exception error!", e);
             }
         }
     }

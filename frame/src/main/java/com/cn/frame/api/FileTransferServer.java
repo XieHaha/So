@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.cn.frame.utils.SocialLog;
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OnUploadListener;
@@ -15,7 +16,6 @@ import com.yanzhenjie.nohttp.rest.JsonObjectRequest;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.cn.frame.utils.HuiZhenLog;
 
 import java.io.File;
 
@@ -85,7 +85,7 @@ public class FileTransferServer {
             DownloadListener downloadListener) {
         String url;
         url = urlStr.contains(" ") ? urlStr.replace(" ", "%20") : urlStr;
-        HuiZhenLog.i(TAG, url);
+        SocialLog.i(TAG, url);
         DownloadRequest request = NoHttp.createDownloadRequest(Uri.encode(url, url), savePath, fileName, false, true);
         if (!TextUtils.isEmpty(token)) {
             request.addHeader("token", token);

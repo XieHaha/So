@@ -3,9 +3,7 @@ package com.cn.lv.ui.main;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,9 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,32 +21,17 @@ import android.widget.TextView;
 
 import com.cn.frame.api.ApiManager;
 import com.cn.frame.data.BaseData;
-import com.cn.frame.data.CommonData;
 import com.cn.frame.data.bean.VersionBean;
 import com.cn.frame.ui.BaseActivity;
-import com.cn.frame.utils.HuiZhenLog;
 import com.cn.frame.widgets.AbstractOnPageChangeListener;
 import com.cn.lv.R;
-import com.cn.lv.chat.listener.AbstractEMContactListener;
-import com.cn.lv.chat.listener.AbstractEMMessageListener;
-import com.cn.lv.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.cn.lv.ui.adapter.ViewPagerAdapter;
 import com.cn.lv.ui.dialog.UpdateDialog;
-import com.cn.lv.ui.hint.HintLoginActivity;
 import com.cn.lv.ui.main.fragment.FriendsFragment;
 import com.cn.lv.ui.main.fragment.MessageFragment;
 import com.cn.lv.ui.main.fragment.WorkerFragment;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMImageMessageBody;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMMessageBody;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.chat.EMVoiceMessageBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,18 +73,6 @@ public class MainActivity extends BaseActivity
      * 居民碎片
      */
     private FriendsFragment friendsFragment;
-    /**
-     * 环信
-     */
-    private EaseConnectionListener connectionListener;
-    /**
-     * 消息监听
-     */
-    private AbstractEMMessageListener msgListener;
-    /**
-     * 联系人变化监听
-     */
-    private AbstractEMContactListener contactListener;
     /**
      * 版本检测
      */
@@ -175,27 +144,6 @@ public class MainActivity extends BaseActivity
                 selectTab(position);
             }
         });
-        //注册一个监听连接状态的listener
-        connectionListener = new EaseConnectionListener();
-        EMClient.getInstance().addConnectionListener(connectionListener);
-        msgListener = new AbstractEMMessageListener() {
-            @Override
-            public void onMessageReceived(List<EMMessage> messages) {
-                //收到消息
-                initNotify();
-                sendChatMsg(messages.get(0));
-            }
-        };
-        EMClient.getInstance().chatManager().addMessageListener(msgListener);
-        contactListener = new AbstractEMContactListener() {
-            @Override
-            public void onContactDeleted(String username) {
-                //被删除时回调此方法
-                //删除会话
-                EMClient.getInstance().chatManager().deleteConversation(username, true);
-            }
-        };
-        EMClient.getInstance().contactManager().setContactListener(contactListener);
     }
 
 
@@ -204,29 +152,6 @@ public class MainActivity extends BaseActivity
      */
     private void loginEaseChat() {
         if (loginBean != null) {
-            EMClient.getInstance().login(loginBean.getDoctorCode().toLowerCase(),
-                    BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
-                        @Override
-                        public void onSuccess() {
-                            EMClient.getInstance().groupManager().loadAllGroups();
-                            EMClient.getInstance().chatManager().loadAllConversations();
-                            if (loginBean != null) {
-                                // update current user's display name for APNs
-                                EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
-                            }
-                            runOnUiThread(() -> HuiZhenLog.i(TAG,
-                                    getString(R.string.txt_login_ease_success)));
-                        }
-
-                        @Override
-                        public void onProgress(int progress, String status) {
-                        }
-
-                        @Override
-                        public void onError(int code, String message) {
-                            HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_error));
-                        }
-                    });
         }
     }
 
@@ -255,67 +180,68 @@ public class MainActivity extends BaseActivity
         ShortcutBadger.removeCount(this);
     }
 
-    public void sendChatMsg(EMMessage message) {
-        //当前消息发送者与正在聊天界面对象一致时，不显示通知
-//        if (message.getFrom().equals(ZycApplication.getInstance().getChatId())) {
-//            return;
-//        }
-        String nickName = "";
-        //        List<PatientBean> list =
-        //                LitePal.where("code = ?", message.getFrom().toUpperCase()).find
-        //                (PatientBean.class);
-        //        if (list != null && list.size() > 0) {
-        //            PatientBean bean = list.get(0);
-        //            nickName = bean.getName();
-        //        }
-        String text;
-        EMMessageBody body = message.getBody();
-        if (body instanceof EMTextMessageBody) {
-            text = ((EMTextMessageBody) body).getMessage();
-        } else if (body instanceof EMImageMessageBody) {
-            text = getString(R.string.picture);
-        } else if (body instanceof EMVoiceMessageBody) {
-            text = getString(R.string.voice_prefix);
-        } else {
-            text = getString(R.string.txt_receive_ease_message);
-        }
-        if (pendingCount > BaseData.BASE_PENDING_COUNT) {
-            pendingCount = 1;
-        }
-        pendingCount++;
-        Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
-        intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
-        intent.setAction(BaseData.EASE_MSG_ANDROID_INTENT_CLICK);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pendingCount,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder = new NotificationCompat.Builder(this, BaseData.BASE_CHAT_CHANNEL);
-            builder.setLargeIcon(largeIcon);
-            builder.setChannelId(BaseData.BASE_CHAT_CHANNEL);
-        } else {
-            builder = new NotificationCompat.Builder(this, null);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(R.mipmap.icon_alpha_logo);
-        } else {
-            builder.setSmallIcon(R.mipmap.logo_icon);
-        }
-        builder.setAutoCancel(true);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        if (TextUtils.isEmpty(nickName)) {
-            builder.setContentTitle(getString(R.string.APP_NAME));
-            builder.setContentText(getString(R.string.txt_receive_ease_message));
-        } else {
-            builder.setContentTitle(nickName);
-            builder.setContentText(text);
-        }
-        builder.setContentIntent(pendingIntent);
-        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
-        builder.setWhen(System.currentTimeMillis());
-        mNotificationManager.notify(message.getFrom(), pendingCount, builder.build());
-    }
+    //    public void sendChatMsg(EMMessage message) {
+    //当前消息发送者与正在聊天界面对象一致时，不显示通知
+    //        if (message.getFrom().equals(ZycApplication.getInstance().getChatId())) {
+    //            return;
+    //        }
+    //        String nickName = "";
+    //        List<PatientBean> list =
+    //                LitePal.where("code = ?", message.getFrom().toUpperCase()).find
+    //                (PatientBean.class);
+    //        if (list != null && list.size() > 0) {
+    //            PatientBean bean = list.get(0);
+    //            nickName = bean.getName();
+    //        }
+    //        String text;
+    //        EMMessageBody body = message.getBody();
+    //        if (body instanceof EMTextMessageBody) {
+    //            text = ((EMTextMessageBody) body).getMessage();
+    //        } else if (body instanceof EMImageMessageBody) {
+    //            text = getString(R.string.picture);
+    //        } else if (body instanceof EMVoiceMessageBody) {
+    //            text = getString(R.string.voice_prefix);
+    //        } else {
+    //            text = getString(R.string.txt_receive_ease_message);
+    //        }
+    //        if (pendingCount > BaseData.BASE_PENDING_COUNT) {
+    //            pendingCount = 1;
+    //        }
+    //        pendingCount++;
+    //        Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
+    //        intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
+    //        intent.setAction(BaseData.EASE_MSG_ANDROID_INTENT_CLICK);
+    //        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,
+    //        pendingCount,
+    //                intent,
+    //                PendingIntent.FLAG_UPDATE_CURRENT);
+    //        NotificationCompat.Builder builder;
+    //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    //            builder = new NotificationCompat.Builder(this, BaseData.BASE_CHAT_CHANNEL);
+    //            builder.setLargeIcon(largeIcon);
+    //            builder.setChannelId(BaseData.BASE_CHAT_CHANNEL);
+    //        } else {
+    //            builder = new NotificationCompat.Builder(this, null);
+    //        }
+    //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    //            builder.setSmallIcon(R.mipmap.icon_alpha_logo);
+    //        } else {
+    //            builder.setSmallIcon(R.mipmap.logo_icon);
+    //        }
+    //        builder.setAutoCancel(true);
+    //        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+    //        if (TextUtils.isEmpty(nickName)) {
+    //            builder.setContentTitle(getString(R.string.APP_NAME));
+    //            builder.setContentText(getString(R.string.txt_receive_ease_message));
+    //        } else {
+    //            builder.setContentTitle(nickName);
+    //            builder.setContentText(text);
+    //        }
+    //        builder.setContentIntent(pendingIntent);
+    //        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
+    //        builder.setWhen(System.currentTimeMillis());
+    //        mNotificationManager.notify(message.getFrom(), pendingCount, builder.build());
+    //    }
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId, String channelName, int importance) {
@@ -342,26 +268,6 @@ public class MainActivity extends BaseActivity
                 break;
             default:
                 break;
-        }
-    }
-
-    /**
-     * 环信账号连接监听
-     */
-    public class EaseConnectionListener implements EMConnectionListener {
-        @Override
-        public void onConnected() {
-        }
-
-        @Override
-        public void onDisconnected(final int error) {
-            runOnUiThread(() -> {
-                if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                    Intent intent = new Intent(MainActivity.this, HintLoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
-                }
-            });
         }
     }
 
@@ -479,8 +385,7 @@ public class MainActivity extends BaseActivity
     }
 
     /**
-     * 返回键 后台运行
-     * 如果前一个activity未finish  会导致无法返回到后台
+     * 返回键 后台运行,如果前一个activity未finish  会导致无法返回到后台
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -489,14 +394,5 @@ public class MainActivity extends BaseActivity
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //移除监听
-        EMClient.getInstance().removeConnectionListener(connectionListener);
-        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
-        EMClient.getInstance().contactManager().removeContactListener(contactListener);
     }
 }

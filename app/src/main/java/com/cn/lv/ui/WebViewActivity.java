@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.BaseUtils;
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 import com.cn.lv.R;
 
 import butterknife.BindView;
@@ -91,7 +91,7 @@ public class WebViewActivity extends BaseActivity  {
         }
         if (BaseUtils.isNetworkAvailable(this)) {
             showLoadingView();
-            HuiZhenLog.i(TAG, "url:" + url);
+            SocialLog.i(TAG, "url:" + url);
             webView.loadUrl(url);
         }
         else {

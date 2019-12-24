@@ -227,12 +227,12 @@ public class BaseUtils {
             try {
                 out.close();
             } catch (IOException e) {
-                HuiZhenLog.e(TAG, e.getMessage());
+                SocialLog.e(TAG, e.getMessage());
             }
             try {
                 in.close();
             } catch (IOException e) {
-                HuiZhenLog.e(TAG, e.getMessage());
+                SocialLog.e(TAG, e.getMessage());
             }
         }
         return count;

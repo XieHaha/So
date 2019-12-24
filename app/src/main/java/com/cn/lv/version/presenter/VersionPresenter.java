@@ -11,12 +11,12 @@ import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
+import com.cn.frame.utils.SocialLog;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.cn.frame.api.DirHelper;
 import com.cn.frame.data.bean.VersionBean;
 import com.cn.frame.utils.BaseUtils;
-import com.cn.frame.utils.HuiZhenLog;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.lv.ZycApplication;
 import com.cn.lv.version.ConstantsVersionMode;
@@ -202,7 +202,7 @@ public class VersionPresenter implements ConstantsVersionMode {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName + "";
         }
         catch (NameNotFoundException e) {
-            HuiZhenLog.w(TAG, "Exception error!", e);
+            SocialLog.w(TAG, "Exception error!", e);
         }
         return null;
     }

@@ -94,7 +94,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         setContentView(R.layout.activity_image_view);
         Intent intent = getIntent();
         if (intent != null) {
-            urls = (ArrayList<NormImage>)intent.getSerializableExtra(INTENT_URLS);
+            urls = (ArrayList<NormImage>) intent.getSerializableExtra(INTENT_URLS);
             currentIndex = intent.getIntExtra(INTENT_POSITION, 0);
         }
         mLoadingView = findViewById(R.id.act_image_view_loading);
@@ -153,18 +153,20 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         @Override
         public View instantiateItem(@NotNull final ViewGroup container, final int position) {
             ImagePreviewView currentPreviewView = imgPreViews.get(position);
-            //                        currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getImageUrl(),
+            //                        currentPreviewView.loadingImageAsync(urls.get(position)
+            //                        .getImagePath(), urls.get(position).getImageUrl(),
             //                                                             position);
             currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(),
-                                                 FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
+                    FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
             container.addView(currentPreviewView, LinearLayout.LayoutParams.MATCH_PARENT,
-                              LinearLayout.LayoutParams.MATCH_PARENT);
+                    LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviewView;
         }
 
         @Override
-        public void destroyItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
-            container.removeView((View)object);
+        public void destroyItem(@NotNull ViewGroup container, int position,
+                                @NotNull Object object) {
+            container.removeView((View) object);
         }
 
         @Override
@@ -176,6 +178,6 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
     @Override
     public void onBackPressed() {
         finish();
-        overridePendingTransition(R.anim.keep, R.anim.fade_out);
+        overridePendingTransition(R.anim.keep, R.anim.anim_fade_out);
     }
 }

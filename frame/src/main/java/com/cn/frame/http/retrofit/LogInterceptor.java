@@ -2,7 +2,7 @@ package com.cn.frame.http.retrofit;
 
 import android.text.TextUtils;
 
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -51,12 +51,12 @@ public class LogInterceptor implements Interceptor {
         Connection connection = chain.connection();
         Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
         request = initNewRequest(request);
-        HuiZhenLog.i(TAG, "请求开始-->" + request.method() + ' ' + request.url() + ' ' + protocol);
+        SocialLog.i(TAG, "请求开始-->" + request.method() + ' ' + request.url() + ' ' + protocol);
         if (!hasRequestBody) {
-            HuiZhenLog.i(TAG, "--> END " + request.method());
+            SocialLog.i(TAG, "--> END " + request.method());
         }
         else if (bodyEncoded(request.headers())) {
-            HuiZhenLog.i(TAG, "--> END " + request.method() + " (encoded body omitted)");
+            SocialLog.i(TAG, "--> END " + request.method() + " (encoded body omitted)");
         }
         else {
             Buffer buffer = new Buffer();
@@ -67,10 +67,10 @@ public class LogInterceptor implements Interceptor {
                 charset = contentType.charset(UTF8);
             }
             if (isPlaintext(buffer) && contentType != null && !fileType.equals(contentType.type())) {
-                HuiZhenLog.i(TAG, "params:" + buffer.readString(charset));
+                SocialLog.i(TAG, "params:" + buffer.readString(charset));
             }
             else {
-                HuiZhenLog.i(TAG, "--> END " + request.method() + " (binary " + requestBody.contentLength() +
+                SocialLog.i(TAG, "--> END " + request.method() + " (binary " + requestBody.contentLength() +
                                   "-byte body omitted)");
             }
         }
@@ -80,19 +80,19 @@ public class LogInterceptor implements Interceptor {
             response = chain.proceed(request);
         }
         catch (Exception e) {
-            HuiZhenLog.i(TAG, "<-- HTTP FAILED: " + e);
+            SocialLog.i(TAG, "<-- HTTP FAILED: " + e);
             throw e;
         }
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
-        HuiZhenLog.i(TAG, "<-- " + response.code() + ' ' + response.message() + ' ' + response.request().url() + " (" +
+        SocialLog.i(TAG, "<-- " + response.code() + ' ' + response.message() + ' ' + response.request().url() + " (" +
                           tookMs + "ms" + ')');
         if (!HttpHeaders.hasBody(response)) {
-            HuiZhenLog.i(TAG, "<-- END HTTP");
+            SocialLog.i(TAG, "<-- END HTTP");
         }
         else if (bodyEncoded(response.headers())) {
-            HuiZhenLog.i(TAG, "<-- END HTTP (encoded body omitted)");
+            SocialLog.i(TAG, "<-- END HTTP (encoded body omitted)");
         }
         else {
             BufferedSource source = responseBody.source();
@@ -106,19 +106,19 @@ public class LogInterceptor implements Interceptor {
                     charset = contentType.charset(UTF8);
                 }
                 catch (UnsupportedCharsetException e) {
-                    HuiZhenLog.i(TAG, "Couldn't decode the response body; charset is likely malformed.");
-                    HuiZhenLog.i(TAG, "<-- END HTTP");
+                    SocialLog.i(TAG, "Couldn't decode the response body; charset is likely malformed.");
+                    SocialLog.i(TAG, "<-- END HTTP");
                     return response;
                 }
             }
             if (!isPlaintext(buffer)) {
-                HuiZhenLog.i(TAG, "<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
+                SocialLog.i(TAG, "<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
                 return response;
             }
             if (contentLength != 0) {
-                HuiZhenLog.i(TAG, buffer.clone().readString(charset));
+                SocialLog.i(TAG, buffer.clone().readString(charset));
             }
-            HuiZhenLog.i(TAG, "请求结束<-- END HTTP (" + buffer.size() + "-byte body)");
+            SocialLog.i(TAG, "请求结束<-- END HTTP (" + buffer.size() + "-byte body)");
         }
         return response;
     }

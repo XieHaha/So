@@ -4,7 +4,7 @@ import com.cn.frame.data.BaseNetConfig;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.http.listener.ResponseListener;
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -45,11 +45,11 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
         //服务器错误信息处理
         if (listener != null) {
             listener.onResponseError(task, new Exception("网络连接错误，请稍后再试"));
-            HuiZhenLog.e(TAG, task + " onError:" + e);
+            SocialLog.e(TAG, task + " onError:" + e);
             if (e.getStackTrace() != null) {
                 for (StackTraceElement element : e.getStackTrace()) {
                     //错误日志 数据量较多 可以显示
-                    //HuiZhenLog.e(TAG, "onError element:" + element.toString());
+                    //SocialLog.e(TAG, "onError element:" + element.toString());
                 }
             }
         }

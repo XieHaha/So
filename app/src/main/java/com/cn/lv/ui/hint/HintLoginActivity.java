@@ -9,12 +9,8 @@ import com.cn.frame.data.CommonData;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.SharePreferenceUtil;
 import com.cn.lv.R;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
 
 import org.litepal.LitePal;
-
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,16 +51,6 @@ public class HintLoginActivity extends BaseActivity {
         SharePreferenceUtil.clear(this);
         //清除数据库数据
         LitePal.deleteDatabase(LitePalHelper.DATA_BASE_NAME);
-        //删除环信会话列表
-        Map<String, EMConversation> conversations =
-                EMClient.getInstance().chatManager().getAllConversations();
-        //删除和某个user会话，如果需要保留聊天记录，传false
-        for (EMConversation conversation : conversations.values()) {
-            EMClient.getInstance().chatManager().deleteConversation(conversation.conversationId()
-                    , true);
-        }
-        //退出环信
-        EMClient.getInstance().logout(true);
     }
 
     @Override
@@ -74,7 +60,7 @@ public class HintLoginActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.keep, R.anim.fade_out);
+        overridePendingTransition(R.anim.keep, R.anim.anim_fade_out);
     }
 
     @OnClick(R.id.dialog_simple_hint_enter)

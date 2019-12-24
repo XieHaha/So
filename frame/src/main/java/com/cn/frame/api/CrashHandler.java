@@ -20,7 +20,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cn.frame.ui.AppManager;
-import com.cn.frame.utils.HuiZhenLog;
+import com.cn.frame.utils.SocialLog;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
@@ -83,7 +83,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             mDefaultHandler.uncaughtException(thread, ex);
         }
         else {
-            HuiZhenLog.d(TAG, "Exception:ThreadId=" + thread.getId() + ";ThreadName=" + thread.getName() + ";AppId=" +
+            SocialLog.d(TAG, "Exception:ThreadId=" + thread.getId() + ";ThreadName=" + thread.getName() + ";AppId=" +
                               Process.myPid());
             if (Looper.myLooper() == Looper.getMainLooper()) {
                 //如果异常出现在主线程，提示并退出程序
@@ -107,7 +107,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     private boolean handleException(Throwable ex) {
         //保存日志文件
-        HuiZhenLog.e(TAG, "unCaughtException", ex);
+        SocialLog.e(TAG, "unCaughtException", ex);
         //如果是调试状态则不生成异常文件，让系统默认的异常处理器来处理
         if (Debug.isDebuggerConnected() || ex == null) { return false; }
         //收集设备参数信息

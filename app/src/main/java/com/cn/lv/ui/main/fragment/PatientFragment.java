@@ -8,11 +8,6 @@ import android.view.View;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.lv.R;
 
-/**
- * @author 顿顿
- * @date 19/5/17 14:55
- * @des 居民列表
- */
 public class PatientFragment extends BaseFragment {
 
     @Override

@@ -9,9 +9,6 @@ import com.cn.lv.R;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * @创建者 顿顿
- */
 public class WhoInfoFragment extends BaseFragment {
     @BindView(R.id.iv_male_bg)
     ImageView ivMaleBg;

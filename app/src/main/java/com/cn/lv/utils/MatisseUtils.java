@@ -12,11 +12,6 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.EnumSet;
 
-/**
- * @author 顿顿
- * @date 19/4/3 14:38
- * @description
- */
 public class MatisseUtils {
     /**
      * 请求修改头像 相册

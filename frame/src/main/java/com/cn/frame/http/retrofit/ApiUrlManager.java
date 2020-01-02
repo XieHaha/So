@@ -40,7 +40,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回值
      */
-    @POST("client/confirm-verify-code")
+    @POST("api/")
     Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
 
 

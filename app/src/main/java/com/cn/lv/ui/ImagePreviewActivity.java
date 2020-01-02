@@ -24,9 +24,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-/**
- * @author dundun
- */
 public class ImagePreviewActivity extends Activity implements ViewPager.OnPageChangeListener {
     public static final String INTENT_URLS = "intent_urls";
     public static final String INTENT_POSITION = "intent_position";

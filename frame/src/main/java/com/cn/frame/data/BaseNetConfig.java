@@ -1,14 +1,13 @@
 package com.cn.frame.data;
 
 /**
- * @author DUNDUN
  * @date 2016/11/29
  */
 public interface BaseNetConfig {
     /**
      * 请求成功编码
      */
-    int REQUEST_SUCCESS = 2000;
+    int REQUEST_SUCCESS = 200;
     /**
      * 其他错误
      */

@@ -25,9 +25,6 @@ import com.cn.lv.version.model.VersionModelListener;
 
 import java.io.File;
 
-/**
- * @author dundun
- */
 public class VersionPresenter implements ConstantsVersionMode {
     private static final String TAG = "ZYC";
     private Context context;

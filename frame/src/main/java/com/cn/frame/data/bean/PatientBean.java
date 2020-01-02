@@ -10,7 +10,6 @@ import java.util.ArrayList;
 /**
  * 居民
  *
- * @author dundun
  */
 public class PatientBean extends LitePalSupport implements Serializable, MultiItemEntity {
     private static final long serialVersionUID = -8620697034094662215L;

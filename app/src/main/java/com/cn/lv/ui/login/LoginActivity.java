@@ -3,31 +3,28 @@ package com.cn.lv.ui.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.ToastUtil;
 import com.cn.lv.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * @author 顿顿
- * @date 19/5/24 15:20
- * @description
- */
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_pwd)
     EditText etPwd;
-    private String phone, verifyCode;
+    private String phone, pwd;
 
     @Override
     protected boolean isInitStatusBar() {
@@ -54,7 +51,7 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void login() {
-        RequestUtils.login(this, "", phone, verifyCode, BaseData.ADMIN, this);
+        RequestUtils.login(this, phone, pwd, this);
     }
 
 
@@ -68,6 +65,17 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(this, RegisterInfoActivity.class));
                 break;
             case R.id.layout_login_next:
+                phone = etPhone.getText().toString().trim();
+                if (!BaseUtils.isMobileNumber(phone)) {
+                    ToastUtil.toast(this, R.string.txt_input_phone_hint);
+                    return;
+                }
+                pwd = etPwd.getText().toString().trim();
+                if (TextUtils.isEmpty(pwd)) {
+                    ToastUtil.toast(this, R.string.txt_input_pwd_hint);
+                    return;
+                }
+                login();
                 break;
             default:
                 break;
@@ -78,6 +86,8 @@ public class LoginActivity extends BaseActivity {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
+            case LOGIN_AND_REGISTER:
+                break;
             default:
                 break;
         }

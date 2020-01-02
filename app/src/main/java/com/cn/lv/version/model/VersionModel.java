@@ -13,11 +13,6 @@ import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.utils.SocialLog;
 
 import java.io.File;
-
-/**
- * @author dundun
- * @date 16/6/6
- */
 public class VersionModel extends AbstractResponseAdapter<BaseResponse> implements VersionModelListener {
     private static final String TAG = "VersionModel";
     private Context context;

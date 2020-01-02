@@ -29,14 +29,11 @@ public class RequestUtils {
                         listener));
     }
 
-    public static void login(Context context, String prepareId, String phone, String verifyCode,
-                             String merchant,
+    public static void login(Context context, String phone, String pwd,
                              final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
-        params.put("merchant", merchant);
-        params.put("phone", phone);
-        params.put("prepareId", prepareId);
-        params.put("verifyCode", verifyCode);
+        params.put("sign", phone);
+        params.put("login_password", pwd);
         RetrofitManager.getApiUrlManager()
                 .login(params)
                 .compose(RxJavaHelper.observableIO2Main(context))

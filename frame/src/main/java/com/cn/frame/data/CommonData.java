@@ -1,8 +1,5 @@
 package com.cn.frame.data;
 
-/**
- * @author dundun
- */
 public interface CommonData {
     /**
      * 公用数据key

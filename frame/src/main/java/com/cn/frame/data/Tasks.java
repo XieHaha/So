@@ -3,7 +3,6 @@ package com.cn.frame.data;
 /**
  * 此类为任务队列编号，根据任务队列编号确定是否取消的任务
  *
- * @author dundun
  */
 public enum Tasks {
     /**

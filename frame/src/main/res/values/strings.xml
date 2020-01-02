@@ -6,6 +6,7 @@
     <string name="txt_go_on">继续</string>
     <string name="txt_male">男</string>
     <string name="txt_female">女</string>
+    <string name="txt_neutral">男女皆可</string>
 
     <!--登录注册-->
     <string name="txt_hello">您好</string>
@@ -40,6 +41,8 @@
     <string name="txt_select_address">请选择您的常住地址</string>
     <string name="txt_your_header">上传您的头像</string>
     <string name="txt_sign_up_who">注册成为？</string>
+    <string name="txt_successful_people">成功人士</string>
+    <string name="txt_sweetheart">魅力甜心</string>
     <string name="txt_interested_in">对谁感兴趣？</string>
 
     <!--loadview-->

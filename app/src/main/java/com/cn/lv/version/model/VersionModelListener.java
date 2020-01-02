@@ -4,10 +4,6 @@ import com.cn.frame.data.bean.VersionBean;
 
 import java.io.File;
 
-/**
- * @author dundun
- * @date 16/6/6
- */
 public interface VersionModelListener {
     void getNewestVersion(NewestVersionCallBack callBack);
 

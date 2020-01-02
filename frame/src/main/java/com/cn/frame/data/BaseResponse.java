@@ -3,7 +3,6 @@ package com.cn.frame.data;
 import java.io.Serializable;
 
 /**
- * @author DUNDUN
  * @date 2015/12/31
  */
 public class BaseResponse<T> implements Serializable {
@@ -12,6 +11,8 @@ public class BaseResponse<T> implements Serializable {
      * 请求响应码
      */
     int code;
+    int count;
+    String type;
     /**
      * 请求响应文本
      */
@@ -30,6 +31,22 @@ public class BaseResponse<T> implements Serializable {
         return this;
     }
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getMsg() {
         return msg;
     }
@@ -39,9 +56,9 @@ public class BaseResponse<T> implements Serializable {
         return this;
     }
 
-    @SuppressWarnings({ "unchecked", "UnusedDeclaration" })
+    @SuppressWarnings({"unchecked", "UnusedDeclaration"})
     public <T extends Object> T getData() {
-        return (T)data;
+        return (T) data;
     }
 
     public BaseResponse setData(T data) {
@@ -52,6 +69,6 @@ public class BaseResponse<T> implements Serializable {
     @Override
     public String toString() {
         return "BaseResponse{" + "code=" + code + ", '" + (msg == null ? "msg为空" : "msg=" + msg) + '\'' + ", " +
-               (data == null ? "data为空" : "data=" + data.toString()) + '}';
+                (data == null ? "data为空" : "data=" + data.toString()) + '}';
     }
 }

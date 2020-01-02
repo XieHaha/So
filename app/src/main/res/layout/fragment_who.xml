@@ -37,14 +37,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_male" />
+                android:src="@mipmap/ic_successful_people" />
 
         </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_male"
+            android:text="@string/txt_successful_people"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/text_14" />
     </LinearLayout>
@@ -77,26 +77,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_female" />
+                android:src="@mipmap/ic_sweetheart" />
 
         </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_female"
+            android:text="@string/txt_sweetheart"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/text_14" />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:text="@string/txt_sex_hint"
-        android:textColor="@color/color_ffffff"
-        android:textSize="@dimen/text_10" />
 
 </RelativeLayout>

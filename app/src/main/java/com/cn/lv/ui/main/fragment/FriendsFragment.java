@@ -8,11 +8,6 @@ import com.cn.frame.api.ApiManager;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.lv.R;
 
-/**
- * @author 顿顿
- * @date 19/5/17 14:55
- * @description 好友
- */
 public class FriendsFragment extends BaseFragment {
     /**
      * 居民列表

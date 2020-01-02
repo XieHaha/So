@@ -1,10 +1,5 @@
 package com.cn.frame.data;
 
-/**
- * @author 顿顿
- * @date 19/4/11 16:45
- * @des 魔法值存储
- */
 public interface BaseData {
     /**
      * 基础type 0

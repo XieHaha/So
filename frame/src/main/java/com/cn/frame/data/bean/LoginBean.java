@@ -2,11 +2,6 @@ package com.cn.frame.data.bean;
 
 import java.io.Serializable;
 
-/**
- * 登录成功
- *
- * @author DUNDUN
- */
 public class LoginBean implements Serializable {
     private static final long serialVersionUID = 1574016439324324068L;
     private String token;

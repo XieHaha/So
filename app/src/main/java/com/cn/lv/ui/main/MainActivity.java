@@ -40,9 +40,6 @@ import butterknife.BindView;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 
-/**
- * @author dundun
- */
 public class MainActivity extends BaseActivity
         implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
     @BindView(R.id.act_main_tab1)

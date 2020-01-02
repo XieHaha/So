@@ -23,11 +23,6 @@ import com.cn.lv.R;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * @author 顿顿
- * @date 19/6/29 14:57
- * @description web
- */
 public class WebViewActivity extends BaseActivity  {
     @BindView(R.id.layout_title_root)
     RelativeLayout layoutTitleRoot;

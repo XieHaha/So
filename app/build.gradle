@@ -26,23 +26,23 @@ android {
     productFlavors {
         lv {
             applicationId "com.cn.lv"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071/\""
-            resValue "string", "APP_NAME", "\"社交\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://sweet.uxuanxueche.com/\""
+            resValue "string", "APP_NAME", "\"Sweet\""
         }
     }
 
     signingConfigs {
         release {
-            storeFile file('E:/HuiZhen/app/zyc.jks')
-            storePassword 'android'
-            keyAlias = '智予成'
-            keyPassword '123456'
+            storeFile file('E:/DUNDUN/Sweet.jks')
+            storePassword 'sweet2020'
+            keyAlias = 'Sweet'
+            keyPassword 'sweet2020'
         }
         debug {
-            keyAlias '测试'
-            keyPassword '999999'
-            storeFile file('E:/HuiZhen/app/zyc.jks')
-            storePassword 'android'
+            keyAlias 'Sweet'
+            keyPassword 'sweet2020'
+            storeFile file('E:/DUNDUN/Sweet.jks')
+            storePassword 'sweet2020'
         }
     }
 
@@ -61,13 +61,7 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            if (variant.name.endsWith("Debug")) {
-                //debug包
-                outputFileName = "DEBUG_${variant.productFlavors[0].name}V${variant.versionName}-${releaseTime()}.apk"
-            } else {
-                //release包
-                outputFileName = "RELEASE_${variant.productFlavors[0].name}V${variant.versionName}-${releaseTime()}.apk"
-            }
+            outputFileName = "${variant.productFlavors[0].name}V${variant.versionName}-${releaseTime()}.apk"
         }
     }
     compileOptions {

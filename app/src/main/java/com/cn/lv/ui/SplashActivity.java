@@ -23,7 +23,6 @@ import pl.droidsonroids.gif.GifImageView;
 /**
  * 启动界面
  *
- * @author DUNDUN
  */
 public class SplashActivity extends BaseActivity {
     @BindView(R.id.gif_image)

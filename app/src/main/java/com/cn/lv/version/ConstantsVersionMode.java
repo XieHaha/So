@@ -1,9 +1,5 @@
 package com.cn.lv.version;
 
-/**
- * @author dundun
- * @date 16/4/7
- */
 public interface ConstantsVersionMode {
     /**
      * 不更新

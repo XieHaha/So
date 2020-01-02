@@ -9,12 +9,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import static android.app.Notification.EXTRA_CHANNEL_ID;
 import static android.provider.Settings.EXTRA_APP_PACKAGE;
-
-/**
- * @author 顿顿
- * @date 19/7/25 17:07
- * @description 跳转设置界面
- */
 public class NotifySettingUtils {
     /**
      * 检测通知权限

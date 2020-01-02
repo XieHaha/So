@@ -8,12 +8,6 @@ import android.content.ContextWrapper;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
-
-/**
- * @author 顿顿
- * @date 19/8/3 18:06
- * @description
- */
 public class NotificationUtils extends ContextWrapper {
     private NotificationManager manager;
     public static final String id = "channel_1";

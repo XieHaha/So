@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
-/**
- * @author dundun
- */
 public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode, View.OnClickListener {
     private static final String TAG = "VersionUpdateDialog";
     private TextView tvTitle, tvCancel, tvUpdate, tvPercent, tvContent;

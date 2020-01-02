@@ -1,10 +1,4 @@
 package com.cn.lv.utils;
-
-/**
- * @author 顿顿
- * @date 19/7/5 16:52
- * @description 文件下载链接拼接
- */
 public class FileUrlUtil {
     /**
      * 添加header token

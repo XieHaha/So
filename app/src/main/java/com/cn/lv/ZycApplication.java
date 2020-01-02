@@ -18,12 +18,6 @@ import com.yanzhenjie.nohttp.NoHttp;
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
-
-/**
- * 2018年4月4日16:40:23
- *
- * @author DUNDUN
- */
 public class ZycApplication extends LitePalApplication {
     private static ZycApplication instance;
     private LoginBean loginBean;

@@ -26,9 +26,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * @author 顿顿
- */
 public class RegisterAndModifyPwdActivity extends BaseActivity {
     @BindView(R.id.et_phone)
     EditText etPhone;
@@ -107,12 +104,6 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
         RequestUtils.getVerifyCode(this, phone, BaseData.ADMIN, this);
     }
 
-    /**
-     * 登录
-     */
-    private void login() {
-        RequestUtils.login(this, "", phone, verifyCode, BaseData.ADMIN, this);
-    }
 
     @OnClick({R.id.iv_back, R.id.tv_get_verify_code, R.id.layout_next})
     public void onViewClicked(View view) {

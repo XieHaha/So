@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * 版本model
  *
- * @author dundun
  */
 public class VersionBean implements Serializable {
     private static final long serialVersionUID = -8438526479985188981L;

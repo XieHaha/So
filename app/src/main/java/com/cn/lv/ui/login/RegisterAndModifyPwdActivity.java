@@ -1,8 +1,17 @@
 package com.cn.lv.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -10,12 +19,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cn.frame.data.BaseData;
+import com.cn.frame.data.BaseNetConfig;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.ToastUtil;
 import com.cn.lv.R;
+import com.cn.lv.ui.WebViewActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -43,10 +57,12 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
     TextView tvTitle1;
     @BindView(R.id.tv_title2)
     TextView tvTitle2;
+    @BindView(R.id.tv_hint)
+    TextView tvHint;
     @BindView(R.id.layout_register_hint)
     LinearLayout layoutRegisterHint;
     private ScheduledExecutorService executorService;
-    private String phone, verifyCode;
+    private String phone, pwd, pwdAgain;
     /**
      * 验证码计时
      */
@@ -59,6 +75,7 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
      * true为注册；false为忘记密码
      */
     private boolean mode;
+    private int code, sex, who, interest;
 
     @Override
     protected boolean isInitStatusBar() {
@@ -72,7 +89,11 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
 
     private Handler handler = new Handler(message -> {
         if (time <= 0) {
+            tvGetVerifyCode.setClickable(true);
+            tvGetVerifyCode.setText(R.string.txt_get_verify_code);
         } else {
+            tvGetVerifyCode.setClickable(false);
+            tvGetVerifyCode.setText(String.format(getString(R.string.txt_login_time), time));
         }
         return true;
     });
@@ -82,8 +103,11 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             mode = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
+            sex = getIntent().getIntExtra(CommonData.KEY_SEX, -1);
+            who = getIntent().getIntExtra(CommonData.KEY_WHO, -1);
+            interest = getIntent().getIntExtra(CommonData.KEY_INTEREST, -1);
         }
-
+        spannableString(getString(R.string.txt_register_hint));
         if (mode) {
             ivBack.setVisibility(View.GONE);
             tvTitle1.setText(R.string.txt_hello);
@@ -101,7 +125,24 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
      * 获取验证码
      */
     private void getVerifyCode() {
-        RequestUtils.getVerifyCode(this, phone, BaseData.ADMIN, this);
+        RequestUtils.getVerifyCode(this, BaseUtils.signSpan(this, phone,
+                InterfaceName.sendCaptcha), this);
+    }
+
+    /**
+     * 注册
+     */
+    private void register() {
+        RequestUtils.register(this, BaseUtils.signSpan(this, phone, InterfaceName.signUp), pwd,
+                code, sex, who, interest, this);
+    }
+
+    /**
+     * 重置密码
+     */
+    private void resetPwd() {
+        RequestUtils.resetPwd(this, BaseUtils.signSpan(this, phone, InterfaceName.pwdReset), pwd,
+                code, this);
     }
 
 
@@ -112,12 +153,50 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_get_verify_code:
+                phone = etPhone.getText().toString().trim();
+                if (!BaseUtils.isMobileNumber(phone)) {
+                    ToastUtil.toast(this, R.string.txt_input_phone_hint);
+                    return;
+                }
+                getVerifyCode();
                 break;
             case R.id.layout_next:
+                if (verifyNext()) {
+                    if (mode) {
+                        register();
+                    } else {
+                        resetPwd();
+                    }
+                }
+
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 校验输入数据
+     */
+    private boolean verifyNext() {
+        String verify = etVerify.getText().toString().trim();
+        if (TextUtils.isEmpty(verify)) {
+            ToastUtil.toast(this, R.string.txt_input_verify_code);
+            return false;
+        } else {
+            code = Integer.valueOf(verify);
+        }
+        pwd = etPwd.getText().toString().trim();
+        pwdAgain = etPwdAgain.getText().toString().trim();
+        if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
+            ToastUtil.toast(this, R.string.txt_input_pwd_hint);
+            return false;
+        }
+        if (!TextUtils.equals(pwd, pwdAgain)) {
+            ToastUtil.toast(this, R.string.txt_pwd_diff);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -143,8 +222,82 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
+            case GET_VERIFY_CODE:
+                isSendVerifyCode = true;
+                startVerifyCodeTimer();
+                break;
+            case REGISTER:
+                ToastUtil.toast(this, response.getMsg());
+                finish();
+                break;
+            case RESET_PWD:
+                ToastUtil.toast(this, response.getMsg());
+                finish();
+                break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 字符串处理
+     */
+    private void spannableString(String s) {
+        SpannableString style = new SpannableString(s);
+        //颜色
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor
+                (this,
+                        R.color.color_1491fc));
+        style.setSpan(colorSpan, 11, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(colorSpan, 18, 24, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //点击
+        ClickableSpan clickSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                Intent intent = new Intent(RegisterAndModifyPwdActivity.this,
+                        WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                startActivity(intent);
+                clearBackgroundColor(widget);
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+                ds.clearShadowLayer();
+            }
+        };
+        //点击
+        ClickableSpan privacyClickSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                Intent intent = new Intent(RegisterAndModifyPwdActivity.this,
+                        WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC,
+                        BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
+                startActivity(intent);
+                clearBackgroundColor(widget);
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+                ds.clearShadowLayer();
+            }
+        };
+        style.setSpan(clickSpan, 11, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(privacyClickSpan, 18, 24, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //配置给TextView
+        tvHint.setMovementMethod(LinkMovementMethod.getInstance());
+        tvHint.setText(style);
+    }
+
+    private void clearBackgroundColor(View view) {
+        if (view instanceof TextView) {
+            ((TextView) view).setHighlightColor(ContextCompat.getColor(this,
+                    android.R.color.transparent));
         }
     }
 

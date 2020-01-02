@@ -2,7 +2,7 @@ package com.cn.frame.api.notify;
 
 import android.support.annotation.NonNull;
 
-import com.cn.frame.utils.SocialLog;
+import com.cn.frame.utils.SweetLog;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -171,7 +171,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyStatusChange error", e);
+                        SweetLog.w(TAG, "notifyStatusChange error", e);
                     }
                 }
             }
@@ -190,7 +190,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyStatusChange error", e);
+                        SweetLog.w(TAG, "notifyStatusChange error", e);
                     }
                 }
             }
@@ -209,7 +209,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyMessageChange error", e);
+                        SweetLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -228,7 +228,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyMessageChange error", e);
+                        SweetLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -247,7 +247,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyMessageChange error", e);
+                        SweetLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -266,7 +266,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyMessageChange error", e);
+                        SweetLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -285,7 +285,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyMessageChange error", e);
+                        SweetLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -304,7 +304,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyMessageChange error", e);
+                        SweetLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -323,7 +323,7 @@ public class NotifyChangeListenerManager {
                         }
                     }
                     catch (Exception e) {
-                        SocialLog.w(TAG, "notifyMessageChange error", e);
+                        SweetLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }

@@ -3,7 +3,7 @@ package com.cn.frame.api;
 import android.content.Context;
 
 import com.cn.frame.api.notify.NotifyChangeListenerManager;
-import com.cn.frame.utils.SocialLog;
+import com.cn.frame.utils.SweetLog;
 
 /**
  * SDK 初始化
@@ -34,12 +34,12 @@ public class ApiManager {
     public void init(Context context, boolean isEnable) {
         sContext = context;
         isLogEnable = isEnable;
-        SocialLog.setIsEnableLog(isEnable);
+        SweetLog.setIsEnableLog(isEnable);
     }
 
     public Context getContext() {
         if (null == sContext) {
-            SocialLog.w(TAG, "api Context is null, must be initial!");
+            SweetLog.w(TAG, "api Context is null, must be initial!");
         }
         return sContext;
     }

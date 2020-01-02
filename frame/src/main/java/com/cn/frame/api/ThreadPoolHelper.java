@@ -1,6 +1,6 @@
 package com.cn.frame.api;
 
-import com.cn.frame.utils.SocialLog;
+import com.cn.frame.utils.SweetLog;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -81,7 +81,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInSingle(r);
                 }
-                SocialLog.w(TAG, "Exception error!", e);
+                SweetLog.w(TAG, "Exception error!", e);
             }
         }
 
@@ -97,7 +97,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInCached(r);
                 }
-                SocialLog.w(TAG, "Exception error!", e);
+                SweetLog.w(TAG, "Exception error!", e);
             }
         }
 
@@ -110,7 +110,7 @@ public class ThreadPoolHelper {
             try {
                 return executorCached.submit(c);
             } catch (Exception e) {
-                SocialLog.e(TAG, "ThreadPoolHelper submitInCached Exception", e);
+                SweetLog.e(TAG, "ThreadPoolHelper submitInCached Exception", e);
             }
             return null;
         }
@@ -127,7 +127,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInFixed(r);
                 }
-                SocialLog.w(TAG, "Exception error!", e);
+                SweetLog.w(TAG, "Exception error!", e);
             }
         }
     }

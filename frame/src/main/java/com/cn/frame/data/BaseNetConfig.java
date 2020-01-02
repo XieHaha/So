@@ -28,4 +28,12 @@ public interface BaseNetConfig {
      * 设置默认超时时间
      */
     int DEFAULT_TIME = 30;
+    /**
+     * 用户使用协议
+     */
+    String BASE_BASIC_USER_PROTOCOL_URL = "client/sys/protocol_by_doctor";
+    /**
+     * 隐私协议
+     */
+    String BASE_BASIC_PRIVATE_PROTOCOL_URL = "client/sys/protocol_by_privacy";
 }

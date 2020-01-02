@@ -20,7 +20,7 @@ import java.util.Date;
  *
  * @author dundun
  */
-public class SocialLog {
+public class SweetLog {
     private static boolean isEnableLog = false;
     private static final char V = 'v';
     private static final char D = 'd';
@@ -29,7 +29,7 @@ public class SocialLog {
     private static final char E = 'e';
 
     public static void setIsEnableLog(boolean isEnableLog) {
-        SocialLog.isEnableLog = isEnableLog;
+        SweetLog.isEnableLog = isEnableLog;
     }
 
     /**

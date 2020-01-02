@@ -16,7 +16,7 @@ import android.text.TextUtils;
 
 import com.cn.frame.api.DirHelper;
 import com.cn.frame.utils.BaseUtils;
-import com.cn.frame.utils.SocialLog;
+import com.cn.frame.utils.SweetLog;
 import com.cn.frame.utils.MimeUtils;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.lv.ZycApplication;
@@ -63,12 +63,12 @@ public final class FileUtils {
                 return true;
             }
             catch (IOException e) {
-                SocialLog.w(TAG, "Exception error!", e);
+                SweetLog.w(TAG, "Exception error!", e);
                 throw new RuntimeException(e.getMessage(), e);
             }
         }
         catch (IOException e) {
-            SocialLog.w(TAG, "Exception error!", e);
+            SweetLog.w(TAG, "Exception error!", e);
             throw new RuntimeException(e.getMessage(), e);
         }
     }
@@ -88,7 +88,7 @@ public final class FileUtils {
             }
         }
         catch (Exception e) {
-            SocialLog.w(TAG, "Exception error!", e);
+            SweetLog.w(TAG, "Exception error!", e);
         }
         return "";
     }
@@ -166,11 +166,11 @@ public final class FileUtils {
         }
         catch (ActivityNotFoundException e) {
             ToastUtil.toast(context, "无法打开文件");
-            SocialLog.w(TAG, "Exception error!", e);
+            SweetLog.w(TAG, "Exception error!", e);
         }
         catch (Exception ex) {
             ToastUtil.toast(context, "无法打开文件");
-            SocialLog.w(TAG, "Exception error!", ex);
+            SweetLog.w(TAG, "Exception error!", ex);
         }
     }
 

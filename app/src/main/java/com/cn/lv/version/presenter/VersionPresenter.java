@@ -11,7 +11,7 @@ import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
-import com.cn.frame.utils.SocialLog;
+import com.cn.frame.utils.SweetLog;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.cn.frame.api.DirHelper;
@@ -199,7 +199,7 @@ public class VersionPresenter implements ConstantsVersionMode {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName + "";
         }
         catch (NameNotFoundException e) {
-            SocialLog.w(TAG, "Exception error!", e);
+            SweetLog.w(TAG, "Exception error!", e);
         }
         return null;
     }

@@ -7,6 +7,7 @@
     <string name="txt_male">男</string>
     <string name="txt_female">女</string>
     <string name="txt_neutral">男女皆可</string>
+    <string name="txt_sign">%s_%d_%s</string>
 
     <!--登录注册-->
     <string name="txt_hello">您好</string>
@@ -17,6 +18,7 @@
     <string name="txt_verify_pwd">确认密码</string>
     <string name="txt_input_pwd_hint">请输入登录密码</string>
     <string name="txt_input_pwd_hint_again">请再次输入登录密码</string>
+    <string name="txt_pwd_diff">两次密码不一致，请重新输入</string>
     <string name="txt_verify_code">验证码</string>
     <string name="txt_get_verify_code">获取验证码</string>
     <string name="txt_input_verify_code">请输入验证码</string>
@@ -44,6 +46,7 @@
     <string name="txt_successful_people">成功人士</string>
     <string name="txt_sweetheart">魅力甜心</string>
     <string name="txt_interested_in">对谁感兴趣？</string>
+    <string name="txt_login_time">%ds</string>
 
     <!--loadview-->
     <string name="brvah_loading">加载中&#8230;</string>

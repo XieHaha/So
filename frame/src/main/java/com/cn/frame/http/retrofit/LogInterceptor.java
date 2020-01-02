@@ -2,7 +2,7 @@ package com.cn.frame.http.retrofit;
 
 import android.text.TextUtils;
 
-import com.cn.frame.utils.SocialLog;
+import com.cn.frame.utils.SweetLog;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -51,12 +51,12 @@ public class LogInterceptor implements Interceptor {
         Connection connection = chain.connection();
         Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
         request = initNewRequest(request);
-        SocialLog.i(TAG, "请求开始-->" + request.method() + ' ' + request.url() + ' ' + protocol);
+        SweetLog.i(TAG, "请求开始-->" + request.method() + ' ' + request.url() + ' ' + protocol);
         if (!hasRequestBody) {
-            SocialLog.i(TAG, "--> END " + request.method());
+            SweetLog.i(TAG, "--> END " + request.method());
         }
         else if (bodyEncoded(request.headers())) {
-            SocialLog.i(TAG, "--> END " + request.method() + " (encoded body omitted)");
+            SweetLog.i(TAG, "--> END " + request.method() + " (encoded body omitted)");
         }
         else {
             Buffer buffer = new Buffer();
@@ -67,10 +67,10 @@ public class LogInterceptor implements Interceptor {
                 charset = contentType.charset(UTF8);
             }
             if (isPlaintext(buffer) && contentType != null && !fileType.equals(contentType.type())) {
-                SocialLog.i(TAG, "params:" + buffer.readString(charset));
+                SweetLog.i(TAG, "params:" + buffer.readString(charset));
             }
             else {
-                SocialLog.i(TAG, "--> END " + request.method() + " (binary " + requestBody.contentLength() +
+                SweetLog.i(TAG, "--> END " + request.method() + " (binary " + requestBody.contentLength() +
                                   "-byte body omitted)");
             }
         }
@@ -80,19 +80,19 @@ public class LogInterceptor implements Interceptor {
             response = chain.proceed(request);
         }
         catch (Exception e) {
-            SocialLog.i(TAG, "<-- HTTP FAILED: " + e);
+            SweetLog.i(TAG, "<-- HTTP FAILED: " + e);
             throw e;
         }
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
-        SocialLog.i(TAG, "<-- " + response.code() + ' ' + response.message() + ' ' + response.request().url() + " (" +
+        SweetLog.i(TAG, "<-- " + response.code() + ' ' + response.message() + ' ' + response.request().url() + " (" +
                           tookMs + "ms" + ')');
         if (!HttpHeaders.hasBody(response)) {
-            SocialLog.i(TAG, "<-- END HTTP");
+            SweetLog.i(TAG, "<-- END HTTP");
         }
         else if (bodyEncoded(response.headers())) {
-            SocialLog.i(TAG, "<-- END HTTP (encoded body omitted)");
+            SweetLog.i(TAG, "<-- END HTTP (encoded body omitted)");
         }
         else {
             BufferedSource source = responseBody.source();
@@ -106,19 +106,19 @@ public class LogInterceptor implements Interceptor {
                     charset = contentType.charset(UTF8);
                 }
                 catch (UnsupportedCharsetException e) {
-                    SocialLog.i(TAG, "Couldn't decode the response body; charset is likely malformed.");
-                    SocialLog.i(TAG, "<-- END HTTP");
+                    SweetLog.i(TAG, "Couldn't decode the response body; charset is likely malformed.");
+                    SweetLog.i(TAG, "<-- END HTTP");
                     return response;
                 }
             }
             if (!isPlaintext(buffer)) {
-                SocialLog.i(TAG, "<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
+                SweetLog.i(TAG, "<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
                 return response;
             }
             if (contentLength != 0) {
-                SocialLog.i(TAG, buffer.clone().readString(charset));
+                SweetLog.i(TAG, buffer.clone().readString(charset));
             }
-            SocialLog.i(TAG, "请求结束<-- END HTTP (" + buffer.size() + "-byte body)");
+            SweetLog.i(TAG, "请求结束<-- END HTTP (" + buffer.size() + "-byte body)");
         }
         return response;
     }

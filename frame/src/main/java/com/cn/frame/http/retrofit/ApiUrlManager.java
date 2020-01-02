@@ -31,7 +31,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回值
      */
-    @POST("client/get-verify-code")
+    @POST("api/")
     Observable<BaseResponse<String>> getVerifyCode(@Body Map<String, String> info);
 
     /**
@@ -42,6 +42,24 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
+
+    /**
+     * 注册
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<LoginBean>> register(@Body Map<String, Object> info);
+
+    /**
+     * 重置密码
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<LoginBean>> resetPwd(@Body Map<String, Object> info);
 
 
     /**

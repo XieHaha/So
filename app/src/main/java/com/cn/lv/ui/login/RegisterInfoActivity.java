@@ -39,6 +39,7 @@ public class RegisterInfoActivity extends BaseActivity implements InfoType {
      * 默认性别
      */
     private int info = SEX;
+    private int sex, who, interest;
     /**
      * 背景图
      */
@@ -89,14 +90,20 @@ public class RegisterInfoActivity extends BaseActivity implements InfoType {
     private void infoPage() {
         switch (info) {
             case SEX:
+                sex = sexInfoFragment.getType();
                 updatePage(true);
                 break;
             case WHO:
+                who = whoInfoFragment.getType();
                 updatePage(true);
                 break;
             case INTEREST:
+                interest = interestInfoFragment.getType();
                 Intent intent = new Intent(this, RegisterAndModifyPwdActivity.class);
                 intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+                intent.putExtra(CommonData.KEY_SEX, sex);
+                intent.putExtra(CommonData.KEY_WHO, who);
+                intent.putExtra(CommonData.KEY_INTEREST, interest);
                 startActivity(intent);
                 finish();
                 break;

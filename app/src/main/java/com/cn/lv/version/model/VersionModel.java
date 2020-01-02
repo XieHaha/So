@@ -2,6 +2,7 @@ package com.cn.lv.version.model;
 
 import android.content.Context;
 
+import com.cn.frame.utils.SweetLog;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.cn.frame.api.DirHelper;
 import com.cn.frame.api.FileTransferServer;
@@ -10,7 +11,6 @@ import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.VersionBean;
 import com.cn.frame.http.listener.AbstractResponseAdapter;
 import com.cn.frame.http.retrofit.RequestUtils;
-import com.cn.frame.utils.SocialLog;
 
 import java.io.File;
 public class VersionModel extends AbstractResponseAdapter<BaseResponse> implements VersionModelListener {
@@ -38,7 +38,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
         File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
-                SocialLog.e(TAG, "delete error");
+                SweetLog.e(TAG, "delete error");
             }
         }
     }
@@ -50,7 +50,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
         File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
-                SocialLog.e(TAG, "delete error");
+                SweetLog.e(TAG, "delete error");
             }
         }
         FileTransferServer.getInstance(context)

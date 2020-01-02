@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.cn.frame.utils.SocialLog;
+import com.cn.frame.utils.SweetLog;
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OnUploadListener;
@@ -85,7 +85,7 @@ public class FileTransferServer {
             DownloadListener downloadListener) {
         String url;
         url = urlStr.contains(" ") ? urlStr.replace(" ", "%20") : urlStr;
-        SocialLog.i(TAG, url);
+        SweetLog.i(TAG, url);
         DownloadRequest request = NoHttp.createDownloadRequest(Uri.encode(url, url), savePath, fileName, false, true);
         if (!TextUtils.isEmpty(token)) {
             request.addHeader("token", token);

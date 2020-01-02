@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
+import com.cn.frame.R;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.bean.DoctorBean;
 import com.cn.frame.data.bean.PatientBean;
@@ -79,6 +80,17 @@ public class BaseUtils {
         }
         return idCard.substring(0, 6) + " " + idCard.substring(6, 14) + " " + idCard.substring(14
                 , idCard.length());
+    }
+
+    /**
+     * 产生6位随机数
+     */
+    private static int random() {
+        return (int) ((Math.random() * 9 + 1) * 100000);
+    }
+
+    public static String signSpan(Context context, String value1, String value2) {
+        return String.format(context.getString(R.string.txt_sign), value1, random(), value2);
     }
 
     /**
@@ -227,12 +239,12 @@ public class BaseUtils {
             try {
                 out.close();
             } catch (IOException e) {
-                SocialLog.e(TAG, e.getMessage());
+                SweetLog.e(TAG, e.getMessage());
             }
             try {
                 in.close();
             } catch (IOException e) {
-                SocialLog.e(TAG, e.getMessage());
+                SweetLog.e(TAG, e.getMessage());
             }
         }
         return count;

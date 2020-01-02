@@ -17,9 +17,15 @@ public class InterestInfoFragment extends BaseFragment {
     @BindView(R.id.iv_neutral_bg)
     ImageView ivNeutralBg;
 
+    private int type = BASE_MALE;
+
     @Override
     public int getLayoutID() {
         return R.layout.fragment_interest;
+    }
+
+    public int getType() {
+        return type;
     }
 
     @OnClick({R.id.layout_male, R.id.layout_female, R.id.layout_neutral})
@@ -29,16 +35,19 @@ public class InterestInfoFragment extends BaseFragment {
                 ivMaleBg.setVisibility(View.VISIBLE);
                 ivFemaleBg.setVisibility(View.INVISIBLE);
                 ivNeutralBg.setVisibility(View.INVISIBLE);
+                type = BASE_MALE;
                 break;
             case R.id.layout_neutral:
                 ivMaleBg.setVisibility(View.INVISIBLE);
                 ivFemaleBg.setVisibility(View.INVISIBLE);
                 ivNeutralBg.setVisibility(View.VISIBLE);
+                type = BASE_NEUTRAL;
                 break;
             case R.id.layout_female:
                 ivMaleBg.setVisibility(View.INVISIBLE);
                 ivFemaleBg.setVisibility(View.VISIBLE);
                 ivNeutralBg.setVisibility(View.INVISIBLE);
+                type = BASE_FEMALE;
                 break;
             default:
                 break;

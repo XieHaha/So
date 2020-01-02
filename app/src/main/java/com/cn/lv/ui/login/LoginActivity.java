@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.BaseUtils;
@@ -51,7 +52,7 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void login() {
-        RequestUtils.login(this, phone, pwd, this);
+        RequestUtils.login(this, BaseUtils.signSpan(this, phone, InterfaceName.signIn), pwd, this);
     }
 
 
@@ -86,7 +87,7 @@ public class LoginActivity extends BaseActivity {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
-            case LOGIN_AND_REGISTER:
+            case LOGIN:
                 break;
             default:
                 break;

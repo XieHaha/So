@@ -3,100 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/status_bar_fix"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/color_ffffff" />
-
-    <RelativeLayout
+    <TextView
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_below="@id/status_bar_fix"
-        android:background="@color/color_ffffff">
+        android:background="@color/color_ffffff"
+        android:gravity="center"
+        android:text="@string/txt_message"
+        android:textColor="@color/color_211D1D"
+        android:textSize="@dimen/text_15" />
 
-        <LinearLayout
-            android:id="@+id/layout_title"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:minWidth="142dp">
-
-            <RelativeLayout
-                android:id="@+id/layout_left"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/iv_message_dot"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toEndOf="@id/tv_left"
-                    android:background="@drawable/circular_red_point_bg"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/layout_right"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/iv_notify_dot"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toEndOf="@id/tv_right"
-                    android:background="@drawable/circular_red_point_bg"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view_bar"
-            android:layout_width="20dp"
-            android:layout_height="3dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/color_17242D" />
-
-        <TextView
-            android:id="@+id/tv_read_message"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@color/txt_main_color_selector"
-            android:textSize="@dimen/text_14" />
-    </RelativeLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/layout_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar" />
+        android:layout_below="@id/title_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_none_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
+        android:drawableTop="@mipmap/pic_none_message"
+        android:gravity="center"
+        android:textColor="@color/color_6a6f80"
+        android:textSize="@dimen/text_15"
+        android:visibility="visible" />
 
 
 </RelativeLayout>

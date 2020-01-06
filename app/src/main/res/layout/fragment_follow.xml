@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/color_ffffff">
+
+        <LinearLayout
+            android:id="@+id/layout_title"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_left"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/txt_followed"
+                android:textColor="@color/color_211D1D"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_right"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/txt_follow"
+                android:textColor="@color/color_211D1D"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_bar"
+            android:layout_width="16dp"
+            android:layout_height="3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_b12c2c" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar" />
+
+
+</RelativeLayout>

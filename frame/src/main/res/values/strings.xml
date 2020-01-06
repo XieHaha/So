@@ -9,6 +9,21 @@
     <string name="txt_neutral">男女皆可</string>
     <string name="txt_sign">%s_%d_%s</string>
 
+    <!--main -->
+    <string name="txt_house">首页</string>
+    <string name="txt_attention">关注</string>
+    <string name="txt_message">消息</string>
+    <string name="txt_my">我的</string>
+
+    <!--首页-->
+    <string name="txt_nearby">附近</string>
+    <string name="txt_online">在线</string>
+    <string name="txt_recently">最近</string>
+    <string name="txt_filter">筛选</string>
+    <!--关注-->
+    <string name="txt_followed">关注我</string>
+    <string name="txt_follow">我关注</string>
+
     <!--登录注册-->
     <string name="txt_hello">您好</string>
     <string name="txt_welcome">欢迎来到奇妙屋</string>

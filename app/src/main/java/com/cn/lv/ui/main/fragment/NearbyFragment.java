@@ -4,23 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.cn.frame.api.ApiManager;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.lv.R;
 
-public class FriendsFragment extends BaseFragment {
-    /**
-     * 居民列表
-     */
-    private PatientFragment patientFragment;
-    /**
-     * 医生列表
-     */
-    private DoctorFragment doctorFragment;
+public class NearbyFragment extends BaseFragment {
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_friends;
+        return R.layout.fragment_message_notify;
     }
 
     @Override
@@ -31,7 +22,6 @@ public class FriendsFragment extends BaseFragment {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
     }
 
     @Override

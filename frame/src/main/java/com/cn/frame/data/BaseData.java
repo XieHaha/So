@@ -14,6 +14,10 @@ public interface BaseData {
      */
     int BASE_TWO = 2;
     /**
+     * 基础type3
+     */
+    int BASE_THREE = 3;
+    /**
      * 男
      */
     int BASE_MALE = 1;

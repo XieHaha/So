@@ -45,4 +45,8 @@
     <color name="pickerview_bgColor_overlay">#60000000</color>
     <color name="pickerview_bgColor_default">#FFFFFFFF</color>
 
+    <color name="color_b12c2c">#B12C2C</color>
+    <color name="color_211D1D">#211D1D</color>
+    <color name="color_1e1c35">#1E1C35</color>
+
 </resources>

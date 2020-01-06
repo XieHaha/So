@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,10 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.cn.frame.api.ApiManager;
 import com.cn.frame.data.BaseData;
@@ -27,9 +23,10 @@ import com.cn.frame.widgets.AbstractOnPageChangeListener;
 import com.cn.lv.R;
 import com.cn.lv.ui.adapter.ViewPagerAdapter;
 import com.cn.lv.ui.dialog.UpdateDialog;
-import com.cn.lv.ui.main.fragment.FriendsFragment;
+import com.cn.lv.ui.main.fragment.FollowFragment;
+import com.cn.lv.ui.main.fragment.HouseFragment;
 import com.cn.lv.ui.main.fragment.MessageFragment;
-import com.cn.lv.ui.main.fragment.WorkerFragment;
+import com.cn.lv.ui.main.fragment.MyFragment;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;
 
@@ -37,39 +34,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 
 public class MainActivity extends BaseActivity
         implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
-    @BindView(R.id.act_main_tab1)
-    RelativeLayout actMainTab1;
-    @BindView(R.id.act_main_tab3)
-    LinearLayout actMainTab3;
-    @BindView(R.id.act_main_tab2)
-    LinearLayout actMainTab2;
-    @BindView(R.id.tv_message)
-    TextView tvMessage;
-    @BindView(R.id.tv_patient)
-    TextView tvPatient;
-    @BindView(R.id.tv_worker)
-    TextView tvWorker;
-    @BindView(R.id.iv_message_dot)
-    ImageView ivMessageDot;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
+    @BindView(R.id.act_main_tab1)
+    LinearLayout actMainTab1;
+    @BindView(R.id.act_main_tab2)
+    LinearLayout actMainTab2;
+    @BindView(R.id.act_main_tab3)
+    LinearLayout actMainTab3;
+    @BindView(R.id.act_main_tab4)
+    LinearLayout actMainTab4;
     /**
-     * 消息碎片
+     * 首页碎片
      */
-    private MessageFragment messageFragment;
-    /**
-     * 工作室碎片
-     */
-    private WorkerFragment workerFragment;
-    /**
-     * 居民碎片
-     */
-    private FriendsFragment friendsFragment;
+    private HouseFragment houseFragment;
     /**
      * 版本检测
      */
@@ -103,11 +87,6 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    protected boolean isInitStatusBar() {
-        return false;
-    }
-
-    @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
     }
@@ -130,9 +109,6 @@ public class MainActivity extends BaseActivity
     @Override
     public void initListener() {
         super.initListener();
-        actMainTab1.setOnClickListener(this);
-        actMainTab2.setOnClickListener(this);
-        actMainTab3.setOnClickListener(this);
         viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(new AbstractOnPageChangeListener() {
             @Override
@@ -250,18 +226,20 @@ public class MainActivity extends BaseActivity
         mNotificationManager.createNotificationChannel(channel);
     }
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
+    @OnClick({R.id.act_main_tab1, R.id.act_main_tab2, R.id.act_main_tab3, R.id.act_main_tab4})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
             case R.id.act_main_tab1:
-                selectTab(BASE_ZERO);
+                viewPager.setCurrentItem(0, false);
                 break;
             case R.id.act_main_tab2:
-                selectTab(BASE_ONE);
+                viewPager.setCurrentItem(1, false);
                 break;
             case R.id.act_main_tab3:
-                selectTab(BASE_TWO);
+                viewPager.setCurrentItem(2, false);
+                break;
+            case R.id.act_main_tab4:
+                viewPager.setCurrentItem(3, false);
                 break;
             default:
                 break;
@@ -272,20 +250,28 @@ public class MainActivity extends BaseActivity
      * 碎片初始化
      */
     private void initFragment() {
-        //聊天消息
-        messageFragment = new MessageFragment();
-        //工作室
-        workerFragment = new WorkerFragment();
-        //居民列表
-        friendsFragment = new FriendsFragment();
+        houseFragment = new HouseFragment();
+        /**
+         * 关注碎片
+         */
+        FollowFragment followFragment = new FollowFragment();
+        /**
+         * 消息碎片
+         */
+        MessageFragment messageFragment = new MessageFragment();
+        /**
+         * 我的碎片
+         */
+        MyFragment myFragment = new MyFragment();
         List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList.add(houseFragment);
+        fragmentList.add(followFragment);
         fragmentList.add(messageFragment);
-        fragmentList.add(workerFragment);
-        fragmentList.add(friendsFragment);
+        fragmentList.add(myFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),
                 fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
-        selectTab(BASE_ONE);
+        selectTab(0);
     }
 
     /**
@@ -294,32 +280,30 @@ public class MainActivity extends BaseActivity
     private void selectTab(int index) {
         switch (index) {
             case BASE_ZERO:
-                viewPager.setCurrentItem(index, false);
-                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 actMainTab1.setSelected(true);
                 actMainTab2.setSelected(false);
                 actMainTab3.setSelected(false);
-                break;
-            case BASE_TWO:
-                viewPager.setCurrentItem(index, false);
-                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                actMainTab1.setSelected(false);
-                actMainTab2.setSelected(false);
-                actMainTab3.setSelected(true);
+                actMainTab4.setSelected(false);
                 break;
             case BASE_ONE:
-            default:
-                viewPager.setCurrentItem(1, false);
-                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 actMainTab1.setSelected(false);
                 actMainTab2.setSelected(true);
                 actMainTab3.setSelected(false);
+                actMainTab4.setSelected(false);
+                break;
+            case BASE_TWO:
+                actMainTab1.setSelected(false);
+                actMainTab2.setSelected(false);
+                actMainTab3.setSelected(true);
+                actMainTab4.setSelected(false);
+                break;
+            case BASE_THREE:
+                actMainTab1.setSelected(false);
+                actMainTab2.setSelected(false);
+                actMainTab3.setSelected(false);
+                actMainTab4.setSelected(true);
+                break;
+            default:
                 break;
         }
     }
@@ -327,22 +311,22 @@ public class MainActivity extends BaseActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (workerFragment != null) {
-            workerFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (houseFragment != null) {
+            houseFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        if (workerFragment != null) {
-            workerFragment.onPermissionNeedExplanation(permissionName);
+        if (houseFragment != null) {
+            houseFragment.onPermissionNeedExplanation(permissionName);
         }
     }
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
-        if (workerFragment != null) {
-            workerFragment.onNoPermissionNeeded(permissionName);
+        if (houseFragment != null) {
+            houseFragment.onNoPermissionNeeded(permissionName);
         }
     }
 

@@ -7,11 +7,11 @@ import android.view.View;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.lv.R;
 
-public class WorkerFragment extends BaseFragment {
+public class RecentlyFragment extends BaseFragment {
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_worker;
+        return R.layout.fragment_message_notify;
     }
 
     @Override

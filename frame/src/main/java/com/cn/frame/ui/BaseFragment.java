@@ -24,7 +24,7 @@ import com.cn.frame.data.BaseNetConfig;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
-import com.cn.frame.data.bean.LoginBean;
+import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.permission.OnPermissionCallback;
 import com.cn.frame.permission.PermissionHelper;
@@ -67,7 +67,7 @@ public abstract class BaseFragment extends Fragment
     /**
      * 登录数据
      */
-    protected LoginBean loginBean;
+    protected UserBaseBean loginBean;
     /**
      * 选择图片
      */
@@ -164,10 +164,10 @@ public abstract class BaseFragment extends Fragment
      * 初始化login数据
      *
      */
-    public LoginBean getLoginBean() {
+    public UserBaseBean getLoginBean() {
         String userStr = (String)SharePreferenceUtil.getObject(getActivity(), CommonData.KEY_LOGIN_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginBean = new Gson().fromJson(userStr, LoginBean.class);
+            loginBean = new Gson().fromJson(userStr, UserBaseBean.class);
         }
         return loginBean;
     }

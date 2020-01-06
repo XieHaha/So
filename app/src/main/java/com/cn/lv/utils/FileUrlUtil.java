@@ -11,7 +11,7 @@ public class FileUrlUtil {
         //        if (TextUtils.isEmpty(url)) {
         //            return null;
         //        }
-        //        GlideUrl glideUrl = new GlideUrl(url, new LazyHeaders.Builder().addHeader("token", ZycApplication.getInstance()
+        //        GlideUrl glideUrl = new GlideUrl(url, new LazyHeaders.Builder().addHeader("token", SweetApplication.getInstance()
         //                                                                                                         .getLoginBean()
         //                                                                                                         .getToken())
         //                                                                       .build());

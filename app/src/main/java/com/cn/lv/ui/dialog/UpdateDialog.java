@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.cn.frame.api.DirHelper;
 import com.cn.frame.ui.AppManager;
 import com.cn.lv.R;
-import com.cn.lv.ZycApplication;
+import com.cn.lv.SweetApplication;
 
 import java.io.File;
 
@@ -169,7 +169,7 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         uri = FileProvider.getUriForFile(context,
-                                ZycApplication.getInstance().getPackageName() +
+                                SweetApplication.getInstance().getPackageName() +
                                 ".fileprovider", file);
                     } else {
                         uri = Uri.fromFile(file);

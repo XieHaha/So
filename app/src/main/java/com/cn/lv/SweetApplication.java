@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import com.cn.frame.api.ApiManager;
 import com.cn.frame.api.CrashHandler;
 import com.cn.frame.data.CommonData;
-import com.cn.frame.data.bean.LoginBean;
+import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.http.retrofit.RetrofitManager;
 import com.cn.frame.utils.SharePreferenceUtil;
 import com.google.gson.Gson;
@@ -18,9 +18,9 @@ import com.yanzhenjie.nohttp.NoHttp;
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
-public class ZycApplication extends LitePalApplication {
-    private static ZycApplication instance;
-    private LoginBean loginBean;
+public class SweetApplication extends LitePalApplication {
+    private static SweetApplication instance;
+    private UserBaseBean loginBean;
     /**
      * 调试模式
      * 1、微信登录
@@ -58,21 +58,21 @@ public class ZycApplication extends LitePalApplication {
     }
 
 
-    public LoginBean getLoginBean() {
+    public UserBaseBean getLoginBean() {
         String userStr = (String) SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN,
                 "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginBean = new Gson().fromJson(userStr, LoginBean.class);
+            loginBean = new Gson().fromJson(userStr, UserBaseBean.class);
         }
         return loginBean;
     }
 
-    public void setLoginBean(LoginBean loginBean) {
+    public void setLoginBean(UserBaseBean loginBean) {
         this.loginBean = loginBean;
         SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_BEAN, loginBean);
     }
 
-    public static ZycApplication getInstance() {
+    public static SweetApplication getInstance() {
         return instance;
     }
 

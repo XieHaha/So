@@ -19,7 +19,7 @@ import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.SweetLog;
 import com.cn.frame.utils.MimeUtils;
 import com.cn.frame.utils.ToastUtil;
-import com.cn.lv.ZycApplication;
+import com.cn.lv.SweetApplication;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -153,7 +153,7 @@ public final class FileUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 uri = FileProvider.getUriForFile(context,
-                                                 ZycApplication.getInstance().getPackageName() + ".fileprovider",
+                                                 SweetApplication.getInstance().getPackageName() + ".fileprovider",
                                                  new File(filePath));
             }
             else {

@@ -1,7 +1,7 @@
 package com.cn.frame.http.retrofit;
 
 import com.cn.frame.data.BaseResponse;
-import com.cn.frame.data.bean.LoginBean;
+import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.VersionBean;
 
 import java.util.Map;
@@ -41,7 +41,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
+    Observable<BaseResponse<UserBaseBean>> login(@Body Map<String, String> info);
 
     /**
      * 注册
@@ -50,7 +50,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<LoginBean>> register(@Body Map<String, Object> info);
+    Observable<BaseResponse<UserBaseBean>> register(@Body Map<String, Object> info);
 
     /**
      * 重置密码
@@ -59,7 +59,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<LoginBean>> resetPwd(@Body Map<String, Object> info);
+    Observable<BaseResponse<UserBaseBean>> resetPwd(@Body Map<String, Object> info);
 
 
     /**

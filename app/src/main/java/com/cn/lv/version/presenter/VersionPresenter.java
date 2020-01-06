@@ -18,7 +18,7 @@ import com.cn.frame.api.DirHelper;
 import com.cn.frame.data.bean.VersionBean;
 import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.ToastUtil;
-import com.cn.lv.ZycApplication;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.model.VersionModel;
 import com.cn.lv.version.model.VersionModelListener;
@@ -108,7 +108,7 @@ public class VersionPresenter implements ConstantsVersionMode {
                     Uri uri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        uri = FileProvider.getUriForFile(context, ZycApplication.getInstance().getPackageName() +
+                        uri = FileProvider.getUriForFile(context, SweetApplication.getInstance().getPackageName() +
                                                                   ".fileprovider", file);
                     }
                     else {

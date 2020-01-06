@@ -5,7 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 
 import com.cn.frame.R;
-import com.cn.lv.ZycApplication;
+import com.cn.lv.SweetApplication;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
@@ -27,7 +27,7 @@ public class MatisseUtils {
                //相机
                .capture(isCapture)
                .captureStrategy(
-                       new CaptureStrategy(true, ZycApplication.getInstance().getPackageName() + ".fileprovider"))
+                       new CaptureStrategy(true, SweetApplication.getInstance().getPackageName() + ".fileprovider"))
                // light
                .theme(R.style.Matisse_Zhihu)
                // 图片选择的最多数量
@@ -52,7 +52,7 @@ public class MatisseUtils {
                //相机
                .capture(isCapture)
                .captureStrategy(
-                       new CaptureStrategy(true, ZycApplication.getInstance().getPackageName() + ".fileprovider"))
+                       new CaptureStrategy(true, SweetApplication.getInstance().getPackageName() + ".fileprovider"))
                // light
                .theme(R.style.Matisse_Zhihu)
                // 图片选择的最多数量

@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity
 
     //    public void sendChatMsg(EMMessage message) {
     //当前消息发送者与正在聊天界面对象一致时，不显示通知
-    //        if (message.getFrom().equals(ZycApplication.getInstance().getChatId())) {
+    //        if (message.getFrom().equals(SweetApplication.getInstance().getChatId())) {
     //            return;
     //        }
     //        String nickName = "";

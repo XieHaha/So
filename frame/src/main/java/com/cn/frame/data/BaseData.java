@@ -51,6 +51,10 @@ public interface BaseData {
      */
     int BASE_MAX_RESEND_TIME = 60;
     /**
+     * session时间
+     */
+    int BASE_MAX_SESSION_TIME = 7200;
+    /**
      * 适配华为  裁剪
      */
     String BASE_HONOR_NAME = "HONOR";

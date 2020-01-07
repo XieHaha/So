@@ -77,7 +77,7 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void login() {
-        RequestUtils.login(this, BaseUtils.signSpan(this, phone, InterfaceName.signIn), pwd,
+        RequestUtils.login(this, BaseUtils.signSpan(this, phone, InterfaceName.SIGN_IN), pwd,
                 String.valueOf(lat), String.valueOf(lng), this);
     }
 

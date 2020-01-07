@@ -24,6 +24,7 @@ import com.cn.frame.data.BaseNetConfig;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.listener.ResponseListener;
@@ -70,7 +71,8 @@ public abstract class BaseFragment extends Fragment
      * 登录数据
      */
     protected UserBaseBean loginBean;
-    protected UserInfoBean userInfoBean;
+    protected UserInfoBean userInfo;
+    protected DataDictBean dataDictBean;
     /**
      * 选择图片
      */
@@ -110,8 +112,9 @@ public abstract class BaseFragment extends Fragment
         sharePreferenceUtil = new SharePreferenceUtil(getContext());
         loginBean = getLoginBean();
         if (loginBean != null) {
-            userInfoBean = loginBean.getUserInfo();
+            userInfo = loginBean.getUserInfo();
         }
+        dataDictBean = getDataDictBean();
         isPrepared = true;
         init(view, savedInstanceState);
         return view;
@@ -176,6 +179,16 @@ public abstract class BaseFragment extends Fragment
             loginBean = new Gson().fromJson(userStr, UserBaseBean.class);
         }
         return loginBean;
+    }
+
+    public DataDictBean getDataDictBean() {
+        String data = (String) SharePreferenceUtil.getObject(getActivity(),
+                CommonData.KEY_DATA_DICT_BEAN,
+                "");
+        if (!TextUtils.isEmpty(data)) {
+            dataDictBean = new Gson().fromJson(data, DataDictBean.class);
+        }
+        return dataDictBean;
     }
 
     /**

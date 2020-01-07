@@ -3,6 +3,7 @@ package com.cn.lv.ui.main;
 import android.app.NotificationManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,10 +12,20 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.cn.frame.api.ApiManager;
+import com.cn.frame.data.BaseData;
+import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.DataDictBean;
+import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.VersionBean;
+import com.cn.frame.http.InterfaceName;
+import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.SweetLog;
 import com.cn.frame.widgets.AbstractOnPageChangeListener;
 import com.cn.lv.R;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.adapter.ViewPagerAdapter;
 import com.cn.lv.ui.dialog.UpdateDialog;
 import com.cn.lv.ui.main.fragment.FollowFragment;
@@ -24,8 +35,13 @@ import com.cn.lv.ui.main.fragment.MyFragment;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -82,21 +98,23 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
+        initFragment();
+        //环信登录
+        loginEaseChat();
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
-        initFragment();
-        //环信登录
-        loginEaseChat();
         //检查更新
         if (!hideVersionUpdate) {
             mVersionPresenter = new VersionPresenter(this, "");
             mVersionPresenter.setVersionViewListener(this);
-            mVersionPresenter.init();
+            //            mVersionPresenter.init();
         }
+        updateSession();
+        updateDataDict();
     }
 
     @Override
@@ -110,6 +128,45 @@ public class MainActivity extends BaseActivity
                 selectTab(position);
             }
         });
+    }
+
+    /**
+     * 获取基础数据集合
+     */
+    private void getBasicsInfo() {
+        RequestUtils.getBasicsInfo(this, BaseUtils.signSpan(this, userInfo.getMobile_number(),
+                loginBean.getSession_id(), InterfaceName.GET_BASICS_INFO), this);
+    }
+
+    /**
+     * 更新
+     */
+    private void renewSign() {
+        RequestUtils.renewSign(this, BaseUtils.signSpan(this, userInfo.getMobile_number(),
+                loginBean.getSession_id(), InterfaceName.RENEW_SIGN), this);
+    }
+
+    /**
+     * 基础数据字典
+     */
+    private void updateDataDict() {
+        if (dataDictBean == null) {
+            getBasicsInfo();
+        }
+    }
+
+    /**
+     * 计算过期时间
+     */
+    private void updateSession() {
+        if (loginBean != null) {
+            long time = loginBean.getDue_time() - System.currentTimeMillis() / 1000;
+            SweetLog.i(TAG, "time:" + time);
+            if (time <= 0) {
+                time = BaseData.BASE_MAX_SESSION_TIME;
+            }
+            initScheduledThread(time);
+        }
     }
 
 
@@ -195,6 +252,44 @@ public class MainActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_BASICS_INFO:
+                DataDictBean bean = (DataDictBean) response.getData();
+                SweetApplication.getInstance().setDataDictBean(bean);
+                break;
+            case RENEW_SIGN:
+                UserBaseBean userBaseBean = (UserBaseBean) response.getData();
+                loginBean.setDue_time(userBaseBean.getDue_time());
+                loginBean.setSession_id(userBaseBean.getSession_id());
+                SweetApplication.getInstance().setLoginBean(loginBean);
+                updateSession();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private ScheduledExecutorService executorService;
+    private Handler handler = new Handler(message -> {
+        SweetLog.i(TAG, "value:" + message.what);
+        //刷新
+        renewSign();
+        return true;
+    });
+
+
+    private void initScheduledThread(long time) {
+        executorService = new ScheduledThreadPoolExecutor(1,
+                new BasicThreadFactory.Builder().namingPattern("sweet").daemon(true).build());
+        executorService.scheduleAtFixedRate(() -> {
+            handler.sendEmptyMessage(0);
+            executorService.shutdownNow();
+        }, time, time, TimeUnit.SECONDS);
     }
 
     @Override

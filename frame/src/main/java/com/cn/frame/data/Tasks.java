@@ -28,5 +28,13 @@ public enum Tasks {
      * 版本更新
      */
     GET_VERSION,
+    /**
+     * 获取基础数据集合
+     */
+    GET_BASICS_INFO,
+    /**
+     * session更新
+     */
+    RENEW_SIGN,
 }
 

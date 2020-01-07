@@ -94,5 +94,27 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_VERSION, listener));
     }
 
+
+    public static void getBasicsInfo(Context context, String sign,
+                                     final ResponseListener<BaseResponse> l) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("sign", RsaUtils.encryptData(sign));
+        RetrofitManager.getApiUrlManager()
+                .getBasicsInfo(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                        Tasks.GET_BASICS_INFO, l));
+    }
+
+    public static void renewSign(Context context, String sign,
+                                 final ResponseListener<BaseResponse> l) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("sign", RsaUtils.encryptData(sign));
+        RetrofitManager.getApiUrlManager()
+                .renewSign(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                        Tasks.RENEW_SIGN, l));
+    }
 }
 

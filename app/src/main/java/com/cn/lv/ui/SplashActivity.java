@@ -86,8 +86,7 @@ public class SplashActivity extends BaseActivity {
     private void initScheduledThread() {
         time = 2;
         executorService = new ScheduledThreadPoolExecutor(1,
-                new BasicThreadFactory.Builder().namingPattern(
-                        "yht-thread-pool-%d").daemon(true).build());
+                new BasicThreadFactory.Builder().namingPattern("sweet").daemon(true).build());
         executorService.scheduleAtFixedRate(() -> {
             time--;
             if (time < 0) {

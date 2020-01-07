@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.cn.frame.api.ApiManager;
 import com.cn.frame.api.CrashHandler;
 import com.cn.frame.data.CommonData;
+import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.http.retrofit.RetrofitManager;
 import com.cn.frame.utils.SharePreferenceUtil;
@@ -21,6 +22,7 @@ import org.litepal.LitePalApplication;
 public class SweetApplication extends LitePalApplication {
     private static SweetApplication instance;
     private UserBaseBean loginBean;
+    private DataDictBean dataDictBean;
     /**
      * 调试模式
      */
@@ -63,6 +65,20 @@ public class SweetApplication extends LitePalApplication {
     public void setLoginBean(UserBaseBean loginBean) {
         this.loginBean = loginBean;
         SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_BEAN, loginBean);
+    }
+
+    public DataDictBean getDataDictBean() {
+        String data = (String) SharePreferenceUtil.getObject(this, CommonData.KEY_DATA_DICT_BEAN,
+                "");
+        if (!TextUtils.isEmpty(data)) {
+            dataDictBean = new Gson().fromJson(data, DataDictBean.class);
+        }
+        return dataDictBean;
+    }
+
+    public void setDataDictBean(DataDictBean dataDictBean) {
+        this.dataDictBean = dataDictBean;
+        SharePreferenceUtil.putObject(this, CommonData.KEY_DATA_DICT_BEAN, dataDictBean);
     }
 
     public static SweetApplication getInstance() {

@@ -34,6 +34,10 @@ public interface CommonData {
      */
     String KEY_LOGIN_BEAN = "key_login_success_bean";
     /**
+     * 数据字典
+     */
+    String KEY_DATA_DICT_BEAN = "key_data_dict_bean";
+    /**
      * 性别
      */
     String KEY_SEX = "key_sex";

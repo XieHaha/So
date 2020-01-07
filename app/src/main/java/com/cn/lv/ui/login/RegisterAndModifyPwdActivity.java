@@ -148,14 +148,14 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
      */
     private void getVerifyCode() {
         RequestUtils.getVerifyCode(this, BaseUtils.signSpan(this, phone,
-                InterfaceName.sendCaptcha), this);
+                InterfaceName.SEND_CAPTCHA), this);
     }
 
     /**
      * 注册
      */
     private void register() {
-        RequestUtils.register(this, BaseUtils.signSpan(this, phone, InterfaceName.signUp), pwd,
+        RequestUtils.register(this, BaseUtils.signSpan(this, phone, InterfaceName.SIGN_UP), pwd,
                 code, sex, who, interest, String.valueOf(lat), String.valueOf(lng), this);
     }
 
@@ -163,7 +163,7 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
      * 重置密码
      */
     private void resetPwd() {
-        RequestUtils.resetPwd(this, BaseUtils.signSpan(this, phone, InterfaceName.pwdReset), pwd,
+        RequestUtils.resetPwd(this, BaseUtils.signSpan(this, phone, InterfaceName.PWD_RESET), pwd,
                 code, this);
     }
 

@@ -6,14 +6,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
+import com.cn.lv.utils.FileUrlUtil;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,6 +58,11 @@ public class MyFragment extends BaseFragment {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        tvName.setText(userInfo.getNickname());
+        tvSign.setText(userInfo.getIndividuality_signature());
+        Glide.with(this).load(FileUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
+        tvSex.setText(BASE_ONE == userInfo.getSex() ? R.string.txt_male : R.string.txt_female);
+        tvAge.setText(String.valueOf(userInfo.getAge()));
     }
 
     @Override
@@ -62,7 +72,7 @@ public class MyFragment extends BaseFragment {
 
     private void signOut() {
         RequestUtils.signOut(getContext(), BaseUtils.signSpan(getContext(),
-                userInfoBean.getMobile_number(), loginBean.getSession_id(), InterfaceName.signOut)
+                userInfo.getMobile_number(), loginBean.getSession_id(), InterfaceName.SIGN_OUT)
                 , this);
     }
 

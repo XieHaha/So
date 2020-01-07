@@ -7,21 +7,29 @@ public interface InterfaceName {
     /**
      * 登录
      */
-    String signIn = "signIn";
+    String SIGN_IN = "signIn";
     /**
      * 退出
      */
-    String signOut = "signOut";
+    String SIGN_OUT = "signOut";
     /**
      * 注册
      */
-    String signUp = "signUp";
+    String SIGN_UP = "signUp";
     /**
      * 发送验证码
      */
-    String sendCaptcha = "sendCaptcha";
+    String SEND_CAPTCHA = "sendCaptcha";
     /**
      * 密码重置
      */
-    String pwdReset = "pwdReset";
+    String PWD_RESET = "pwdReset";
+    /**
+     * 基础数据集合
+     */
+    String GET_BASICS_INFO = "getBasicsInfo";
+    /**
+     * 基础数据集合
+     */
+    String RENEW_SIGN = "renewSign";
 }

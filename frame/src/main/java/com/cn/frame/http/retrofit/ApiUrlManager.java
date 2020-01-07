@@ -1,6 +1,7 @@
 package com.cn.frame.http.retrofit;
 
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.VersionBean;
 
@@ -42,6 +43,7 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<UserBaseBean>> login(@Body Map<String, String> info);
+
     /**
      * 退出
      *
@@ -69,7 +71,6 @@ public interface ApiUrlManager {
     @POST("api/")
     Observable<BaseResponse<UserBaseBean>> resetPwd(@Body Map<String, Object> info);
 
-
     /**
      * 版本更新
      *
@@ -81,5 +82,22 @@ public interface ApiUrlManager {
     Observable<BaseResponse<VersionBean>> getVersion(@Header("token") String token, @Query(
             "device") String info);
 
+    /**
+     * 数据字典
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<DataDictBean>> getBasicsInfo(@Body Map<String, String> info);
+
+    /**
+     * session 更新
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<UserBaseBean>> renewSign(@Body Map<String, String> info);
 
 }

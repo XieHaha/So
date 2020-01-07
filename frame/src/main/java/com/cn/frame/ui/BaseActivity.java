@@ -24,6 +24,7 @@ import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.UserBaseBean;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.permission.OnPermissionCallback;
 import com.cn.frame.permission.Permission;
@@ -56,6 +57,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 登录数据
      */
     protected UserBaseBean loginBean;
+    protected UserInfoBean userInfoBean;
     /**
      * 轻量级存储
      */
@@ -69,6 +71,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
      */
     protected PermissionHelper permissionHelper;
     private boolean isRequest = true;
+    private boolean isRequestLocation = true;
     private boolean isRequestPhone = true;
     private boolean isRequestCamera = true;
     private boolean isRequestRecord = true;
@@ -94,6 +97,9 @@ public abstract class BaseActivity extends RxAppCompatActivity
         }
         ButterKnife.bind(this);
         loginBean = getLoginBean();
+        if (loginBean != null) {
+            userInfoBean = loginBean.getUserInfo();
+        }
         sharePreferenceUtil = new SharePreferenceUtil(this);
         //权限管理类
         permissionHelper = PermissionHelper.getInstance(this);
@@ -395,6 +401,10 @@ public abstract class BaseActivity extends RxAppCompatActivity
                 permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 return;
             }
+            if (Permission.FINE_LOCATION.equals(per)) {
+                permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
             if (Permission.READ_PHONE_STATE.equals(per)) {
                 permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 return;
@@ -420,6 +430,11 @@ public abstract class BaseActivity extends RxAppCompatActivity
         for (String permission : permissionName) {
             if (Permission.STORAGE_WRITE.equals(permission)) {
                 ToastUtil.toast(getApplicationContext(), R.string.dialog_no_storage_permission_tip);
+                break;
+            }
+            if (Permission.FINE_LOCATION.equals(permission)) {
+                ToastUtil.toast(getApplicationContext(),
+                        R.string.dialog_no_location_permission_tip);
                 break;
             }
             if (Permission.READ_PHONE_STATE.equals(permission)) {
@@ -448,6 +463,10 @@ public abstract class BaseActivity extends RxAppCompatActivity
             isRequest = false;
             permissionHelper.requestAfterExplanation(Permission.STORAGE_WRITE);
         }
+        if (isRequestLocation) {
+            isRequestLocation = false;
+            permissionHelper.requestAfterExplanation(Permission.FINE_LOCATION);
+        }
         if (isRequestPhone) {
             isRequestPhone = false;
             permissionHelper.requestAfterExplanation(Permission.READ_PHONE_STATE);
@@ -465,12 +484,14 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
         HintDialog dialog = new HintDialog(this);
-        //        dialog.setEnterBtnTxt(getString(R.string.txt_open));
         dialog.setEnterSelect(true);
         dialog.setOnEnterClickListener(() -> PermissionHelper.toPermissionSetting(getBaseContext()));
         switch (permissionName) {
             case Permission.STORAGE_WRITE:
                 dialog.setContentString(getString(R.string.dialog_no_storage_permission_tip));
+                break;
+            case Permission.FINE_LOCATION:
+                dialog.setContentString(getString(R.string.dialog_no_location_permission_tip));
                 break;
             case Permission.READ_PHONE_STATE:
                 dialog.setContentString(getString(R.string.dialog_no_read_phone_state_tip));
@@ -490,6 +511,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         isRequest = true;
+        isRequestLocation = true;
         isRequestPhone = true;
         isRequestCamera = true;
         isRequestRecord = true;

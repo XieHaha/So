@@ -25,6 +25,7 @@ import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.UserBaseBean;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.permission.OnPermissionCallback;
 import com.cn.frame.permission.PermissionHelper;
@@ -42,7 +43,8 @@ import butterknife.Unbinder;
  * @author dundun
  */
 public abstract class BaseFragment extends Fragment
-        implements UiInterface, BaseData, OnPermissionCallback, ResponseListener<BaseResponse>, View.OnClickListener {
+        implements UiInterface, BaseData, OnPermissionCallback, ResponseListener<BaseResponse>,
+        View.OnClickListener {
     public static final String TAG = "ZYC";
     /**
      * load view
@@ -68,6 +70,7 @@ public abstract class BaseFragment extends Fragment
      * 登录数据
      */
     protected UserBaseBean loginBean;
+    protected UserInfoBean userInfoBean;
     /**
      * 选择图片
      */
@@ -93,19 +96,22 @@ public abstract class BaseFragment extends Fragment
 
     @Nullable
     @Override
-    public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public final View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                   Bundle savedInstanceState) {
         View view;
         int layoutID = getLayoutID();
         if (layoutID != 0) {
             view = inflater.inflate(getLayoutID(), null);
-        }
-        else {
+        } else {
             view = getLayoutView();
         }
         unbinder = ButterKnife.bind(this, view);
         permissionHelper = PermissionHelper.getInstance(getActivity());
         sharePreferenceUtil = new SharePreferenceUtil(getContext());
         loginBean = getLoginBean();
+        if (loginBean != null) {
+            userInfoBean = loginBean.getUserInfo();
+        }
         isPrepared = true;
         init(view, savedInstanceState);
         return view;
@@ -162,10 +168,10 @@ public abstract class BaseFragment extends Fragment
 
     /**
      * 初始化login数据
-     *
      */
     public UserBaseBean getLoginBean() {
-        String userStr = (String)SharePreferenceUtil.getObject(getActivity(), CommonData.KEY_LOGIN_BEAN, "");
+        String userStr = (String) SharePreferenceUtil.getObject(getActivity(),
+                CommonData.KEY_LOGIN_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
             loginBean = new Gson().fromJson(userStr, UserBaseBean.class);
         }
@@ -174,7 +180,6 @@ public abstract class BaseFragment extends Fragment
 
     /**
      * 获取状态栏高度,在页面还没有显示出来之前
-     *
      */
     public static int getStateBarHeight(Activity a) {
         if (a == null) {
@@ -193,7 +198,6 @@ public abstract class BaseFragment extends Fragment
      * 1.initView
      * 3.initData
      * 4.initListener
-     *
      */
     private void init(@NonNull View view, @NonNull Bundle savedInstanceState) {
         initView(view, savedInstanceState);
@@ -235,7 +239,7 @@ public abstract class BaseFragment extends Fragment
      * 隐藏软键盘
      */
     public void hideSoftInputFromWindow(Context context, EditText editText) {
-        InputMethodManager inputMethodManager = (InputMethodManager)context.getSystemService(
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
@@ -244,7 +248,7 @@ public abstract class BaseFragment extends Fragment
      * 打开软键盘
      */
     public void showSoftInputFromWindow(Context context, EditText editText) {
-        InputMethodManager inputMethodManager = (InputMethodManager)context.getSystemService(
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
     }
@@ -267,12 +271,11 @@ public abstract class BaseFragment extends Fragment
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
         if (Build.BRAND.toUpperCase().contains(BaseData.BASE_HONOR_NAME) ||
-            Build.BRAND.toUpperCase().contains(BaseData.BASE_HUAWEI_NAME)) {
+                Build.BRAND.toUpperCase().contains(BaseData.BASE_HUAWEI_NAME)) {
             //华为特殊处理 不然会显示圆
             intent.putExtra("aspectX", 9998);
             intent.putExtra("aspectY", 9999);
-        }
-        else {
+        } else {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
         }
@@ -359,12 +362,10 @@ public abstract class BaseFragment extends Fragment
     public void onResponseCode(Tasks task, BaseResponse response) {
         if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
             token(response.getMsg());
-        }
-        else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
-                 response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
+        } else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
+                response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
             ToastUtil.toast(getContext(), response.getMsg());
-        }
-        else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
+        } else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
             accountError();
         }
     }
@@ -383,7 +384,7 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -410,6 +411,13 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
+    }
+
+    public boolean isSamePermission(String o, String n) {
+        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
+            return false;
+        }
+        return o.equals(n);
     }
 
 }

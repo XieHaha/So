@@ -13,6 +13,10 @@ public enum Tasks {
      */
     LOGIN,
     /**
+     * 退出
+     */
+    SIGN_OUT,
+    /**
      * 注册
      */
     REGISTER,

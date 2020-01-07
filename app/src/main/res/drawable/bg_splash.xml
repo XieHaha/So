@@ -6,10 +6,8 @@
             <solid android:color="@color/color_ffffff" />
         </shape>
     </item>
-    <item android:top="156dp">
-        <bitmap
-            android:gravity="top"
-            android:src="@mipmap/pic_splash" />
+    <item>
+        <bitmap android:src="@mipmap/pic_header" />
     </item>
 
 </layer-list>

@@ -10,7 +10,7 @@
         android:background="@color/color_ffffff"
         android:gravity="center"
         android:text="@string/txt_message"
-        android:textColor="@color/color_211D1D"
+        android:textColor="@color/color_211d1d"
         android:textSize="@dimen/text_15" />
 
     <android.support.v4.widget.SwipeRefreshLayout

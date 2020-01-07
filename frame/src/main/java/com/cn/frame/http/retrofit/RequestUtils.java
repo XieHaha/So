@@ -29,11 +29,13 @@ public class RequestUtils {
                         listener));
     }
 
-    public static void login(Context context, String phone, String pwd,
+    public static void login(Context context, String phone, String pwd, String lat, String lng,
                              final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(phone));
         params.put("login_password", pwd);
+        params.put("lat", lat);
+        params.put("lng", lng);
         RetrofitManager.getApiUrlManager()
                 .login(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
@@ -41,8 +43,19 @@ public class RequestUtils {
                         Tasks.LOGIN, listener));
     }
 
+    public static void signOut(Context context, String sign,
+                               final ResponseListener<BaseResponse> l) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("sign", RsaUtils.encryptData(sign));
+        RetrofitManager.getApiUrlManager()
+                .signOut(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                        Tasks.SIGN_OUT, l));
+    }
+
     public static void register(Context context, String phone, String pwd, int captcha, int sex,
-                                int registerType, int beInterestedIn,
+                                int registerType, int beInterestedIn, String lat, String lng,
                                 final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(phone));
@@ -51,6 +64,8 @@ public class RequestUtils {
         params.put("register_type", registerType);
         params.put("be_interested_in", beInterestedIn);
         params.put("captcha", captcha);
+        params.put("lat", lat);
+        params.put("lng", lng);
         RetrofitManager.getApiUrlManager()
                 .register(params)
                 .compose(RxJavaHelper.observableIO2Main(context))

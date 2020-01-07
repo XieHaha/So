@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/txt_followed"
-                android:textColor="@color/color_211D1D"
+                android:textColor="@color/color_211d1d"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/txt_follow"
-                android:textColor="@color/color_211D1D"
+                android:textColor="@color/color_211d1d"
                 android:textSize="15sp" />
 
         </LinearLayout>

@@ -89,8 +89,19 @@ public class BaseUtils {
         return (int) ((Math.random() * 9 + 1) * 100000);
     }
 
+    /**
+     * 随机数
+     */
     public static String signSpan(Context context, String value1, String value2) {
         return String.format(context.getString(R.string.txt_sign), value1, random(), value2);
+    }
+
+    /**
+     * session id
+     */
+    public static String signSpan(Context context, String value1, String value2, String value3) {
+        return String.format(context.getString(R.string.txt_sign_by_session), value1, value2,
+                value3);
     }
 
     /**

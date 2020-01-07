@@ -8,6 +8,9 @@
     <string name="txt_female">女</string>
     <string name="txt_neutral">男女皆可</string>
     <string name="txt_sign">%s_%d_%s</string>
+    <string name="txt_sign_by_session">%s_%s_%s</string>
+    <string name="txt_min_num">0</string>
+    <string name="txt_exit_sure">确认退出？</string>
 
     <!--main -->
     <string name="txt_house">首页</string>
@@ -23,6 +26,14 @@
     <!--关注-->
     <string name="txt_followed">关注我</string>
     <string name="txt_follow">我关注</string>
+    <string name="txt_browse">浏览我</string>
+    <!--我的-->
+    <string name="txt_edit">编辑</string>
+    <string name="txt_setting">我的设置</string>
+    <string name="txt_help">帮助中心</string>
+    <string name="txt_about">关于我们</string>
+    <string name="txt_blacklist">屏蔽会员</string>
+    <string name="txt_exit">退出登录</string>
 
     <!--登录注册-->
     <string name="txt_hello">您好</string>

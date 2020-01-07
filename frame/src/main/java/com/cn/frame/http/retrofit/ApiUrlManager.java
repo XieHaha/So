@@ -42,6 +42,14 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<UserBaseBean>> login(@Body Map<String, String> info);
+    /**
+     * 退出
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> signOut(@Body Map<String, String> info);
 
     /**
      * 注册

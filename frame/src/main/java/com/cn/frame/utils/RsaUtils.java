@@ -32,7 +32,7 @@ public final class RsaUtils {
             // 编码前设定编码方式及密钥
             cipher.init(Cipher.ENCRYPT_MODE, loadPublicKey());
             // 传入编码数据并返回编码结果
-            return Base64.encodeToString(cipher.doFinal(data.getBytes()), Base64.DEFAULT);
+            return Base64.encodeToString(cipher.doFinal(data.getBytes()), Base64.DEFAULT).replace("\n", "");
         } catch (Exception e) {
             e.printStackTrace();
             return null;

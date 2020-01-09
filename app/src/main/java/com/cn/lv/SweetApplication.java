@@ -37,7 +37,7 @@ public class SweetApplication extends LitePalApplication {
         //app 帮助类
         ApiManager.getInstance().init(this, debugMode);
         //网络
-        RetrofitManager.getInstance().init(BuildConfig.BASE_BASIC_URL);
+        RetrofitManager.getInstance().init(this,BuildConfig.BASE_BASIC_URL);
         //日志捕捉
         CrashHandler.init(this);
         //数据库

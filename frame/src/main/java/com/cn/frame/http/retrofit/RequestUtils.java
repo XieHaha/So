@@ -22,7 +22,7 @@ public class RequestUtils {
                                      final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(phone));
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .getVerifyCode(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VERIFY_CODE,
@@ -36,7 +36,7 @@ public class RequestUtils {
         params.put("login_password", pwd);
         params.put("lat", lat);
         params.put("lng", lng);
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .login(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, false,
@@ -47,7 +47,7 @@ public class RequestUtils {
                                final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(sign));
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .signOut(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, false,
@@ -66,7 +66,7 @@ public class RequestUtils {
         params.put("captcha", captcha);
         params.put("lat", lat);
         params.put("lng", lng);
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .register(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, false,
@@ -79,7 +79,7 @@ public class RequestUtils {
         params.put("sign", RsaUtils.encryptData(phone));
         params.put("new_pwd", pwd);
         params.put("captcha", captcha);
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .resetPwd(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, false,
@@ -88,7 +88,7 @@ public class RequestUtils {
 
     public static void getVersion(Context context, String token,
                                   final ResponseListener<BaseResponse> listener) {
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .getVersion(token, BaseData.ADMIN)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_VERSION, listener));
@@ -99,7 +99,7 @@ public class RequestUtils {
                                      final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(sign));
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .getBasicsInfo(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, false,
@@ -110,7 +110,7 @@ public class RequestUtils {
                                  final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(sign));
-        RetrofitManager.getApiUrlManager()
+        RetrofitManager.getApiUrlManager(context)
                 .renewSign(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, false,

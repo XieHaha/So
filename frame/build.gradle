@@ -61,6 +61,8 @@ dependencies {
     //角标
     api "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //cookie
+    api 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 }
 repositories {
     mavenCentral()

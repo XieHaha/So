@@ -63,6 +63,11 @@ public class MyFragment extends BaseFragment {
         Glide.with(this).load(FileUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
         tvSex.setText(BASE_ONE == userInfo.getSex() ? R.string.txt_male : R.string.txt_female);
         tvAge.setText(String.valueOf(userInfo.getAge()));
+        tvAddress.setText(userInfo.getAddress());
+        tvJob.setText(dataDictBean.getOccupationInfo().get(userInfo.getOccupation()));
+        tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
+        tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
+        tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.utils.RsaUtils;
 
@@ -115,6 +116,41 @@ public class RequestUtils {
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, true, false,
                         Tasks.RENEW_SIGN, l));
+    }
+
+    public static void getHomeInfo(Context context, String sign, String type, UserInfoBean userInfo,
+                                   int page, int pageSize, boolean show,
+                                   final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("requestDisplayType", type);
+        params.put("age", userInfo.getAge());
+        params.put("height", userInfo.getHeight());
+        params.put("somatotype", userInfo.getSomatotype());
+        params.put("race", userInfo.getRace());
+        params.put("education", userInfo.getEducation());
+        params.put("marriage", userInfo.getMarriage());
+        params.put("children", userInfo.getChildren());
+        params.put("smoke", userInfo.getSmoke());
+        params.put("drink", userInfo.getDrink());
+        params.put("per_page", pageSize);
+        params.put("page", page);
+        RetrofitManager.getApiUrlManager(context)
+                .getHomeInfo(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, show, Tasks.GET_HOME_INFO, l));
+    }
+
+    public static void renewCollection(Context context, String sign, int userId, int collection,
+                                       final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("user_id", userId);
+        params.put("collection_state", collection);
+        RetrofitManager.getApiUrlManager(context)
+                .renewCollection(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.RENEW_COLLECTION, l));
     }
 }
 

@@ -1,7 +1,9 @@
 package com.cn.frame.http.retrofit;
 
+import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.bean.DataDictBean;
+import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.VersionBean;
 
@@ -99,5 +101,23 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<UserBaseBean>> renewSign(@Body Map<String, String> info);
+
+    /**
+     * 首页数据
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<BaseListData<RolesBean>>> getHomeInfo(@Body Map<String, Object> info);
+
+    /**
+     * 关注
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<BaseListData<RolesBean>>> renewCollection(@Body Map<String, Object> info);
 
 }

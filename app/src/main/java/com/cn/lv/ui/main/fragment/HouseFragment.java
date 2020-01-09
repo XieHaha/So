@@ -78,6 +78,7 @@ public class HouseFragment extends BaseFragment {
     @Override
     public void initListener() {
         super.initListener();
+        viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(new AbstractOnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,

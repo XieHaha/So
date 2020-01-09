@@ -36,5 +36,13 @@ public enum Tasks {
      * session更新
      */
     RENEW_SIGN,
+    /**
+     * 首页数据
+     */
+    GET_HOME_INFO,
+    /**
+     * 关注更新
+     */
+    RENEW_COLLECTION,
 }
 

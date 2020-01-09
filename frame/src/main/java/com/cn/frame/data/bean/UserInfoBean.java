@@ -43,6 +43,8 @@ public class UserInfoBean implements Serializable {
     private String wechat;
     private String email;
     private String create_time;
+    private String address;
+
 
     public int getUser_id() {
         return user_id;
@@ -314,5 +316,13 @@ public class UserInfoBean implements Serializable {
 
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

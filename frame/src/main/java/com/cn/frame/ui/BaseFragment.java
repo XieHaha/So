@@ -30,6 +30,8 @@ import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.permission.OnPermissionCallback;
 import com.cn.frame.permission.PermissionHelper;
+import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.RsaUtils;
 import com.cn.frame.utils.SharePreferenceUtil;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.widgets.dialog.LoadingDialog;
@@ -189,6 +191,14 @@ public abstract class BaseFragment extends Fragment
             dataDictBean = new Gson().fromJson(data, DataDictBean.class);
         }
         return dataDictBean;
+    }
+
+    /**
+     * 获取sign
+     */
+    public String signSession(String interfaceName) {
+        return RsaUtils.encryptData(BaseUtils.signSpan(getContext(), userInfo.getMobile_number(),
+                loginBean.getSession_id(), interfaceName));
     }
 
     /**

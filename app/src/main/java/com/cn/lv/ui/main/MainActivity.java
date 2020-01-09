@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void initListener() {
         super.initListener();
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new AbstractOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

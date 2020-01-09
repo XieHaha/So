@@ -29,6 +29,10 @@ public interface BaseData {
      * 男女皆可
      */
     int BASE_NEUTRAL = 3;
+    /**
+     * 分页数据每页数量
+     */
+    int PAGE_SIZE = 10;
 
     /**
      * 身份证号最大长度

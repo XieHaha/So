@@ -32,4 +32,12 @@ public interface InterfaceName {
      * 基础数据集合
      */
     String RENEW_SIGN = "renewSign";
+    /**
+     * 首页数据
+     */
+    String HOME_INFO = "homeInfo";
+    /**
+     * 关注
+     */
+    String RENEW_COLLECTION = "renewCollection";
 }

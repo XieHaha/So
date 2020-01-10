@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.cn.frame.api.ApiManager;
-import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.DataDictBean;
@@ -22,7 +21,6 @@ import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.BaseUtils;
-import com.cn.frame.utils.SweetLog;
 import com.cn.frame.widgets.AbstractOnPageChangeListener;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
@@ -160,12 +158,13 @@ public class MainActivity extends BaseActivity
      */
     private void updateSession() {
         if (loginBean != null) {
-            long time = loginBean.getDue_time() - System.currentTimeMillis() / 1000;
-            SweetLog.i(TAG, "time:" + time);
+            //提前30分钟更新 -1800
+            long time = loginBean.getDue_time() - System.currentTimeMillis() / 1000 - 1800;
             if (time <= 0) {
-                time = BaseData.BASE_MAX_SESSION_TIME;
+                handler.sendEmptyMessage(0);
+            } else {
+                initScheduledThread(time);
             }
-            initScheduledThread(time);
         }
     }
 
@@ -276,7 +275,6 @@ public class MainActivity extends BaseActivity
 
     private ScheduledExecutorService executorService;
     private Handler handler = new Handler(message -> {
-        SweetLog.i(TAG, "value:" + message.what);
         //刷新
         renewSign();
         return true;

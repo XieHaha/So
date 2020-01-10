@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
@@ -56,13 +57,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        permissionHelper.request(new String[]{Permission.FINE_LOCATION});
-    }
-
-    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         phone = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_ACCOUNT);
@@ -79,6 +73,15 @@ public class LoginActivity extends BaseActivity {
     private void login() {
         RequestUtils.login(this, BaseUtils.signSpan(this, phone, InterfaceName.SIGN_IN), pwd,
                 String.valueOf(lat), String.valueOf(lng), this);
+    }
+
+    /**
+     * 获取基础数据集合
+     */
+    private void getBasicsInfo() {
+        RequestUtils.getBasicsInfo(this, BaseUtils.signSpan(this,
+                loginBean.getUserInfo().getMobile_number(),
+                loginBean.getSession_id(), InterfaceName.GET_BASICS_INFO), this);
     }
 
     private void jump() {
@@ -118,9 +121,16 @@ public class LoginActivity extends BaseActivity {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.LOGIN) {
+            //存储登录信息
+            sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_ACCOUNT, phone);
+            sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_PWD, pwd);
             loginBean = (UserBaseBean) response.getData();
             //存储登录结果
             SweetApplication.getInstance().setLoginBean(loginBean);
+            getBasicsInfo();
+        } else if (task == Tasks.GET_BASICS_INFO) {
+            DataDictBean bean = (DataDictBean) response.getData();
+            SweetApplication.getInstance().setDataDictBean(bean);
             jump();
         }
     }
@@ -130,6 +140,7 @@ public class LoginActivity extends BaseActivity {
      */
     @SuppressLint("MissingPermission")
     private void startLocation() {
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Location location = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (location != null) {

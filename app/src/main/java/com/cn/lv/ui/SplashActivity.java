@@ -3,10 +3,21 @@ package com.cn.lv.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
-import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.CommonData;
+import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.UserBaseBean;
+import com.cn.frame.data.bean.UserInfoBean;
+import com.cn.frame.http.InterfaceName;
+import com.cn.frame.http.listener.ResponseListener;
+import com.cn.frame.http.retrofit.RequestUtils;
+import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.SharePreferenceUtil;
 import com.cn.lv.R;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.login.LoginActivity;
 import com.cn.lv.ui.main.MainActivity;
 
@@ -16,23 +27,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
-import pl.droidsonroids.gif.GifImageView;
-
 /**
  * 启动界面
  */
-public class SplashActivity extends BaseActivity {
-    @BindView(R.id.gif_image)
-    GifImageView gifImage;
+public class SplashActivity extends AppCompatActivity implements ResponseListener<BaseResponse> {
     private ScheduledExecutorService executorService;
+    /**
+     * 轻量级存储
+     */
+    protected SharePreferenceUtil sharePreferenceUtil;
+    private UserBaseBean loginBean;
+    private UserInfoBean userInfo;
     private int time = 0;
-
-    @Override
-    public int getLayoutID() {
-        return R.layout.act_splash;
-    }
-
     private Handler handler = new Handler(message -> {
         if (time <= 0) {
             jump();
@@ -41,24 +47,78 @@ public class SplashActivity extends BaseActivity {
     });
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        //        try {
-        //            GifDrawable gifDrawable = new GifDrawable(getResources(), R.mipmap
-        //            .pic_splash_gif);
-        //            initScheduledThread(gifDrawable.getDuration());
-        //            gifImage.setImageDrawable(gifDrawable);
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.act_splash);
+        sharePreferenceUtil = new SharePreferenceUtil(this);
+        loginBean = SweetApplication.getInstance().getLoginBean();
+        if (loginBean != null) {
+            userInfo = loginBean.getUserInfo();
+        }
+        updateSession();
+    }
+
+    /**
+     * 登录
+     */
+    private void login() {
+        String pwd = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_PWD);
+        RequestUtils.login(this, BaseUtils.signSpan(this, userInfo.getMobile_number(),
+                InterfaceName.SIGN_IN), pwd,
+                "", "", this);
+    }
+
+
+    /**
+     * 计算过期时间
+     */
+    private void updateSession() {
+        if (loginBean != null) {
+            long time = loginBean.getDue_time() - System.currentTimeMillis() / 1000;
+            if (time <= 0) {
+                //已过期就重新登录来更新session
+                login();
+            } else {
+                initScheduledThread();
+            }
+        } else {
+            initScheduledThread();
+        }
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        initScheduledThread();
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        if (task == Tasks.LOGIN) {
+            loginBean = (UserBaseBean) response.getData();
+            //存储登录结果
+            SweetApplication.getInstance().setLoginBean(loginBean);
+        }
     }
 
+    @Override
+    public void onResponseError(Tasks task, Exception e) {
+
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+
+    }
+
+    @Override
+    public void onResponseStart(Tasks task) {
+
+    }
+
+    @Override
+    public void onResponseCancel(Tasks task) {
+
+    }
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+        initScheduledThread();
+    }
 
     private void jump() {
         if (loginBean == null) {

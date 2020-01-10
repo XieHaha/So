@@ -357,7 +357,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
-        permissionHelper.request(new String[]{Permission.STORAGE_WRITE});
+        permissionHelper.request(new String[]{Permission.FINE_LOCATION,Permission.STORAGE_WRITE});
     }
 
     @Override

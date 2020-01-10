@@ -22,6 +22,10 @@ public interface CommonData {
      */
     String KEY_LOGIN_ACCOUNT = "key_login_account";
     /**
+     * 登录账号
+     */
+    String KEY_LOGIN_PWD = "key_login_pwd";
+    /**
      * 是否显示的是登录协议（登录协议页面不显示title）
      */
     String KEY_IS_PROTOCOL = "key_is_protocol";

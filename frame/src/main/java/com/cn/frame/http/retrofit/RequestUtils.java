@@ -176,5 +176,17 @@ public class RequestUtils {
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ABOUT_US, l));
     }
+
+    public static void helpsList(Context context, String sign, int page, int pageSize,
+                                 final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("per_page", pageSize);
+        params.put("page", page);
+        RetrofitManager.getApiUrlManager(context)
+                .helpsList(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.HELPS_LIST, l));
+    }
 }
 

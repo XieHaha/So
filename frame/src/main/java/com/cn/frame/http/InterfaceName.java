@@ -45,7 +45,11 @@ public interface InterfaceName {
      */
     String RENEW_COLLECTION = "renewCollection";
     /**
-     * 关注
+     * 关于我们
      */
     String ABOUT_US = "aboutUs";
+    /**
+     *  帮助中心
+     */
+    String HELPS_LIST = "helpsList";
 }

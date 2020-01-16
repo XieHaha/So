@@ -52,5 +52,9 @@ public enum Tasks {
      * 关于我们
      */
     ABOUT_US,
+    /**
+     * 帮助中心
+     */
+    HELPS_LIST,
 }
 

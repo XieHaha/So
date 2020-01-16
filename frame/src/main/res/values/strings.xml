@@ -2,6 +2,7 @@
     <string name="app_name">frame</string>
 
     <string name="title_setting">设置</string>
+    <string name="title_help">热门问题</string>
 
     <!--公用-->
     <string name="txt_sure">确定</string>

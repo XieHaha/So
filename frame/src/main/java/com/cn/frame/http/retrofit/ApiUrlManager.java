@@ -4,6 +4,7 @@ import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.bean.AboutUsBean;
 import com.cn.frame.data.bean.DataDictBean;
+import com.cn.frame.data.bean.HelpBean;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.VersionBean;
@@ -138,5 +139,14 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<AboutUsBean>> aboutUs(@Body Map<String, Object> info);
+
+    /**
+     * 帮助中心
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<BaseListData<HelpBean>>> helpsList(@Body Map<String, Object> info);
 
 }

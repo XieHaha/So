@@ -101,6 +101,7 @@ public class MyFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
             case R.id.layout_help:
+                startActivity(new Intent(getContext(), HelpActivity.class));
                 break;
             case R.id.layout_about:
                 startActivity(new Intent(getContext(), AboutActivity.class));

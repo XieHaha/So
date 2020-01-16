@@ -44,5 +44,9 @@ public enum Tasks {
      * 关注更新
      */
     RENEW_COLLECTION,
+    /**
+     * 关注列表
+     */
+    COLLECTION_LIST,
 }
 

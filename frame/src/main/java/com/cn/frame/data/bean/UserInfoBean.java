@@ -43,6 +43,7 @@ public class UserInfoBean implements Serializable {
     private String wechat;
     private String email;
     private String create_time;
+    private String rong_cloud_token;
     private String address;
 
 
@@ -316,6 +317,15 @@ public class UserInfoBean implements Serializable {
 
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
+    }
+
+
+    public String getRong_cloud_token() {
+        return rong_cloud_token;
+    }
+
+    public void setRong_cloud_token(String rong_cloud_token) {
+        this.rong_cloud_token = rong_cloud_token;
     }
 
     public String getAddress() {

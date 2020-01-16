@@ -112,6 +112,15 @@ public interface ApiUrlManager {
     Observable<BaseResponse<BaseListData<RolesBean>>> getHomeInfo(@Body Map<String, Object> info);
 
     /**
+     * 关注列表
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<BaseListData<RolesBean>>> collectionList(@Body Map<String, Object> info);
+
+    /**
      * 关注
      *
      * @param info map参数

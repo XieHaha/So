@@ -1,4 +1,4 @@
-package com.cn.lv.ui.main.fragment;
+package com.cn.lv.ui.main.attention;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.cn.frame.utils.ScreenUtils;
 import com.cn.frame.widgets.AbstractOnPageChangeListener;
 import com.cn.lv.R;
 import com.cn.lv.ui.adapter.ViewPagerAdapter;
+import com.cn.lv.ui.main.fragment.IFollowFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class FollowFragment extends BaseFragment {
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_follow;
+        return R.layout.fragment_attention;
     }
 
     @Override

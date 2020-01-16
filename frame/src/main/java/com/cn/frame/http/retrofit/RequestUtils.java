@@ -141,6 +141,19 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(context, show, Tasks.GET_HOME_INFO, l));
     }
 
+    public static void collectionList(Context context, String sign, int followType, int page,
+                                      int pageSize, final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("followType", followType);
+        params.put("per_page", pageSize);
+        params.put("page", page);
+        RetrofitManager.getApiUrlManager(context)
+                .collectionList(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.COLLECTION_LIST, l));
+    }
+
     public static void renewCollection(Context context, String sign, int userId, int collection,
                                        final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);

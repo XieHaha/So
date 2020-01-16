@@ -1,4 +1,4 @@
-package com.cn.lv.ui.main.fragment;
+package com.cn.lv.ui.main.house;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,7 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class NearbyFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
+public class RecentlyFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
         BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
@@ -77,7 +77,7 @@ public class NearbyFragment extends BaseFragment implements BaseQuickAdapter.OnI
      * 获取数据
      */
     private void getData(boolean show) {
-        RequestUtils.getHomeInfo(getContext(), signSession(InterfaceName.HOME_INFO), "nearby",
+        RequestUtils.getHomeInfo(getContext(), signSession(InterfaceName.HOME_INFO), "newest",
                 userInfo, page, PAGE_SIZE, show, this);
     }
 
@@ -177,4 +177,5 @@ public class NearbyFragment extends BaseFragment implements BaseQuickAdapter.OnI
         page++;
         getData(false);
     }
+
 }

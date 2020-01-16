@@ -1,4 +1,4 @@
-package com.cn.lv.ui.main.fragment;
+package com.cn.lv.ui.main.house;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

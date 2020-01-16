@@ -37,6 +37,10 @@ public interface InterfaceName {
      */
     String HOME_INFO = "homeInfo";
     /**
+     * 关注列表
+     */
+    String COLLECTION_LIST = "collectionList";
+    /**
      * 关注
      */
     String RENEW_COLLECTION = "renewCollection";

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="247dp"
+    android:background="@color/color_ffffff"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/color_211d1d"
+        android:textSize="@dimen/text_14"
+        tools:text="名字" />
+
+    <ImageView
+        android:id="@+id/iv_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tv_name"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingStart="0dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/iv_attention"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:src="@drawable/selector_attention" />
+
+        <ImageView
+            android:id="@+id/iv_message"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:src="@mipmap/ic_message_black" />
+
+    </LinearLayout>
+
+</RelativeLayout>

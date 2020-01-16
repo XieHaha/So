@@ -105,6 +105,16 @@
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.main.my.SettingActivity"
+            android:label="@string/title_setting"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.main.my.AboutActivity"
+            android:label="@string/txt_about"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <!--登出-->
         <receiver
             android:name="com.cn.lv.receiver.LoginOutBroadcastReceiver"

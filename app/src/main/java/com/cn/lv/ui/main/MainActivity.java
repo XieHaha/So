@@ -29,7 +29,7 @@ import com.cn.lv.ui.adapter.ViewPagerAdapter;
 import com.cn.lv.ui.dialog.UpdateDialog;
 import com.cn.lv.ui.main.attention.FollowFragment;
 import com.cn.lv.ui.main.fragment.MessageFragment;
-import com.cn.lv.ui.main.fragment.MyFragment;
+import com.cn.lv.ui.main.my.MyFragment;
 import com.cn.lv.ui.main.house.HouseFragment;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;

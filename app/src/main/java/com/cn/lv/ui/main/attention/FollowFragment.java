@@ -15,7 +15,6 @@ import com.cn.frame.utils.ScreenUtils;
 import com.cn.frame.widgets.AbstractOnPageChangeListener;
 import com.cn.lv.R;
 import com.cn.lv.ui.adapter.ViewPagerAdapter;
-import com.cn.lv.ui.main.fragment.IFollowFragment;
 
 import java.util.ArrayList;
 import java.util.List;

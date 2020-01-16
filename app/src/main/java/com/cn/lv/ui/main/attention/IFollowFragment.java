@@ -29,7 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
+public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
         BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
@@ -79,7 +79,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
      * 获取数据
      */
     private void getData() {
-        RequestUtils.collectionList(getContext(), signSession(InterfaceName.COLLECTION_LIST), 1,
+        RequestUtils.collectionList(getContext(), signSession(InterfaceName.COLLECTION_LIST), 2,
                 page, PAGE_SIZE, this);
     }
 
@@ -119,9 +119,6 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                     state = 1;
                 }
                 renewCollection(bean.getUser_id(), state);
-                //本地更新
-                bean.setCollection_state(state);
-                followAdapter.notifyItemChanged(position);
                 break;
             case R.id.iv_message:
                 ToastUtil.toast(getContext(), "聊天");
@@ -130,6 +127,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 break;
         }
     }
+
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
@@ -143,11 +141,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 }
                 rolesBeans.addAll(list);
                 followAdapter.setNewData(rolesBeans);
-                if (list != null && list.size() >= BaseData.PAGE_SIZE) {
-                    followAdapter.loadMoreComplete();
-                } else {
-                    followAdapter.loadMoreEnd();
-                }
+                followAdapter.loadMoreComplete();
                 if (rolesBeans != null && rolesBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
                     tvNoneMessage.setVisibility(View.GONE);
@@ -157,6 +151,8 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 }
                 break;
             case RENEW_COLLECTION:
+                //更新数据
+                getData();
                 ToastUtil.toast(getContext(), response.getMsg());
                 break;
             default:

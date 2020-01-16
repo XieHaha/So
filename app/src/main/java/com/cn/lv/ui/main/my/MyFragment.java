@@ -1,5 +1,6 @@
-package com.cn.lv.ui.main.fragment;
+package com.cn.lv.ui.main.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -97,10 +98,12 @@ public class MyFragment extends BaseFragment {
             case R.id.iv_vip:
                 break;
             case R.id.layout_set:
+                startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
             case R.id.layout_help:
                 break;
             case R.id.layout_about:
+                startActivity(new Intent(getContext(), AboutActivity.class));
                 break;
             case R.id.layout_black:
                 break;

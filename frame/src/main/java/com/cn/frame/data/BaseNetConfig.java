@@ -15,7 +15,7 @@ public interface BaseNetConfig {
     /**
      * token错误或者失效
      */
-    int REQUEST_TOKEN_ERROR = 4001;
+    int REQUEST_TOKEN_ERROR = 401;
     /**
      * 账号禁用
      */

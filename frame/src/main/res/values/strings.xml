@@ -1,5 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">frame</string>
+
+    <string name="title_setting">设置</string>
 
     <!--公用-->
     <string name="txt_sure">确定</string>
@@ -32,8 +34,17 @@
     <string name="txt_setting">我的设置</string>
     <string name="txt_help">帮助中心</string>
     <string name="txt_about">关于我们</string>
+    <string name="txt_clear">清除本地缓存</string>
     <string name="txt_blacklist">屏蔽会员</string>
     <string name="txt_exit">退出登录</string>
+    <string name="txt_device">设备</string>
+    <!--关于我们-->
+    <string name="txt_app">APP</string>
+    <string name="txt_version">版本</string>
+    <string name="txt_name">昵称</string>
+    <string name="txt_mobile">手机</string>
+    <string name="txt_protocol">用户协议</string>
+    <string name="txt_pri">隐私政策</string>
 
     <!--登录注册-->
     <string name="txt_hello">您好</string>

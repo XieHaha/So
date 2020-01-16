@@ -30,6 +30,8 @@ import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.permission.OnPermissionCallback;
 import com.cn.frame.permission.Permission;
 import com.cn.frame.permission.PermissionHelper;
+import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.RsaUtils;
 import com.cn.frame.utils.SharePreferenceUtil;
 import com.cn.frame.utils.StatusBarUtil;
 import com.cn.frame.utils.SweetLog;
@@ -219,6 +221,14 @@ public abstract class BaseActivity extends RxAppCompatActivity
     }
 
     /**
+     * 获取sign
+     */
+    public String signSession(String interfaceName) {
+        return RsaUtils.encryptData(BaseUtils.signSpan(this, userInfo.getMobile_number(),
+                loginBean.getSession_id(), interfaceName));
+    }
+
+    /**
      * 初始化login数据
      */
     public UserBaseBean getLoginBean() {
@@ -357,7 +367,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
-        permissionHelper.request(new String[]{Permission.FINE_LOCATION,Permission.STORAGE_WRITE});
+        permissionHelper.request(new String[]{Permission.FINE_LOCATION, Permission.STORAGE_WRITE});
     }
 
     @Override

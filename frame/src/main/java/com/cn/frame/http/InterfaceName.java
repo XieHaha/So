@@ -44,4 +44,8 @@ public interface InterfaceName {
      * 关注
      */
     String RENEW_COLLECTION = "renewCollection";
+    /**
+     * 关注
+     */
+    String ABOUT_US = "aboutUs";
 }

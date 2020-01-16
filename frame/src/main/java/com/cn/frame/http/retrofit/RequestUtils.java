@@ -145,6 +145,7 @@ public class RequestUtils {
                                       int pageSize, final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
+        //1、关注我  2、我关注
         params.put("followType", followType);
         params.put("per_page", pageSize);
         params.put("page", page);
@@ -164,6 +165,16 @@ public class RequestUtils {
                 .renewCollection(params)
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, Tasks.RENEW_COLLECTION, l));
+    }
+
+    public static void aboutUs(Context context, String sign,
+                               final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        RetrofitManager.getApiUrlManager(context)
+                .aboutUs(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ABOUT_US, l));
     }
 }
 

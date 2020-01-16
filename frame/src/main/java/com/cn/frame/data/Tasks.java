@@ -48,5 +48,9 @@ public enum Tasks {
      * 关注列表
      */
     COLLECTION_LIST,
+    /**
+     * 关于我们
+     */
+    ABOUT_US,
 }
 

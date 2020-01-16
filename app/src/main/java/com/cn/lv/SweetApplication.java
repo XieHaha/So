@@ -19,6 +19,8 @@ import com.yanzhenjie.nohttp.NoHttp;
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
+import io.rong.imkit.RongIM;
+
 public class SweetApplication extends LitePalApplication {
     private static SweetApplication instance;
     private UserBaseBean loginBean;
@@ -37,13 +39,15 @@ public class SweetApplication extends LitePalApplication {
         //app 帮助类
         ApiManager.getInstance().init(this, debugMode);
         //网络
-        RetrofitManager.getInstance().init(this,BuildConfig.BASE_BASIC_URL);
+        RetrofitManager.getInstance().init(this, BuildConfig.BASE_BASIC_URL);
         //日志捕捉
         CrashHandler.init(this);
         //数据库
         LitePal.initialize(this);
         //下载
         NoHttp.initialize(this);
+        //融云
+        RongIM.init(this);
     }
 
     @Override

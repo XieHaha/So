@@ -21,15 +21,16 @@ import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.SweetLog;
 import com.cn.frame.widgets.AbstractOnPageChangeListener;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.adapter.ViewPagerAdapter;
 import com.cn.lv.ui.dialog.UpdateDialog;
 import com.cn.lv.ui.main.attention.FollowFragment;
-import com.cn.lv.ui.main.house.HouseFragment;
 import com.cn.lv.ui.main.fragment.MessageFragment;
 import com.cn.lv.ui.main.fragment.MyFragment;
+import com.cn.lv.ui.main.house.HouseFragment;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;
 
@@ -43,6 +44,8 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 
 public class MainActivity extends BaseActivity
@@ -78,6 +81,11 @@ public class MainActivity extends BaseActivity
     private int pendingCount = 1;
 
     @Override
+    protected boolean isInitStatusBar() {
+        return false;
+    }
+
+    @Override
     public void beforeCreateView(@NonNull Bundle savedInstanceState) {
         super.beforeCreateView(savedInstanceState);
         //必须在super 之前调用,不然无效。因为那时候fragment已经被恢复了。
@@ -98,8 +106,8 @@ public class MainActivity extends BaseActivity
         super.initView(savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         initFragment();
-        //环信登录
-        loginEaseChat();
+        //融云
+        loginChat();
     }
 
     @Override
@@ -170,10 +178,32 @@ public class MainActivity extends BaseActivity
 
 
     /**
-     * 登录环信聊天
+     * 登录融云聊天
      */
-    private void loginEaseChat() {
-        if (loginBean != null) {
+    private void loginChat() {
+        if (userInfo != null) {
+            SweetLog.i(TAG, "connect...");
+            RongIM.connect(userInfo.getRong_cloud_token(), new RongIMClient.ConnectCallbackEx() {
+                @Override
+                public void OnDatabaseOpened(RongIMClient.DatabaseOpenStatus code) {
+
+                }
+
+                @Override
+                public void onTokenIncorrect() {
+                    SweetLog.i(TAG, "connect token error");
+                }
+
+                @Override
+                public void onSuccess(String s) {
+                    SweetLog.i(TAG, "connect  success：" + s);
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode e) {
+                    SweetLog.i(TAG, "connect  error:" + e.getMessage());
+                }
+            });
         }
     }
 

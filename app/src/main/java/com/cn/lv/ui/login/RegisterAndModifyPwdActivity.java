@@ -116,7 +116,6 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         permissionHelper.request(new String[]{Permission.FINE_LOCATION});
     }
 
@@ -266,6 +265,7 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
      */
     @SuppressLint("MissingPermission")
     private void startLocation() {
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Location location = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (location != null) {

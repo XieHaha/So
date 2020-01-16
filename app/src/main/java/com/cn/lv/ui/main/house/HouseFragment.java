@@ -65,7 +65,6 @@ public class HouseFragment extends BaseFragment {
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         permissionHelper.request(new String[]{Permission.FINE_LOCATION});
         initFragment();
     }
@@ -174,6 +173,7 @@ public class HouseFragment extends BaseFragment {
      */
     @SuppressLint("MissingPermission")
     private void startLocation() {
+        manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Location location = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (location != null) {

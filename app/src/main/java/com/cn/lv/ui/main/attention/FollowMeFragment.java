@@ -146,7 +146,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 if (list != null && list.size() >= BaseData.PAGE_SIZE) {
                     followAdapter.loadMoreComplete();
                 } else {
-                    followAdapter.loadMoreEnd();
+                    followAdapter.setEnableLoadMore(false);
                 }
                 if (rolesBeans != null && rolesBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);

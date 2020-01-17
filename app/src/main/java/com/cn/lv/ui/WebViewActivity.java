@@ -10,38 +10,27 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cn.frame.data.CommonData;
 import com.cn.frame.ui.BaseActivity;
-import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.SweetLog;
 import com.cn.lv.R;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
-public class WebViewActivity extends BaseActivity  {
+public class WebViewActivity extends BaseActivity {
     @BindView(R.id.layout_title_root)
     RelativeLayout layoutTitleRoot;
     @BindView(R.id.web_view)
     WebView webView;
-    @BindView(R.id.tv_disagree)
-    TextView tvDisagree;
-    @BindView(R.id.tv_agree)
-    TextView tvAgree;
-    @BindView(R.id.layout_bottom)
-    LinearLayout layoutBottom;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
-    @BindView(R.id.layout_public_hint)
-    LinearLayout layoutPublicHint;
     /**
      * title
      */
-    private String title;
+    private String title, content;
     /**
      * 源
      */
@@ -74,38 +63,17 @@ public class WebViewActivity extends BaseActivity  {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             title = getIntent().getStringExtra(CommonData.KEY_TITLE);
+            content = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
             url = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
             isProtocol = getIntent().getBooleanExtra(CommonData.KEY_IS_PROTOCOL, false);
         }
+        publicTitleBarTitle.setText(title);
+        showLoadingView();
+        SweetLog.i(TAG, "url:" + url);
         if (isProtocol) {
-            layoutBottom.setVisibility(View.VISIBLE);
-            layoutTitleRoot.setVisibility(View.GONE);
-        }
-        else {
-            publicTitleBarTitle.setText(title);
-        }
-        if (BaseUtils.isNetworkAvailable(this)) {
-            showLoadingView();
-            SweetLog.i(TAG, "url:" + url);
+            webView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null);
+        } else {
             webView.loadUrl(url);
-        }
-        else {
-            loadStatus();
-        }
-    }
-
-    @OnClick({ R.id.tv_disagree, R.id.tv_agree })
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_disagree:
-                exit();
-                break;
-            case R.id.tv_agree:
-                sharePreferenceUtil.putBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, false);
-                finish();
-                break;
-            default:
-                break;
         }
     }
 
@@ -116,15 +84,14 @@ public class WebViewActivity extends BaseActivity  {
                 closeLoadingView();
                 if (!isError) {
                     webView.setVisibility(View.VISIBLE);
-                    layoutPublicHint.setVisibility(View.GONE);
                 }
             }
 
             // 新版本，只会在Android6及以上调用
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            public void onReceivedError(WebView view, WebResourceRequest request,
+                                        WebResourceError error) {
                 isError = true;
-                loadStatus();
             }
 
             /**
@@ -133,9 +100,9 @@ public class WebViewActivity extends BaseActivity  {
              */
             // 旧版本，会在新版本中也可能被调用，所以加上一个判断，防止重复显示
             @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            public void onReceivedError(WebView view, int errorCode, String description,
+                                        String failingUrl) {
                 isError = true;
-                loadStatus();
             }
         };
         webView.setWebViewClient(webViewClient);
@@ -151,13 +118,5 @@ public class WebViewActivity extends BaseActivity  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(0);
         }
-    }
-
-    /**
-     * 加载状态
-     */
-    private void loadStatus() {
-        webView.setVisibility(View.GONE);
-        layoutPublicHint.setVisibility(View.VISIBLE);
     }
 }

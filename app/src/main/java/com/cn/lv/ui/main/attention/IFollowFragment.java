@@ -141,7 +141,11 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
                 }
                 rolesBeans.addAll(list);
                 followAdapter.setNewData(rolesBeans);
-                followAdapter.loadMoreComplete();
+                if (list != null && list.size() >= BaseData.PAGE_SIZE) {
+                    followAdapter.loadMoreComplete();
+                } else {
+                    followAdapter.setEnableLoadMore(false);
+                }
                 if (rolesBeans != null && rolesBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
                     tvNoneMessage.setVisibility(View.GONE);

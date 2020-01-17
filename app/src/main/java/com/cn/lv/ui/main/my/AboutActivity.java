@@ -1,17 +1,20 @@
 package com.cn.lv.ui.main.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.AboutUsBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.lv.R;
+import com.cn.lv.ui.WebViewActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -63,14 +66,22 @@ public class AboutActivity extends BaseActivity {
 
     @OnClick({R.id.layout_pri, R.id.layout_protocol})
     public void onViewClicked(View view) {
+        Intent intent;
+        intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
         switch (view.getId()) {
             case R.id.layout_pri:
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_pri));
+                intent.putExtra(CommonData.KEY_PUBLIC_STRING, aboutUsBean.getPrivacy_policy());
                 break;
             case R.id.layout_protocol:
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_protocol));
+                intent.putExtra(CommonData.KEY_PUBLIC_STRING, aboutUsBean.getUser_agreement());
                 break;
             default:
                 break;
         }
+        startActivity(intent);
     }
 
     @Override

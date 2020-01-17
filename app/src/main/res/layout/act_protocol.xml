@@ -7,11 +7,11 @@
 
     <include layout="@layout/public_title" />
 
-    <WebView
-        android:id="@+id/web_view"
+    <TextView
+        android:id="@+id/tv_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="visible" />
+        android:layout_height="match_parent"
+        android:textColor="@color/color_211d1d"
+        android:textSize="@dimen/text_14" />
 
 </LinearLayout>

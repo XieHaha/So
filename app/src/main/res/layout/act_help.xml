@@ -25,6 +25,15 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <ImageView
+        android:id="@+id/iv_need"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="88dp"
+        android:src="@mipmap/ic_need_help" />
+
     <TextView
         android:id="@+id/tv_none_message"
         android:layout_width="wrap_content"

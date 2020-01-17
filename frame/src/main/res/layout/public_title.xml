@@ -4,7 +4,7 @@
     android:id="@+id/layout_title_root"
     android:layout_width="match_parent"
     android:layout_height="@dimen/app_title_bar_height"
-    android:background="@color/color_ffffff">
+    android:background="#FAFAFA">
 
     <ImageView
         android:id="@+id/public_title_bar_back"

@@ -188,5 +188,17 @@ public class RequestUtils {
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, Tasks.HELPS_LIST, l));
     }
+
+    public static void questionFeedback(Context context, String sign, String title, String feedback,
+                                        final ResponseListener<BaseResponse> l) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("title", title);
+        params.put("feedback", feedback);
+        RetrofitManager.getApiUrlManager(context)
+                .questionFeedback(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.QUESTION_FEEDBACK, l));
+    }
 }
 

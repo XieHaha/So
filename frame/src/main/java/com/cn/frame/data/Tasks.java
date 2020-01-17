@@ -56,5 +56,9 @@ public enum Tasks {
      * 帮助中心
      */
     HELPS_LIST,
+    /**
+     * 问题反馈
+     */
+    QUESTION_FEEDBACK,
 }
 

@@ -96,6 +96,7 @@ public class MyFragment extends BaseFragment {
             case R.id.layout_browse:
                 break;
             case R.id.iv_vip:
+                startActivity(new Intent(getContext(), AuthActivity.class));
                 break;
             case R.id.layout_set:
                 startActivity(new Intent(getContext(), SettingActivity.class));

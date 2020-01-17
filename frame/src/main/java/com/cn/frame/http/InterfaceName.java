@@ -49,7 +49,11 @@ public interface InterfaceName {
      */
     String ABOUT_US = "aboutUs";
     /**
-     *  帮助中心
+     * 帮助中心
      */
     String HELPS_LIST = "helpsList";
+    /**
+     * 问题反馈
+     */
+    String QUESTION_FEEDBACK = "questionFeedback";
 }

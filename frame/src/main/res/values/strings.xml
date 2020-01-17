@@ -3,6 +3,8 @@
 
     <string name="title_setting">设置</string>
     <string name="title_help">热门问题</string>
+    <string name="title_help_commit">提交问题</string>
+    <string name="title_auth">认证</string>
 
     <!--公用-->
     <string name="txt_sure">确定</string>

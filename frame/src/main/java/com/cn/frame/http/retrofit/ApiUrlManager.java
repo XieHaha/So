@@ -149,4 +149,13 @@ public interface ApiUrlManager {
     @POST("api/")
     Observable<BaseResponse<BaseListData<HelpBean>>> helpsList(@Body Map<String, Object> info);
 
+    /**
+     * 问题反馈
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> questionFeedback(@Body Map<String, String> info);
+
 }

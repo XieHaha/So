@@ -1,5 +1,6 @@
 package com.cn.lv.ui.main.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class HelpActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
         BaseQuickAdapter.RequestLoadMoreListener {
@@ -138,5 +140,10 @@ public class HelpActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void onLoadMoreRequested() {
         page++;
         helpsList();
+    }
+
+    @OnClick(R.id.iv_need)
+    public void onViewClicked() {
+        startActivity(new Intent(this, CommitActivity.class));
     }
 }

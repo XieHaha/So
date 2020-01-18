@@ -200,5 +200,17 @@ public class RequestUtils {
                 .compose(RxJavaHelper.observableIO2Main(context))
                 .subscribe(new AbstractLoadViewObserver<>(context, Tasks.QUESTION_FEEDBACK, l));
     }
+
+    public static void shieldList(Context context, String sign, int page, int pageSize,
+                                 final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("per_page", pageSize);
+        params.put("page", page);
+        RetrofitManager.getApiUrlManager(context)
+                .shieldList(params)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.SHIELD_LIST, l));
+    }
 }
 

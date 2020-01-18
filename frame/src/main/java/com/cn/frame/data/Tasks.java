@@ -60,5 +60,9 @@ public enum Tasks {
      * 问题反馈
      */
     QUESTION_FEEDBACK,
+    /**
+     * 屏蔽列表
+     */
+    SHIELD_LIST,
 }
 

@@ -25,6 +25,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MyFragment extends BaseFragment {
+    @BindView(R.id.iv_vip)
+    ImageView ivVip;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_sign)
@@ -69,6 +71,12 @@ public class MyFragment extends BaseFragment {
         tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
         tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
         tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
+        int authState = userInfo.getAuth_state();
+        if (authState == BASE_ONE) {
+            ivVip.setImageResource(R.mipmap.pic_my_bg);
+        } else {
+            ivVip.setImageResource(R.mipmap.pic_my_bg1);
+        }
     }
 
     @Override
@@ -96,7 +104,11 @@ public class MyFragment extends BaseFragment {
             case R.id.layout_browse:
                 break;
             case R.id.iv_vip:
-                startActivity(new Intent(getContext(), AuthActivity.class));
+                if (userInfo.getAuth_state() == BASE_ONE) {
+                    startActivity(new Intent(getContext(), AuthActivity.class));
+                } else {
+                    startActivity(new Intent(getContext(), AuthActivity.class));
+                }
                 break;
             case R.id.layout_set:
                 startActivity(new Intent(getContext(), SettingActivity.class));
@@ -108,6 +120,7 @@ public class MyFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), AboutActivity.class));
                 break;
             case R.id.layout_black:
+                startActivity(new Intent(getContext(), BlackActivity.class));
                 break;
             case R.id.layout_exit:
                 new HintDialog(getContext()).setTitleString(getString(R.string.APP_NAME))

@@ -31,6 +31,7 @@ public class UserInfoBean implements Serializable {
     private int visitor_number;
     private int auth_state;
     private int online_state;
+    private int is_auth;
     private int collection_num;
     private int attention_num;
     private String qq;
@@ -334,5 +335,13 @@ public class UserInfoBean implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getIs_auth() {
+        return is_auth;
+    }
+
+    public void setIs_auth(int is_auth) {
+        this.is_auth = is_auth;
     }
 }

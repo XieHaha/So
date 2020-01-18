@@ -71,11 +71,11 @@ public class MyFragment extends BaseFragment {
         tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
         tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
         tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
-        int authState = userInfo.getAuth_state();
+        int authState = userInfo.getIs_auth();
         if (authState == BASE_ONE) {
-            ivVip.setImageResource(R.mipmap.pic_my_bg);
-        } else {
             ivVip.setImageResource(R.mipmap.pic_my_bg1);
+        } else {
+            ivVip.setImageResource(R.mipmap.pic_my_bg);
         }
     }
 
@@ -104,10 +104,10 @@ public class MyFragment extends BaseFragment {
             case R.id.layout_browse:
                 break;
             case R.id.iv_vip:
-                if (userInfo.getAuth_state() == BASE_ONE) {
+                if (userInfo.getIs_auth() == BASE_ONE) {
                     startActivity(new Intent(getContext(), AuthActivity.class));
                 } else {
-                    startActivity(new Intent(getContext(), AuthActivity.class));
+                    startActivity(new Intent(getContext(), VipActivity.class));
                 }
                 break;
             case R.id.layout_set:

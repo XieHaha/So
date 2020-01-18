@@ -1,4 +1,4 @@
-package com.cn.frame.data.bean;
+package com.cn.frame.data;
 
 import java.io.Serializable;
 

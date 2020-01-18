@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.cn.frame.data.bean.NormImage;
+import com.cn.frame.data.NormImage;
 import com.cn.frame.widgets.imagepreview.transformer.ImageTransformer;
 import com.cn.frame.widgets.imagepreview.utils.NavigatorPageIndex;
 import com.cn.frame.widgets.imagepreview.view.ImageLoadingView;

@@ -3,26 +3,25 @@
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_ffffff"
-    android:paddingTop="70dp">
+    android:background="@color/color_ffffff">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/gif_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/pic_header" />
 
     <TextView
         android:id="@+id/act_splash_time_hint"
         android:layout_width="70dp"
+        android:layout_height="28dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:textColor="@color/color_ffffff"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:visibility="gone"
         android:background="@drawable/corner15_stroke1_white33_bg"
-        android:layout_height="28dp" />
+        android:gravity="center"
+        android:textColor="@color/color_ffffff"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

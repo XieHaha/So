@@ -96,6 +96,7 @@ public class MyFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_edit:
+                startActivity(new Intent(getContext(), PersonalActivity.class));
                 break;
             case R.id.layout_followed:
                 break;

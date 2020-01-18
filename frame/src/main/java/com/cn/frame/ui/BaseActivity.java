@@ -80,6 +80,18 @@ public abstract class BaseActivity extends RxAppCompatActivity
     private boolean isRequestCamera = true;
     private boolean isRequestRecord = true;
     /**
+     * 选择图片
+     */
+    public static final int RC_PICK_IMG = 0x0001;
+    /**
+     * 拍照
+     */
+    public static final int RC_PICK_CAMERA = RC_PICK_IMG + 1;
+    /**
+     * 图片  裁剪
+     */
+    public static final int RC_CROP_IMG = RC_PICK_CAMERA + 1;
+    /**
      * 返回按钮对象
      */
     protected ImageView backBtn;

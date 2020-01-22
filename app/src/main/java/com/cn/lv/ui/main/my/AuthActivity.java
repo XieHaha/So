@@ -1,5 +1,7 @@
 package com.cn.lv.ui.main.my;
 
+import android.content.Intent;
+
 import com.cn.frame.ui.BaseActivity;
 import com.cn.lv.R;
 
@@ -21,8 +23,8 @@ public class AuthActivity extends BaseActivity {
         return R.layout.act_auth;
     }
 
-
     @OnClick(R.id.iv_next)
     public void onViewClicked() {
+        startActivity(new Intent(this, PersonalActivity.class));
     }
 }

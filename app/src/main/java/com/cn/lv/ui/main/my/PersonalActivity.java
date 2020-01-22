@@ -2,7 +2,9 @@ package com.cn.lv.ui.main.my;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -10,8 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cn.frame.data.NormImage;
+import com.cn.frame.http.InterfaceName;
+import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.permission.Permission;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.dialog.DownDialog;
 import com.cn.frame.widgets.dialog.listener.OnMediaItemClickListener;
@@ -22,13 +27,14 @@ import com.zhihu.matisse.Matisse;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PersonalActivity extends BaseActivity implements OnMediaItemClickListener {
+    @BindView(R.id.et_name)
+    EditText etName;
     @BindView(R.id.iv_header)
     ImageView ivHeader;
     @BindView(R.id.iv_add)
@@ -38,9 +44,9 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     @BindView(R.id.et_content)
     EditText etContent;
     @BindView(R.id.tv_age)
-    TextView tvAge;
+    EditText tvAge;
     @BindView(R.id.tv_address)
-    TextView tvAddress;
+    EditText tvAddress;
     @BindView(R.id.tv_who)
     TextView tvWho;
     @BindView(R.id.tv_life)
@@ -50,7 +56,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     @BindView(R.id.tv_income)
     TextView tvIncome;
     @BindView(R.id.tv_height)
-    TextView tvHeight;
+    EditText tvHeight;
     @BindView(R.id.tv_job)
     TextView tvJob;
     @BindView(R.id.tv_body_type)
@@ -84,8 +90,9 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      */
     private ArrayList<File> privateFiles = new ArrayList<>();
 
-    private int age, address, who, life, money, income, height, job, bodyType, race,
-            education, marriage, child, smoke, drink;
+    private String name, introduction, purpose, address;
+    private int age, who, life, money, income, height, job, bodyType, race, education, marriage,
+            child, smoke, drink;
 
     /**
      * 图片类型
@@ -108,6 +115,15 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     }
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        if (!TextUtils.isEmpty(userInfo.getNickname())) {
+            etName.setText(userInfo.getNickname());
+            etName.setSelection(userInfo.getNickname().length());
+        }
+    }
+
+    @Override
     public void initListener() {
         super.initListener();
         gridViewPublic.setOnItemClickListener((parent, view, position, id) -> {
@@ -122,11 +138,11 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
 
     }
 
-    @OnClick({R.id.iv_header, R.id.iv_add, R.id.layout_age, R.id.layout_address, R.id.layout_who,
-            R.id.layout_life, R.id.layout_money, R.id.layout_income, R.id.layout_height,
-            R.id.layout_job, R.id.layout_body_type, R.id.layout_race, R.id.layout_education,
-            R.id.layout_marriage, R.id.layout_child, R.id.layout_smoke, R.id.layout_drink,
-            R.id.iv_next})
+    @OnClick({R.id.iv_header, R.id.iv_add, R.id.layout_who, R.id.layout_life, R.id.layout_money,
+            R.id.layout_income, R.id.layout_job, R.id.layout_body_type, R.id.layout_race,
+            R.id.layout_address,
+            R.id.layout_education, R.id.layout_marriage, R.id.layout_child, R.id.layout_smoke,
+            R.id.layout_drink, R.id.iv_next})
     public void onViewClicked(View view) {
         List<String> data;
         switch (view.getId()) {
@@ -134,13 +150,6 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             case R.id.iv_add:
                 imageType = BASE_ONE;
                 permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
-                break;
-            case R.id.layout_age:
-                data = Arrays.asList(getResources().getStringArray(R.array.age));
-                new DownDialog(this).setData(data)
-                        .setOnMediaItemClickListener(R.id.layout_age, this).show();
-                break;
-            case R.id.layout_address:
                 break;
             case R.id.layout_who:
                 data = dataDictBean.getBeInterestedIn();
@@ -153,18 +162,22 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                         .setOnMediaItemClickListener(R.id.layout_life, this).show();
                 break;
             case R.id.layout_money:
+                data = dataDictBean.getIncome();
+                new DownDialog(this).setData(data)
+                        .setOnMediaItemClickListener(R.id.layout_money, this).show();
                 break;
             case R.id.layout_income:
                 data = dataDictBean.getIncome();
                 new DownDialog(this).setData(data)
                         .setOnMediaItemClickListener(R.id.layout_income, this).show();
                 break;
-            case R.id.layout_height:
-                break;
             case R.id.layout_job:
                 data = dataDictBean.getOccupationInfo();
                 new DownDialog(this).setData(data)
                         .setOnMediaItemClickListener(R.id.layout_job, this).show();
+                break;
+            case R.id.layout_address:
+                ToastUtil.toast(this, "地址未完成");
                 break;
             case R.id.layout_body_type:
                 data = dataDictBean.getSomatotype();
@@ -202,21 +215,61 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                         .setOnMediaItemClickListener(R.id.layout_drink, this).show();
                 break;
             case R.id.iv_next:
+                if (headerFile == null) {
+                    ToastUtil.toast(this, "头像不能为空");
+                    return;
+                }
+                name = etName.getText().toString().trim();
+                if (TextUtils.isEmpty(name)) {
+                    ToastUtil.toast(this, "昵称不能为空");
+                    return;
+                }
+                introduction = etTitle.getText().toString().trim();
+                if (TextUtils.isEmpty(introduction)) {
+                    ToastUtil.toast(this, "自我介绍不能为空");
+                    return;
+                }
+                purpose = etContent.getText().toString().trim();
+                if (TextUtils.isEmpty(purpose)) {
+                    ToastUtil.toast(this, "交友目的不能为空");
+                    return;
+                }
+                String ageStr = tvAge.getText().toString().trim();
+                if (TextUtils.isEmpty(ageStr)) {
+                    ToastUtil.toast(this, "年龄不能为空");
+                    return;
+                } else {
+                    age = Integer.valueOf(ageStr);
+                }
+                String str = tvHeight.getText().toString().trim();
+                if (TextUtils.isEmpty(str)) {
+                    ToastUtil.toast(this, "身高不能为空");
+                    return;
+                } else {
+                    height = Integer.valueOf(str);
+                }
+                commit();
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * 提交
+     */
+    private void commit() {
+        ToastUtil.toast(this, "未知错误");
+    }
+
+    private void auth() {
+        RequestUtils.auth(this, signSession(InterfaceName.AUTH), this);
+    }
+
+
     @Override
     public void onMediaItemClick(int type, int value) {
         switch (type) {
-            case R.id.layout_age:
-                age = value;
-                break;
-            case R.id.layout_address:
-
-                break;
             case R.id.layout_who:
                 who = value;
                 tvWho.setText(dataDictBean.getBeInterestedIn().get(who));
@@ -227,13 +280,11 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 break;
             case R.id.layout_money:
                 money = value;
+                tvMoney.setText(dataDictBean.getIncome().get(money));
                 break;
             case R.id.layout_income:
                 income = value;
                 tvIncome.setText(dataDictBean.getIncome().get(income));
-                break;
-            case R.id.layout_height:
-                height = value;
                 break;
             case R.id.layout_job:
                 job = value;

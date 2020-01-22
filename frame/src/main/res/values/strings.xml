@@ -17,6 +17,7 @@
     <string name="txt_sign_by_session">%s_%s_%s</string>
     <string name="txt_min_num">0</string>
     <string name="txt_exit_sure">确认退出？</string>
+    <string name="txt_unit_price">￥%s/日</string>
 
     <!--main -->
     <string name="txt_house">首页</string>

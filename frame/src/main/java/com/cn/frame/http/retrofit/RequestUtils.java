@@ -19,43 +19,43 @@ import java.util.Map;
  */
 public class RequestUtils {
 
-    public static void getVerifyCode(Context context, String phone,
+    public static void getVerifyCode(Context c, String phone,
                                      final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(phone));
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .getVerifyCode(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VERIFY_CODE,
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, Tasks.GET_VERIFY_CODE,
                         listener));
     }
 
-    public static void login(Context context, String phone, String pwd, String lat, String lng,
+    public static void login(Context c, String phone, String pwd, String lat, String lng,
                              final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(phone));
         params.put("login_password", pwd);
         params.put("lat", lat);
         params.put("lng", lng);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .login(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false,
                         Tasks.LOGIN, listener));
     }
 
-    public static void signOut(Context context, String sign,
+    public static void signOut(Context c, String sign,
                                final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(sign));
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .signOut(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false,
                         Tasks.SIGN_OUT, l));
     }
 
-    public static void register(Context context, String phone, String pwd, int captcha, int sex,
+    public static void register(Context c, String phone, String pwd, int captcha, int sex,
                                 int registerType, int beInterestedIn, String lat, String lng,
                                 final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
@@ -67,58 +67,57 @@ public class RequestUtils {
         params.put("captcha", captcha);
         params.put("lat", lat);
         params.put("lng", lng);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .register(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false,
                         Tasks.REGISTER, listener));
     }
 
-    public static void resetPwd(Context context, String phone, String pwd, int captcha,
+    public static void resetPwd(Context c, String phone, String pwd, int captcha,
                                 final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(phone));
         params.put("new_pwd", pwd);
         params.put("captcha", captcha);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .resetPwd(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false,
                         Tasks.RESET_PWD, listener));
     }
 
-    public static void getVersion(Context context, String token,
+    public static void getVersion(Context c, String token,
                                   final ResponseListener<BaseResponse> listener) {
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .getVersion(token, BaseData.ADMIN)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_VERSION, listener));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_VERSION, listener));
     }
 
 
-    public static void getBasicsInfo(Context context, String sign,
+    public static void getBasicsInfo(Context c, String sign,
                                      final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(sign));
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .getBasicsInfo(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false,
                         Tasks.GET_BASICS_INFO, l));
     }
 
-    public static void renewSign(Context context, String sign,
-                                 final ResponseListener<BaseResponse> l) {
+    public static void renewSign(Context c, String sign, final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", RsaUtils.encryptData(sign));
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .renewSign(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false,
                         Tasks.RENEW_SIGN, l));
     }
 
-    public static void getHomeInfo(Context context, String sign, String type, UserInfoBean userInfo,
+    public static void getHomeInfo(Context c, String sign, String type, UserInfoBean userInfo,
                                    int page, int pageSize, boolean show,
                                    final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
@@ -135,13 +134,13 @@ public class RequestUtils {
         params.put("drink", userInfo.getDrink());
         params.put("per_page", pageSize);
         params.put("page", page);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .getHomeInfo(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, show, Tasks.GET_HOME_INFO, l));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, show, Tasks.GET_HOME_INFO, l));
     }
 
-    public static void collectionList(Context context, String sign, int followType, int page,
+    public static void collectionList(Context c, String sign, int followType, int page,
                                       int pageSize, final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
@@ -149,68 +148,86 @@ public class RequestUtils {
         params.put("followType", followType);
         params.put("per_page", pageSize);
         params.put("page", page);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .collectionList(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.COLLECTION_LIST, l));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.COLLECTION_LIST, l));
     }
 
-    public static void renewCollection(Context context, String sign, int userId, int collection,
+    public static void renewCollection(Context c, String sign, int userId, int collection,
                                        final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
         params.put("user_id", userId);
         params.put("collection_state", collection);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .renewCollection(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.RENEW_COLLECTION, l));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.RENEW_COLLECTION, l));
     }
 
-    public static void aboutUs(Context context, String sign,
+    public static void aboutUs(Context c, String sign,
                                final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .aboutUs(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ABOUT_US, l));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.ABOUT_US, l));
     }
 
-    public static void helpsList(Context context, String sign, int page, int pageSize,
+    public static void helpsList(Context c, String sign, int page, int pageSize,
                                  final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
         params.put("per_page", pageSize);
         params.put("page", page);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .helpsList(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.HELPS_LIST, l));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.HELPS_LIST, l));
     }
 
-    public static void questionFeedback(Context context, String sign, String title, String feedback,
+    public static void questionFeedback(Context c, String sign, String title, String feedback,
                                         final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", sign);
         params.put("title", title);
         params.put("feedback", feedback);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .questionFeedback(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.QUESTION_FEEDBACK, l));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.QUESTION_FEEDBACK, l));
     }
 
-    public static void shieldList(Context context, String sign, int page, int pageSize,
-                                 final ResponseListener<BaseResponse> l) {
+    public static void shieldList(Context c, String sign, int page, int pageSize,
+                                  final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
         params.put("per_page", pageSize);
         params.put("page", page);
-        RetrofitManager.getApiUrlManager(context)
+        RetrofitManager.getApiUrlManager(c)
                 .shieldList(params)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.SHIELD_LIST, l));
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.SHIELD_LIST, l));
+    }
+
+    public static void getCardInfo(Context c, String sign, final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        RetrofitManager.getApiUrlManager(c)
+                .getCardInfo(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_CARD_INFO, l));
+    }
+
+    public static void auth(Context c, String sign, final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        RetrofitManager.getApiUrlManager(c)
+                .auth(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.AUTH, l));
     }
 }
 

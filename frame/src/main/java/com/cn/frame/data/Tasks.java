@@ -64,5 +64,13 @@ public enum Tasks {
      * 屏蔽列表
      */
     SHIELD_LIST,
+    /**
+     * 会员卡信息
+     */
+    GET_CARD_INFO,
+    /**
+     * 认证
+     */
+    AUTH,
 }
 

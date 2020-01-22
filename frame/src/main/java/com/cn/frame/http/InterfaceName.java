@@ -60,4 +60,12 @@ public interface InterfaceName {
      * 屏蔽列表
      */
     String SHIELD_LIST = "shieldList";
+    /**
+     * 卡信息
+     */
+    String GET_CARD_INFO = "getCardInfo";
+    /**
+     * 认证   */
+    String AUTH = "auth";
+
 }

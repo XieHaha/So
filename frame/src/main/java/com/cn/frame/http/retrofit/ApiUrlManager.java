@@ -3,12 +3,14 @@ package com.cn.frame.http.retrofit;
 import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.bean.AboutUsBean;
+import com.cn.frame.data.bean.CardInfoBean;
 import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.HelpBean;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.VersionBean;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -166,5 +168,23 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<BaseListData<HelpBean>>> shieldList(@Body Map<String, Object> info);
+
+    /**
+     * 会员卡信息
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<List<CardInfoBean>>> getCardInfo(@Body Map<String, Object> info);
+
+    /**
+     * 认证
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> auth(@Body Map<String, Object> info);
 
 }

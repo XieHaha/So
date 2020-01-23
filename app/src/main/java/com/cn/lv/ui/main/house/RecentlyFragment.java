@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.cn.frame.api.notify.NotifyChangeListenerManager;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
@@ -148,6 +149,7 @@ public class RecentlyFragment extends BaseFragment implements BaseQuickAdapter.O
                 break;
             case RENEW_COLLECTION:
                 ToastUtil.toast(getContext(), response.getMsg());
+                NotifyChangeListenerManager.getInstance().notifyFollowListChange("");
                 break;
             default:
                 break;

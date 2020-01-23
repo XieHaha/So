@@ -9,10 +9,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.cn.frame.api.ApiManager;
+import com.cn.frame.api.notify.IChange;
+import com.cn.frame.api.notify.NotifyChangeListenerManager;
+import com.cn.frame.api.notify.RegisterType;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.FollowNumBean;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
@@ -22,6 +27,7 @@ import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.frame.widgets.recycler.GridItemDecoration;
 import com.cn.lv.R;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.adapter.FollowAdapter;
 
 import java.util.ArrayList;
@@ -31,7 +37,7 @@ import butterknife.BindView;
 
 public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
-        BaseQuickAdapter.OnItemChildClickListener {
+        BaseQuickAdapter.OnItemChildClickListener, IChange<String> {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -40,12 +46,18 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
     TextView tvNoneMessage;
     private FollowAdapter followAdapter;
 
+    private int curPosition;
     private BaseListData<RolesBean> baseListData;
     private List<RolesBean> rolesBeans = new ArrayList<>();
     /**
      * 页码
      */
     private int page = 1;
+
+    @Override
+    public void onChange(String data) {
+        getData();
+    }
 
     @Override
     public int getLayoutID() {
@@ -67,12 +79,19 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         if (BaseUtils.isNetworkAvailable(getContext())) {
             getData();
             tvNoneMessage.setVisibility(View.GONE);
         } else {
             tvNoneMessage.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        iNotifyChangeListenerServer.registerFollowList(this, RegisterType.REGISTER);
     }
 
     /**
@@ -111,14 +130,8 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.iv_attention:
-                RolesBean bean = rolesBeans.get(position);
-                int state;
-                if (bean.getCollection_state() == BASE_ONE) {
-                    state = 2;
-                } else {
-                    state = 1;
-                }
-                renewCollection(bean.getUser_id(), state);
+                curPosition = position;
+                renewCollection(rolesBeans.get(position).getUser_id(), 2);
                 break;
             case R.id.iv_message:
                 ToastUtil.toast(getContext(), "聊天");
@@ -153,11 +166,21 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
                     recyclerView.setVisibility(View.GONE);
                     tvNoneMessage.setVisibility(View.VISIBLE);
                 }
+                userInfo.setAttention_num(rolesBeans.size());
+                loginBean.setUserInfo(userInfo);
+                SweetApplication.getInstance().setLoginBean(loginBean);
+                NotifyChangeListenerManager.getInstance().notifyFollowNumChanged("");
                 break;
             case RENEW_COLLECTION:
+                ToastUtil.toast(getContext(), response.getMsg());
                 //更新数据
                 getData();
-                ToastUtil.toast(getContext(), response.getMsg());
+                //更新关注数
+                FollowNumBean numBean = (FollowNumBean) response.getData();
+                userInfo.setAttention_num(numBean.getAttention_num());
+                loginBean.setUserInfo(userInfo);
+                SweetApplication.getInstance().setLoginBean(loginBean);
+                NotifyChangeListenerManager.getInstance().notifyFollowNumChanged("");
                 break;
             default:
                 break;
@@ -188,4 +211,9 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
         getData();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        iNotifyChangeListenerServer.registerFollowList(this, RegisterType.UNREGISTER);
+    }
 }

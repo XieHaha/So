@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cn.frame.api.ApiManager;
+import com.cn.frame.api.notify.IChange;
+import com.cn.frame.api.notify.RegisterType;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.http.InterfaceName;
@@ -17,6 +20,7 @@ import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.utils.FileUrlUtil;
 
 import java.util.Objects;
@@ -24,7 +28,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MyFragment extends BaseFragment {
+public class MyFragment extends BaseFragment implements IChange<String> {
     @BindView(R.id.iv_vip)
     ImageView ivVip;
     @BindView(R.id.tv_name)
@@ -49,6 +53,11 @@ public class MyFragment extends BaseFragment {
     TextView tvBrowseNum;
 
     @Override
+    public void onChange(String data) {
+        updateFollowNum();
+    }
+
+    @Override
     public int getLayoutID() {
         return R.layout.fragment_my;
     }
@@ -56,6 +65,7 @@ public class MyFragment extends BaseFragment {
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
     }
 
     @Override
@@ -82,12 +92,22 @@ public class MyFragment extends BaseFragment {
     @Override
     public void initListener() {
         super.initListener();
+        iNotifyChangeListenerServer.registerFollowNumChangeListener(this, RegisterType.REGISTER);
     }
 
     private void signOut() {
         RequestUtils.signOut(getContext(), BaseUtils.signSpan(getContext(),
                 userInfo.getMobile_number(), loginBean.getSession_id(), InterfaceName.SIGN_OUT)
                 , this);
+    }
+
+    /**
+     * 更新
+     */
+    private void updateFollowNum() {
+        loginBean = SweetApplication.getInstance().getLoginBean();
+        userInfo = loginBean.getUserInfo();
+        tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
     }
 
     @OnClick({R.id.tv_edit, R.id.layout_followed, R.id.layout_follow, R.id.layout_browse,
@@ -146,5 +166,11 @@ public class MyFragment extends BaseFragment {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        iNotifyChangeListenerServer.registerFollowNumChangeListener(this, RegisterType.UNREGISTER);
     }
 }

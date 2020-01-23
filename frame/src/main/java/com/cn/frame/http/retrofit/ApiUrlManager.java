@@ -5,6 +5,7 @@ import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.bean.AboutUsBean;
 import com.cn.frame.data.bean.CardInfoBean;
 import com.cn.frame.data.bean.DataDictBean;
+import com.cn.frame.data.bean.FollowNumBean;
 import com.cn.frame.data.bean.HelpBean;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.data.bean.UserBaseBean;
@@ -131,7 +132,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<BaseListData<RolesBean>>> renewCollection(@Body Map<String, Object> info);
+    Observable<BaseResponse<FollowNumBean>> renewCollection(@Body Map<String, Object> info);
 
     /**
      * 关于我们

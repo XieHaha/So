@@ -84,5 +84,9 @@ public enum Tasks {
      * 市信息
      */
     GET_CITY_INFO,
+    /**
+     * 用户信息
+     */
+    GET_USER_INFO,
 }
 

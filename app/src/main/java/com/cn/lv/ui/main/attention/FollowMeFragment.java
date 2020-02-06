@@ -1,5 +1,7 @@
 package com.cn.lv.ui.main.attention;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.http.InterfaceName;
@@ -23,6 +26,7 @@ import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.frame.widgets.recycler.GridItemDecoration;
 import com.cn.lv.R;
 import com.cn.lv.ui.adapter.FollowAdapter;
+import com.cn.lv.ui.main.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ import butterknife.BindView;
 public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
         BaseQuickAdapter.OnItemChildClickListener {
+    private static final int REQUEST_CODE_FOLLOW = 100;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -103,25 +108,38 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
         recyclerView.setAdapter(followAdapter);
     }
 
+    private RolesBean curRolesBean;
+    private int curPosition;
+
+    private void updateFollow(int state) {
+        renewCollection(curRolesBean.getUser_id(), state);
+        //本地更新
+        curRolesBean.setCollection_state(state);
+        followAdapter.notifyItemChanged(curPosition);
+    }
+
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        curRolesBean = rolesBeans.get(position);
+        curPosition = position;
+        Intent intent = new Intent(getContext(), UserInfoActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, rolesBeans.get(position).getUser_id());
+        startActivityForResult(intent, REQUEST_CODE_FOLLOW);
     }
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.iv_attention:
-                RolesBean bean = rolesBeans.get(position);
+                curRolesBean = rolesBeans.get(position);
+                curPosition = position;
                 int state;
-                if (bean.getCollection_state() == BASE_ONE) {
+                if (curRolesBean.getCollection_state() == BASE_ONE) {
                     state = 2;
                 } else {
                     state = 1;
                 }
-                renewCollection(bean.getUser_id(), state);
-                //本地更新
-                bean.setCollection_state(state);
-                followAdapter.notifyItemChanged(position);
+                updateFollow(state);
                 break;
             case R.id.iv_message:
                 ToastUtil.toast(getContext(), "聊天");
@@ -168,6 +186,17 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
     public void onResponseEnd(Tasks task) {
         super.onResponseEnd(task);
         layoutRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_FOLLOW) {
+                int state = data.getIntExtra(CommonData.KEY_PUBLIC, 2);
+                updateFollow(state);
+            }
+        }
     }
 
     /**

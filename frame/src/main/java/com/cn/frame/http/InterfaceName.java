@@ -80,5 +80,9 @@ public interface InterfaceName {
      * 市信息
      */
     String GET_CITY_INFO = "getCityInfo";
+    /**
+     * 用户信息
+     */
+    String GET_USER_INFO = "getUserInfo";
 
 }

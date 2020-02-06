@@ -11,6 +11,7 @@ import com.cn.frame.data.bean.HelpBean;
 import com.cn.frame.data.bean.ProvinceBean;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.data.bean.UserBaseBean;
+import com.cn.frame.data.bean.UserDetailBean;
 import com.cn.frame.data.bean.VersionBean;
 
 import java.util.ArrayList;
@@ -227,5 +228,14 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<List<CityBean>>> getCityData(@Body Map<String, Object> info);
+
+    /**
+     * 用户信息
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<UserDetailBean>> getUserInfo(@Body Map<String, Object> info);
 
 }

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
@@ -64,7 +65,8 @@
             android:paddingEnd="15dp"
             android:text="@string/txt_filter"
             android:textColor="@color/color_211d1d"
-            android:textSize="@dimen/text_10" />
+            android:textSize="@dimen/text_10"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager

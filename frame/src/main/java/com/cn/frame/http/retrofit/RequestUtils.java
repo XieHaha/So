@@ -407,5 +407,16 @@ public class RequestUtils {
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_CITY_INFO, l));
     }
+
+    public static void getUserInfo(Context c, String sign, int user_id,
+                                   final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("user_id", user_id);
+        RetrofitManager.getApiUrlManager(c)
+                .getUserInfo(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_USER_INFO, l));
+    }
 }
 

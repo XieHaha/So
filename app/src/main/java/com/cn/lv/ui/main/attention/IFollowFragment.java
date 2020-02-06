@@ -1,5 +1,7 @@
 package com.cn.lv.ui.main.attention;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +18,7 @@ import com.cn.frame.api.notify.RegisterType;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.FollowNumBean;
 import com.cn.frame.data.bean.RolesBean;
@@ -29,6 +32,7 @@ import com.cn.frame.widgets.recycler.GridItemDecoration;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.adapter.FollowAdapter;
+import com.cn.lv.ui.main.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,7 @@ import butterknife.BindView;
 public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
         BaseQuickAdapter.OnItemChildClickListener, IChange<String> {
+    private static final int REQUEST_CODE_FOLLOW = 100;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -46,7 +51,6 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
     TextView tvNoneMessage;
     private FollowAdapter followAdapter;
 
-    private int curPosition;
     private BaseListData<RolesBean> baseListData;
     private List<RolesBean> rolesBeans = new ArrayList<>();
     /**
@@ -122,15 +126,24 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
         recyclerView.setAdapter(followAdapter);
     }
 
+    private RolesBean curRolesBean;
+
+    private void updateFollow(int state) {
+        renewCollection(curRolesBean.getUser_id(), state);
+    }
+
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        curRolesBean = rolesBeans.get(position);
+        Intent intent = new Intent(getContext(), UserInfoActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, rolesBeans.get(position).getUser_id());
+        startActivityForResult(intent, REQUEST_CODE_FOLLOW);
     }
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.iv_attention:
-                curPosition = position;
                 renewCollection(rolesBeans.get(position).getUser_id(), 2);
                 break;
             case R.id.iv_message:
@@ -192,6 +205,18 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
         super.onResponseEnd(task);
         layoutRefresh.setRefreshing(false);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_FOLLOW) {
+                int state = data.getIntExtra(CommonData.KEY_PUBLIC, 2);
+                updateFollow(state);
+            }
+        }
+    }
+
 
     /**
      * 下拉刷新

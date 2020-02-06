@@ -22,7 +22,7 @@ public class CardInfoAdapter extends BaseQuickAdapter<CardInfoBean, BaseViewHold
         helper.setText(R.id.tv_time, item.getCard_name())
                 .setText(R.id.tv_total_price, "￥" + item.getCard_money())
                 .setText(R.id.tv_unit_price, getUnitPrice(item.getCard_money(),
-                        item.getCard_duration()));
+                        item.getCard_duration())).addOnClickListener(R.id.iv_one);
     }
 
     private String getUnitPrice(float cardMoney, long cardDuration) {

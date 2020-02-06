@@ -65,6 +65,10 @@ public interface InterfaceName {
      */
     String GET_CARD_INFO = "getCardInfo";
     /**
+     * 会员
+     */
+    String UPGRADE_MEMBERSHIP = "upgradeMembership";
+    /**
      * 认证
      */
     String AUTH = "auth";
@@ -84,5 +88,9 @@ public interface InterfaceName {
      * 用户信息
      */
     String GET_USER_INFO = "getUserInfo";
+    /**
+     * 用户屏蔽
+     */
+    String SHIELD_USER = "shieldUser";
 
 }

@@ -18,20 +18,26 @@ import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.gridview.AutoGridView;
+import com.cn.frame.widgets.menu.MenuItem;
+import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
 import com.cn.lv.utils.FileUrlUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class UserInfoActivity extends BaseActivity {
+public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMenuItemClickListener {
     @BindView(R.id.iv_header)
     ImageView ivHeader;
+    @BindView(R.id.iv_menu)
+    ImageView ivMenu;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_sign)
@@ -65,6 +71,11 @@ public class UserInfoActivity extends BaseActivity {
     private int userId;
     private ArrayList<NormImage> images = new ArrayList<>();
 
+    /**
+     * 是否已屏蔽
+     */
+    private boolean isBlack;
+
     @Override
     protected boolean isInitBackBtn() {
         return true;
@@ -85,6 +96,7 @@ public class UserInfoActivity extends BaseActivity {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             userId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
+            isBlack = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
         }
         gridViewPrivate.updateImg(images, false);
     }
@@ -99,7 +111,22 @@ public class UserInfoActivity extends BaseActivity {
         RequestUtils.getUserInfo(this, signSession(InterfaceName.GET_USER_INFO), userId, this);
     }
 
-    @OnClick({R.id.tv_message, R.id.tv_follow})
+    private void shieldUser(int state) {
+        RequestUtils.shieldUser(this, signSession(InterfaceName.SHIELD_USER), userId, state, this);
+    }
+
+    private void initMenu() {
+        TopRightMenu mTopRightMenu = new TopRightMenu(this);
+        List<MenuItem> menuItems = new ArrayList<>();
+        if (isBlack) {
+            menuItems.add(new MenuItem(R.mipmap.ic_blacklist, "取消屏蔽"));
+        } else {
+            menuItems.add(new MenuItem(R.mipmap.ic_blacklist, "屏蔽用户"));
+        }
+        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 70)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(ivMenu, -BaseUtils.dp2px(this, 124), 10);
+    }
+
+    @OnClick({R.id.tv_message, R.id.tv_follow, R.id.iv_menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_message:
@@ -118,8 +145,25 @@ public class UserInfoActivity extends BaseActivity {
                 intent.putExtra(CommonData.KEY_PUBLIC, follow);
                 setResult(RESULT_OK, intent);
                 break;
+            case R.id.iv_menu:
+                initMenu();
+                break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 菜单
+     */
+    @Override
+    public void onMenuItemClick(int position) {
+        if (position == BASE_ZERO) {
+            if (isBlack) {
+                shieldUser(2);
+            } else {
+                shieldUser(1);
+            }
         }
     }
 
@@ -129,6 +173,8 @@ public class UserInfoActivity extends BaseActivity {
         if (task == Tasks.GET_USER_INFO) {
             userDetailBean = (UserDetailBean) response.getData();
             bindData();
+        } else if (task == Tasks.SHIELD_USER) {
+            ToastUtil.toast(this, response.getMsg());
         }
     }
 

@@ -18,6 +18,7 @@ import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
@@ -31,6 +32,7 @@ import butterknife.OnClick;
 
 public class MyFragment extends BaseFragment implements IChange<String> {
     private static final int REQUEST_CODE_AUTH = 100;
+    private static final int REQUEST_CODE_VIP = 200;
     @BindView(R.id.iv_vip)
     ImageView ivVip;
     @BindView(R.id.tv_name)
@@ -132,7 +134,8 @@ public class MyFragment extends BaseFragment implements IChange<String> {
                     startActivityForResult(new Intent(getContext(), AuthActivity.class),
                             REQUEST_CODE_AUTH);
                 } else {
-                    startActivity(new Intent(getContext(), VipActivity.class));
+                    startActivityForResult(new Intent(getContext(), VipActivity.class),
+                            REQUEST_CODE_VIP);
                 }
                 break;
             case R.id.layout_set:
@@ -176,6 +179,8 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         }
         if (requestCode == REQUEST_CODE_AUTH) {
             update();
+        } else if (requestCode == REQUEST_CODE_VIP) {
+            ToastUtil.toast(getContext(), "最贵的vip");
         }
     }
 

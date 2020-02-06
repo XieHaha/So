@@ -229,6 +229,20 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_CARD_INFO, l));
     }
 
+    public static void upgradeMembership(Context c, String sign, int card_id, float card_money,
+                                         long card_duration,
+                                         final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("card_id", card_id);
+        params.put("card_money", card_money);
+        params.put("card_duration", card_duration);
+        RetrofitManager.getApiUrlManager(c)
+                .upgradeMembership(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.UPGRADE_MEMBERSHIP, l));
+    }
+
     public static void auth(Context c, String sign, String name, File headerFile, int age,
                             int height, int weight, int bodyType, int race, int education,
                             int marriage, int child, int smoke, int drink, int be_interested_in,
@@ -417,6 +431,18 @@ public class RequestUtils {
                 .getUserInfo(params)
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_USER_INFO, l));
+    }
+
+    public static void shieldUser(Context c, String sign, int user_id, int state,
+                                  final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("user_id", user_id);
+        params.put("collection_state", state);
+        RetrofitManager.getApiUrlManager(c)
+                .shieldUser(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.SHIELD_USER, l));
     }
 }
 

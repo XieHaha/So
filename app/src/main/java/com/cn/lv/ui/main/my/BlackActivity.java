@@ -1,5 +1,6 @@
 package com.cn.lv.ui.main.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.http.InterfaceName;
@@ -21,6 +23,7 @@ import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.lv.R;
 import com.cn.lv.ui.adapter.NearbyAdapter;
+import com.cn.lv.ui.main.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,12 @@ public class BlackActivity extends BaseActivity implements BaseQuickAdapter.OnIt
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
+    }
+
+    @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -70,23 +79,17 @@ public class BlackActivity extends BaseActivity implements BaseQuickAdapter.OnIt
         initAdapter();
     }
 
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        if (BaseUtils.isNetworkAvailable(this)) {
-            getData();
-            tvNoneMessage.setVisibility(View.GONE);
-        } else {
-            tvNoneMessage.setVisibility(View.VISIBLE);
-        }
-    }
-
     /**
      * 获取数据
      */
     private void getData() {
-        RequestUtils.shieldList(this, signSession(InterfaceName.SHIELD_LIST), page, PAGE_SIZE,
-                this);
+        if (BaseUtils.isNetworkAvailable(this)) {
+            RequestUtils.shieldList(this, signSession(InterfaceName.SHIELD_LIST), page, PAGE_SIZE,
+                    this);
+            tvNoneMessage.setVisibility(View.GONE);
+        } else {
+            tvNoneMessage.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -102,6 +105,10 @@ public class BlackActivity extends BaseActivity implements BaseQuickAdapter.OnIt
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(this, UserInfoActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, rolesBeans.get(position).getUser_id());
+        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+        startActivity(intent);
     }
 
     @Override

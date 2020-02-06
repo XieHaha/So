@@ -15,12 +15,26 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/pic_user_info_bg" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/pic_user_info_bg" />
+
+                <ImageView
+                    android:id="@+id/iv_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="40dp"
+                    android:padding="12dp"
+                    android:src="@mipmap/ic_menu_more" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_name"
@@ -59,7 +73,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/ic_edit"
+                    android:drawableStart="@mipmap/ic_address"
                     android:drawablePadding="10dp"
                     android:gravity="center"
                     android:text="常住城市："
@@ -86,7 +100,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/ic_edit"
+                    android:drawableStart="@mipmap/ic_who"
                     android:drawablePadding="10dp"
                     android:gravity="center"
                     android:text="期望对象："

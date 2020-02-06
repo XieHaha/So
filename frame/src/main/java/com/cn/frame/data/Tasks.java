@@ -69,6 +69,10 @@ public enum Tasks {
      */
     GET_CARD_INFO,
     /**
+     * 会员
+     */
+    UPGRADE_MEMBERSHIP,
+    /**
      * 认证
      */
     AUTH,
@@ -88,5 +92,9 @@ public enum Tasks {
      * 用户信息
      */
     GET_USER_INFO,
+    /**
+     * 屏蔽
+     */
+    SHIELD_USER,
 }
 

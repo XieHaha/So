@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.CardInfoBean;
@@ -19,7 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class VipActivity extends BaseActivity {
+public class VipActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -46,6 +48,7 @@ public class VipActivity extends BaseActivity {
         super.initView(savedInstanceState);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         cardInfoAdapter = new CardInfoAdapter(R.layout.item_card_info, cardInfoBeans);
+        cardInfoAdapter.setOnItemChildClickListener(this);
         recyclerView.setAdapter(cardInfoAdapter);
         getCardInfo();
     }
@@ -54,6 +57,16 @@ public class VipActivity extends BaseActivity {
         RequestUtils.getCardInfo(this, signSession(InterfaceName.GET_CARD_INFO), this);
     }
 
+    private void upgradeMembership(int card_id, float card_money, long card_duration) {
+        RequestUtils.upgradeMembership(this, signSession(InterfaceName.UPGRADE_MEMBERSHIP),
+                card_id, card_money, card_duration, this);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        CardInfoBean bean = cardInfoBeans.get(position);
+        upgradeMembership(bean.getCard_id(), bean.getCard_money(), bean.getCard_duration());
+    }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
@@ -69,6 +82,19 @@ public class VipActivity extends BaseActivity {
                 }
             }
             cardInfoAdapter.setNewData(cardInfoBeans);
+        } else if (task == Tasks.UPGRADE_MEMBERSHIP) {
+
+        }
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        if (task == Tasks.UPGRADE_MEMBERSHIP) {
+//            loginBean.setUserInfo(userInfo);
+//            SweetApplication.getInstance().setLoginBean(loginBean);
+            setResult(RESULT_OK);
+            finish();
         }
     }
 }

@@ -187,6 +187,15 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<CardInfoBean>>> getCardInfo(@Body Map<String, Object> info);
 
     /**
+     * 会员
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> upgradeMembership(@Body Map<String, Object> info);
+
+    /**
      * 认证
      *
      * @param info        map参数
@@ -237,5 +246,14 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<UserDetailBean>> getUserInfo(@Body Map<String, Object> info);
+
+    /**
+     * 屏蔽
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> shieldUser(@Body Map<String, Object> info);
 
 }

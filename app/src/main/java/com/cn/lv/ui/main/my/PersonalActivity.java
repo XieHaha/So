@@ -11,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.NormImage;
+import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.CityBean;
+import com.cn.frame.data.bean.ProvinceBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.permission.Permission;
@@ -22,6 +26,7 @@ import com.cn.frame.widgets.dialog.DownDialog;
 import com.cn.frame.widgets.dialog.listener.OnMediaItemClickListener;
 import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.lv.R;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
@@ -46,7 +51,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     @BindView(R.id.tv_age)
     EditText tvAge;
     @BindView(R.id.tv_address)
-    EditText tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_who)
     TextView tvWho;
     @BindView(R.id.tv_life)
@@ -77,6 +82,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     AutoGridView gridViewPublic;
     @BindView(R.id.grid_view_private)
     AutoGridView gridViewPrivate;
+    @BindView(R.id.iv_next)
+    ImageView ivNext;
+    @BindView(R.id.tv_next)
+    TextView tvNext;
 
     private File headerFile;
     private ArrayList<NormImage> publicPaths = new ArrayList<>();
@@ -90,9 +99,14 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      */
     private ArrayList<File> privateFiles = new ArrayList<>();
 
+    private ArrayList<ProvinceBean> provinceBeans = new ArrayList<>();
+    private ArrayList<String> provinceNames = new ArrayList<>();
+    private ArrayList<CityBean> cityBeans = new ArrayList<>();
+    private ArrayList<String> cityNames = new ArrayList<>();
+
     private String name, introduction, purpose, address;
     private int age, who, life, money, income, height, job, bodyType, race, education, marriage,
-            child, smoke, drink;
+            child, smoke, drink, addressPro, addressCity;
 
     /**
      * 图片类型
@@ -121,6 +135,20 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             etName.setText(userInfo.getNickname());
             etName.setSelection(userInfo.getNickname().length());
         }
+        int status = userInfo.getIs_auth();
+        if (status == BASE_ONE) {
+            ivNext.setVisibility(View.VISIBLE);
+            tvNext.setVisibility(View.GONE);
+        } else {
+            tvNext.setVisibility(View.VISIBLE);
+            ivNext.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        getProvinceData();
     }
 
     @Override
@@ -138,11 +166,38 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
 
     }
 
+    /**
+     * 获取省信息
+     */
+    private void getProvinceData() {
+        RequestUtils.getProvinceData(this, signSession(InterfaceName.GET_PROVINCE_INFO), this);
+    }
+
+    /**
+     * 获取市信息
+     */
+    private void getCityData(int parentId) {
+        RequestUtils.getCityData(this, signSession(InterfaceName.GET_CITY_INFO), parentId, this);
+    }
+
+    private void auth() {
+        RequestUtils.auth(this, signSession(InterfaceName.AUTH), name, headerFile, age, height, 0
+                , bodyType, race, education, marriage, child, smoke, drink,
+                userInfo.getBe_interested_in(), income, money, life, who, purpose, introduction,
+                publicFiles, privateFiles, this);
+    }
+
+    private void edit() {
+        RequestUtils.edit(this, signSession(InterfaceName.EDIT_USER_INFO), name, headerFile, age,
+                height, 0, bodyType, race, education, marriage, child, smoke, drink,
+                userInfo.getBe_interested_in(), income, money, life, who, purpose, introduction,
+                publicFiles, privateFiles, this);
+    }
+
     @OnClick({R.id.iv_header, R.id.iv_add, R.id.layout_who, R.id.layout_life, R.id.layout_money,
             R.id.layout_income, R.id.layout_job, R.id.layout_body_type, R.id.layout_race,
-            R.id.layout_address,
-            R.id.layout_education, R.id.layout_marriage, R.id.layout_child, R.id.layout_smoke,
-            R.id.layout_drink, R.id.iv_next})
+            R.id.layout_address, R.id.layout_education, R.id.layout_marriage, R.id.layout_child,
+            R.id.layout_smoke, R.id.layout_drink, R.id.iv_next, R.id.tv_next})
     public void onViewClicked(View view) {
         List<String> data;
         switch (view.getId()) {
@@ -177,7 +232,8 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                         .setOnMediaItemClickListener(R.id.layout_job, this).show();
                 break;
             case R.id.layout_address:
-                ToastUtil.toast(this, "地址未完成");
+                new DownDialog(this).setData(provinceNames)
+                        .setOnMediaItemClickListener(R.id.layout_address, this).show();
                 break;
             case R.id.layout_body_type:
                 data = dataDictBean.getSomatotype();
@@ -215,40 +271,12 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                         .setOnMediaItemClickListener(R.id.layout_drink, this).show();
                 break;
             case R.id.iv_next:
-                if (headerFile == null) {
-                    ToastUtil.toast(this, "头像不能为空");
-                    return;
-                }
-                name = etName.getText().toString().trim();
-                if (TextUtils.isEmpty(name)) {
-                    ToastUtil.toast(this, "昵称不能为空");
-                    return;
-                }
-                introduction = etTitle.getText().toString().trim();
-                if (TextUtils.isEmpty(introduction)) {
-                    ToastUtil.toast(this, "自我介绍不能为空");
-                    return;
-                }
-                purpose = etContent.getText().toString().trim();
-                if (TextUtils.isEmpty(purpose)) {
-                    ToastUtil.toast(this, "交友目的不能为空");
-                    return;
-                }
-                String ageStr = tvAge.getText().toString().trim();
-                if (TextUtils.isEmpty(ageStr)) {
-                    ToastUtil.toast(this, "年龄不能为空");
-                    return;
-                } else {
-                    age = Integer.valueOf(ageStr);
-                }
-                String str = tvHeight.getText().toString().trim();
-                if (TextUtils.isEmpty(str)) {
-                    ToastUtil.toast(this, "身高不能为空");
-                    return;
-                } else {
-                    height = Integer.valueOf(str);
-                }
-                commit();
+                //认证
+                commit(1);
+                break;
+            case R.id.tv_next:
+                //编辑资料
+                commit(2);
                 break;
             default:
                 break;
@@ -258,12 +286,50 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     /**
      * 提交
      */
-    private void commit() {
-        ToastUtil.toast(this, "未知错误");
-    }
-
-    private void auth() {
-        RequestUtils.auth(this, signSession(InterfaceName.AUTH), this);
+    private void commit(int type) {
+        if (headerFile == null) {
+            ToastUtil.toast(this, "头像不能为空");
+            return;
+        }
+        name = etName.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            ToastUtil.toast(this, "昵称不能为空");
+            return;
+        }
+        introduction = etTitle.getText().toString().trim();
+        if (TextUtils.isEmpty(introduction)) {
+            ToastUtil.toast(this, "自我介绍不能为空");
+            return;
+        }
+        purpose = etContent.getText().toString().trim();
+        if (TextUtils.isEmpty(purpose)) {
+            ToastUtil.toast(this, "交友目的不能为空");
+            return;
+        }
+        String ageStr = tvAge.getText().toString().trim();
+        if (TextUtils.isEmpty(ageStr)) {
+            ToastUtil.toast(this, "年龄不能为空");
+            return;
+        } else {
+            age = Integer.valueOf(ageStr);
+        }
+        String str = tvHeight.getText().toString().trim();
+        if (TextUtils.isEmpty(str)) {
+            ToastUtil.toast(this, "身高不能为空");
+            return;
+        } else {
+            height = Integer.valueOf(str);
+        }
+        switch (type) {
+            case BASE_ONE:
+                auth();
+                break;
+            case BASE_TWO:
+                edit();
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -289,6 +355,14 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             case R.id.layout_job:
                 job = value;
                 tvJob.setText(dataDictBean.getOccupationInfo().get(job));
+                break;
+            case R.id.layout_address:
+                addressPro = value;
+                getCityData(provinceBeans.get(value).getId());
+                break;
+            case R.id.text:
+                addressCity = value;
+                tvAddress.setText(provinceNames.get(addressPro) + cityNames.get(addressCity));
                 break;
             case R.id.layout_body_type:
                 bodyType = value;
@@ -320,6 +394,67 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 break;
             default:
                 break;
+        }
+    }
+
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case AUTH:
+                userInfo.setIs_auth(2);
+                userInfo.setNickname(name);
+                userInfo.setIndividuality_signature(introduction);
+                userInfo.setAge(age);
+                loginBean.setUserInfo(userInfo);
+                SweetApplication.getInstance().setLoginBean(loginBean);
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case EDIT_USER_INFO:
+                userInfo.setNickname(name);
+                userInfo.setIndividuality_signature(introduction);
+                userInfo.setAge(age);
+                loginBean.setUserInfo(userInfo);
+                SweetApplication.getInstance().setLoginBean(loginBean);
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case GET_PROVINCE_INFO:
+                provinceBeans = (ArrayList<ProvinceBean>) response.getData();
+                provinceNames.clear();
+                for (ProvinceBean bean : provinceBeans) {
+                    provinceNames.add(bean.getName());
+                }
+                break;
+            case GET_CITY_INFO:
+                cityBeans = (ArrayList<CityBean>) response.getData();
+                cityNames.clear();
+                for (CityBean bean : cityBeans) {
+                    cityNames.add(bean.getName());
+                }
+                new DownDialog(this).setData(cityNames)
+                        .setOnMediaItemClickListener(R.id.text, this).show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        if (response.getCode() == 202) {
+            //todo  支付
+            userInfo.setIs_auth(2);
+            userInfo.setNickname(name);
+            userInfo.setIndividuality_signature(introduction);
+            userInfo.setAge(age);
+            loginBean.setUserInfo(userInfo);
+            SweetApplication.getInstance().setLoginBean(loginBean);
+            setResult(RESULT_OK);
+            finish();
         }
     }
 
@@ -404,4 +539,5 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 break;
         }
     }
+
 }

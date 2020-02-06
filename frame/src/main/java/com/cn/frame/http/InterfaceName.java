@@ -65,7 +65,20 @@ public interface InterfaceName {
      */
     String GET_CARD_INFO = "getCardInfo";
     /**
-     * 认证   */
+     * 认证
+     */
     String AUTH = "auth";
+    /**
+     * 认证
+     */
+    String EDIT_USER_INFO = "editUserInfo";
+    /**
+     * 省信息
+     */
+    String GET_PROVINCE_INFO = "getProvinceInfo";
+    /**
+     * 市信息
+     */
+    String GET_CITY_INFO = "getCityInfo";
 
 }

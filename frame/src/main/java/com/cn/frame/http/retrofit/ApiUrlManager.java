@@ -4,21 +4,27 @@ import com.cn.frame.data.BaseListData;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.bean.AboutUsBean;
 import com.cn.frame.data.bean.CardInfoBean;
+import com.cn.frame.data.bean.CityBean;
 import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.FollowNumBean;
 import com.cn.frame.data.bean.HelpBean;
+import com.cn.frame.data.bean.ProvinceBean;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.VersionBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -182,10 +188,44 @@ public interface ApiUrlManager {
     /**
      * 认证
      *
+     * @param info        map参数
+     * @param headerBody  头像
+     * @param publicData  公开
+     * @param privateData 私有
+     * @return 返回值
+     */
+    @Multipart
+    @POST("api/")
+    Observable<BaseResponse<String>> auth(@Body Map<String, Object> info,
+                                          @Part MultipartBody.Part headerBody,
+                                          @Part ArrayList<MultipartBody.Part> publicData,
+                                          @Part ArrayList<MultipartBody.Part> privateData);
+
+    /**
+     * 认证 or 信息编辑
+     *
      * @param info map参数
      * @return 返回值
      */
     @POST("api/")
     Observable<BaseResponse<String>> auth(@Body Map<String, Object> info);
+
+    /**
+     * 省信息
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<List<ProvinceBean>>> getProvinceData(@Body Map<String, String> info);
+
+    /**
+     * 市信息
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<List<CityBean>>> getCityData(@Body Map<String, Object> info);
 
 }

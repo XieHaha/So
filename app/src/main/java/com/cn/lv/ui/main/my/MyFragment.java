@@ -1,5 +1,6 @@
 package com.cn.lv.ui.main.my;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MyFragment extends BaseFragment implements IChange<String> {
+    private static final int REQUEST_CODE_AUTH = 100;
     @BindView(R.id.iv_vip)
     ImageView ivVip;
     @BindView(R.id.tv_name)
@@ -116,7 +118,8 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_edit:
-                startActivity(new Intent(getContext(), PersonalActivity.class));
+                startActivityForResult(new Intent(getContext(), PersonalActivity.class),
+                        REQUEST_CODE_AUTH);
                 break;
             case R.id.layout_followed:
                 break;
@@ -126,7 +129,8 @@ public class MyFragment extends BaseFragment implements IChange<String> {
                 break;
             case R.id.iv_vip:
                 if (userInfo.getIs_auth() == BASE_ONE) {
-                    startActivity(new Intent(getContext(), AuthActivity.class));
+                    startActivityForResult(new Intent(getContext(), AuthActivity.class),
+                            REQUEST_CODE_AUTH);
                 } else {
                     startActivity(new Intent(getContext(), VipActivity.class));
                 }
@@ -159,13 +163,35 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case SIGN_OUT:
-                exit();
-                break;
-            default:
-                break;
+        if (task == Tasks.SIGN_OUT) {
+            exit();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_AUTH) {
+            update();
+        }
+    }
+
+    /**
+     * 认证后更新
+     */
+    private void update() {
+        loginBean = SweetApplication.getInstance().getLoginBean();
+        userInfo = loginBean.getUserInfo();
+        int authState = userInfo.getIs_auth();
+        if (authState == BASE_ONE) {
+            ivVip.setImageResource(R.mipmap.pic_my_bg1);
+        } else {
+            ivVip.setImageResource(R.mipmap.pic_my_bg);
+        }
+        tvName.setText(userInfo.getNickname());
     }
 
     @Override

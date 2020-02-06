@@ -9,8 +9,16 @@ import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.listener.ResponseListener;
 import com.cn.frame.utils.RsaUtils;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 提交参数方式
@@ -221,13 +229,183 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_CARD_INFO, l));
     }
 
-    public static void auth(Context c, String sign, final ResponseListener<BaseResponse> l) {
+    public static void auth(Context c, String sign, String name, File headerFile, int age,
+                            int height, int weight, int bodyType, int race, int education,
+                            int marriage, int child, int smoke, int drink, int be_interested_in,
+                            int income, int money, int life, int who, String purpose,
+                            String introduction, ArrayList<File> publicFiles,
+                            ArrayList<File> privateFiles,
+                            final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
+        params.put("nickname", name);
+        RequestBody header = RequestBody.create(MediaType.parse("multipart/form-data"),
+                headerFile);
+        MultipartBody.Part headerBody = null;
+        try {
+            headerBody = MultipartBody.Part.createFormData("head_portrait",
+                    URLEncoder.encode(headerFile.getName(), "UTF-8"), header);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        params.put("head_portrait", headerFile);
+        params.put("age", age);
+        params.put("height", height);
+        params.put("weight", weight);
+        params.put("somatotype", bodyType);
+        params.put("race", race);
+        params.put("education", education);
+        params.put("marriage", marriage);
+        params.put("children", child);
+        params.put("smoke", smoke);
+        params.put("drink", drink);
+        params.put("be_interested_in", be_interested_in);
+        params.put("annual_income", income);
+        params.put("net_assets", money);
+        params.put("life_style", life);
+        params.put("contact_object", who);
+        params.put("making_friends_goals", purpose);
+        params.put("individuality_signature", introduction);
+        ArrayList<MultipartBody.Part> publicData = null, privateData = null;
+        if (publicFiles.size() > 0) {
+            publicData = new ArrayList<>();
+            for (int i = 0, publicFilesSize = publicFiles.size(); i < publicFilesSize; i++) {
+                File file = publicFiles.get(i);
+                RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
+                        file);
+                MultipartBody.Part body = null;
+                try {
+                    body = MultipartBody.Part.createFormData("publicImgs_" + (i + 1),
+                            URLEncoder.encode(file.getName(), "UTF-8"), reqFile);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                publicData.add(body);
+                params.put("publicImgs_" + (i + 1), file);
+            }
+        }
+        if (privateFiles.size() > 0) {
+            privateData = new ArrayList<>();
+            for (int i = 0, privateFilesSize = privateFiles.size(); i < privateFilesSize; i++) {
+                File file = privateFiles.get(i);
+                RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
+                        file);
+                MultipartBody.Part body = null;
+                try {
+                    body = MultipartBody.Part.createFormData("privateImgs_" + (i + 1),
+                            URLEncoder.encode(file.getName(), "UTF-8"), reqFile);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                privateData.add(body);
+                params.put("privateImgs_" + (i + 1), file);
+
+            }
+        }
         RetrofitManager.getApiUrlManager(c)
                 .auth(params)
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.AUTH, l));
+    }
+
+    public static void edit(Context c, String sign, String name, File headerFile, int age,
+                            int height, int weight, int bodyType, int race, int education,
+                            int marriage, int child, int smoke, int drink, int be_interested_in,
+                            int income, int money, int life, int who, String purpose,
+                            String introduction, ArrayList<File> publicFiles,
+                            ArrayList<File> privateFiles,
+                            final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("nickname", name);
+        RequestBody header = RequestBody.create(MediaType.parse("multipart/form-data"),
+                headerFile);
+        MultipartBody.Part headerBody = null;
+        try {
+            headerBody = MultipartBody.Part.createFormData("head_portrait",
+                    URLEncoder.encode(headerFile.getName(), "UTF-8"), header);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        params.put("head_portrait", headerFile);
+        params.put("age", age);
+        params.put("height", height);
+        params.put("weight", weight);
+        params.put("somatotype", bodyType);
+        params.put("race", race);
+        params.put("education", education);
+        params.put("marriage", marriage);
+        params.put("children", child);
+        params.put("smoke", smoke);
+        params.put("drink", drink);
+        params.put("be_interested_in", be_interested_in);
+        params.put("annual_income", income);
+        params.put("net_assets", money);
+        params.put("life_style", life);
+        params.put("contact_object", who);
+        params.put("making_friends_goals", purpose);
+        params.put("individuality_signature", introduction);
+        ArrayList<MultipartBody.Part> publicData = null, privateData = null;
+        if (publicFiles.size() > 0) {
+            publicData = new ArrayList<>();
+            for (int i = 0, publicFilesSize = publicFiles.size(); i < publicFilesSize; i++) {
+                File file = publicFiles.get(i);
+                RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
+                        file);
+                MultipartBody.Part body = null;
+                try {
+                    body = MultipartBody.Part.createFormData("publicImgs_" + (i + 1),
+                            URLEncoder.encode(file.getName(), "UTF-8"), reqFile);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                publicData.add(body);
+                params.put("publicImgs_" + (i + 1), file);
+            }
+        }
+        if (privateFiles.size() > 0) {
+            privateData = new ArrayList<>();
+            for (int i = 0, privateFilesSize = privateFiles.size(); i < privateFilesSize; i++) {
+                File file = privateFiles.get(i);
+                RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
+                        file);
+                MultipartBody.Part body = null;
+                try {
+                    body = MultipartBody.Part.createFormData("privateImgs_" + (i + 1),
+                            URLEncoder.encode(file.getName(), "UTF-8"), reqFile);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                privateData.add(body);
+                params.put("privateImgs_" + (i + 1), file);
+
+            }
+        }
+        RetrofitManager.getApiUrlManager(c)
+                .auth(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.EDIT_USER_INFO, l));
+    }
+
+    public static void getProvinceData(Context c, String sign,
+                                       final ResponseListener<BaseResponse> l) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("sign", sign);
+        RetrofitManager.getApiUrlManager(c)
+                .getProvinceData(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_PROVINCE_INFO, l));
+    }
+
+    public static void getCityData(Context c, String sign, int parentId,
+                                   final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("parentId", parentId);
+        RetrofitManager.getApiUrlManager(c)
+                .getCityData(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_CITY_INFO, l));
     }
 }
 

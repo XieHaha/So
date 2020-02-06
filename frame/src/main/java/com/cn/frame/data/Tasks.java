@@ -72,5 +72,17 @@ public enum Tasks {
      * 认证
      */
     AUTH,
+    /**
+     * 信息编辑
+     */
+    EDIT_USER_INFO,
+    /**
+     * 省信息
+     */
+    GET_PROVINCE_INFO,
+    /**
+     * 市信息
+     */
+    GET_CITY_INFO,
 }
 

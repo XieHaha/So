@@ -175,6 +175,7 @@
                 android:paddingEnd="15dp">
 
                 <TextView
+                    android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -704,6 +705,19 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:src="@mipmap/ic_auth1" />
+
+            <TextView
+                android:id="@+id/tv_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="@mipmap/ic_red_rect"
+                android:gravity="center"
+                android:text="保存"
+                android:textColor="@color/color_ffffff"
+                android:visibility="gone" />
 
         </LinearLayout>
 

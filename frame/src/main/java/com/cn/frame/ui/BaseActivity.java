@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.cn.frame.R;
 import com.cn.frame.api.notify.INotifyChangeListenerServer;
 import com.cn.frame.data.BaseData;
+import com.cn.frame.data.BaseNetConfig;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
@@ -407,7 +408,14 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        ToastUtil.toast(this, response.getMsg());
+        if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
+            token(response.getMsg());
+        } else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
+                response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
+            ToastUtil.toast(this, response.getMsg());
+        } else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
+            accountError();
+        }
     }
 
     @Override

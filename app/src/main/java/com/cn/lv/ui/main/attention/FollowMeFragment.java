@@ -2,6 +2,7 @@ package com.cn.lv.ui.main.attention;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,12 +27,16 @@ import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.frame.widgets.recycler.GridItemDecoration;
 import com.cn.lv.R;
 import com.cn.lv.ui.adapter.FollowAdapter;
+import com.cn.lv.ui.main.ChatActivity;
 import com.cn.lv.ui.main.UserInfoActivity;
+import com.cn.lv.utils.FileUrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
@@ -129,6 +134,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        RolesBean bean = rolesBeans.get(position);
         switch (view.getId()) {
             case R.id.iv_attention:
                 curRolesBean = rolesBeans.get(position);
@@ -142,7 +148,12 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 updateFollow(state);
                 break;
             case R.id.iv_message:
-                ToastUtil.toast(getContext(), "聊天");
+                //设置当前用户信息
+                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(bean.getUser_id()), bean.getNickname(), Uri.parse(FileUrlUtil.addTokenToUrl(bean.getHead_portrait()))));
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.putExtra(CommonData.KEY_CHAT_TITLE, bean.getNickname());
+                intent.putExtra(CommonData.KEY_CHAT_ID, String.valueOf(bean.getUser_id()));
+                startActivity(intent);
                 break;
             default:
                 break;

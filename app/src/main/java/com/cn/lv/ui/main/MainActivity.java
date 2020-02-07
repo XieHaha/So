@@ -29,8 +29,8 @@ import com.cn.lv.ui.adapter.ViewPagerAdapter;
 import com.cn.lv.ui.dialog.UpdateDialog;
 import com.cn.lv.ui.main.attention.FollowFragment;
 import com.cn.lv.ui.main.fragment.MessageFragment;
-import com.cn.lv.ui.main.my.MyFragment;
 import com.cn.lv.ui.main.house.HouseFragment;
+import com.cn.lv.ui.main.my.MyFragment;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;
 
@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
 
 
@@ -236,6 +237,8 @@ public class MainActivity extends BaseActivity
         FollowFragment followFragment = new FollowFragment();
         //消息碎片
         MessageFragment messageFragment = new MessageFragment();
+        ConversationListFragment mConversationListFragment = new ConversationListFragment();
+        messageFragment.setmConversationListFragment(mConversationListFragment);
         //我的碎片
         MyFragment myFragment = new MyFragment();
         List<Fragment> fragmentList = new ArrayList<>();

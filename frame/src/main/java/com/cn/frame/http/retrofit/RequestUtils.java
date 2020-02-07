@@ -438,7 +438,7 @@ public class RequestUtils {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
         params.put("user_id", user_id);
-        params.put("collection_state", state);
+        params.put("shield_state", state);
         RetrofitManager.getApiUrlManager(c)
                 .shieldUser(params)
                 .compose(RxJavaHelper.observableIO2Main(c))

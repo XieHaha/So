@@ -47,7 +47,12 @@ public class SweetApplication extends LitePalApplication {
         //下载
         NoHttp.initialize(this);
         //融云
+        initRongIM();
+    }
+
+    private void initRongIM() {
         RongIM.init(this);
+        RongIM.getInstance().setMessageAttachedUserInfo(true);
     }
 
     @Override

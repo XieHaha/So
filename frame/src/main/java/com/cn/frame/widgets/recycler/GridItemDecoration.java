@@ -8,8 +8,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
-import com.cn.frame.utils.SweetLog;
-
 public class GridItemDecoration extends RecyclerView.ItemDecoration {
     private static final String TAG = "GridDividerItemDeco";
 
@@ -70,7 +68,6 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         int eachItemWidth = maxDividerWidth / mSpanCount;
         //item与item之间的距离
         int dividerItemWidth = (maxDividerWidth - 2 * spaceWidth) / (mSpanCount - 1);
-        SweetLog.i("SWEET", "width:" + dividerItemWidth);
 
         left = itemPosition % mSpanCount * (dividerItemWidth - eachItemWidth) + spaceWidth;
         right = eachItemWidth - left;
@@ -90,9 +87,6 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
             }
         }
 
-
-        SweetLog.i("SWEET",
-                "left:" + left + "  top:" + top + "  right:" + right + "  bottom:" + bottom);
         outRect.set(left, top, right, bottom);
     }
 

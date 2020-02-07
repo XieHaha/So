@@ -1,6 +1,7 @@
 package com.cn.lv.ui.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -32,6 +33,8 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMenuItemClickListener {
     @BindView(R.id.iv_header)
@@ -128,8 +131,16 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
 
     @OnClick({R.id.tv_message, R.id.tv_follow, R.id.iv_menu})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.tv_message:
+                //设置当前用户信息
+                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(userDetailBean.getUser_id()), userDetailBean.getNickname(), Uri.parse(FileUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
+                intent = new Intent(this, ChatActivity.class);
+                intent.putExtra(CommonData.KEY_CHAT_TITLE, userDetailBean.getNickname());
+                intent.putExtra(CommonData.KEY_CHAT_ID,
+                        String.valueOf(userDetailBean.getUser_id()));
+                startActivity(intent);
                 break;
             case R.id.tv_follow:
                 int follow;
@@ -141,7 +152,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
                     follow = 1;
 
                 }
-                Intent intent = new Intent();
+                intent = new Intent();
                 intent.putExtra(CommonData.KEY_PUBLIC, follow);
                 setResult(RESULT_OK, intent);
                 break;

@@ -26,6 +26,14 @@ public interface CommonData {
      */
     String KEY_LOGIN_PWD = "key_login_pwd";
     /**
+     * TITLE
+     */
+    String KEY_CHAT_TITLE = "key_chat_title";
+    /**
+     * TITLE
+     */
+    String KEY_CHAT_ID = "key_chat_id";
+    /**
      * 是否显示的是登录协议（登录协议页面不显示title）
      */
     String KEY_IS_PROTOCOL = "key_is_protocol";

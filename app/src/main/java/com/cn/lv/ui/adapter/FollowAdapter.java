@@ -11,7 +11,7 @@ import com.cn.frame.data.BaseData;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.lv.R;
-import com.cn.lv.utils.FileUrlUtil;
+import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class FollowAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         name.setText(item.getNickname());
         ImageView attention = helper.getView(R.id.iv_attention);
         ImageView ivHeader = helper.getView(R.id.iv_header);
-        Glide.with(mContext).load(FileUrlUtil.addTokenToUrl(item.getHead_portrait())).apply(GlideHelper.getOptionsPic()).into(ivHeader);
+        Glide.with(mContext).load(ImageUrlUtil.addTokenToUrl(item.getHead_portrait())).apply(GlideHelper.getOptionsPic()).into(ivHeader);
         //关注
         int att = item.getCollection_state();
         if (att == BASE_ONE) {

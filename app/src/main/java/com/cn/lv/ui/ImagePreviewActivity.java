@@ -18,7 +18,7 @@ import com.cn.frame.widgets.imagepreview.utils.NavigatorPageIndex;
 import com.cn.frame.widgets.imagepreview.view.ImageLoadingView;
 import com.cn.frame.widgets.imagepreview.view.ImagePreviewView;
 import com.cn.lv.R;
-import com.cn.lv.utils.FileUrlUtil;
+import com.cn.lv.utils.ImageUrlUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -154,7 +154,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
             //                        .getImagePath(), urls.get(position).getImageUrl(),
             //                                                             position);
             currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(),
-                    FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
+                    ImageUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
             container.addView(currentPreviewView, LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviewView;

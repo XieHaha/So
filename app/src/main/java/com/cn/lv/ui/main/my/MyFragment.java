@@ -23,7 +23,7 @@ import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
-import com.cn.lv.utils.FileUrlUtil;
+import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.Objects;
 
@@ -77,7 +77,7 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         super.initData(savedInstanceState);
         tvName.setText(userInfo.getNickname());
         tvSign.setText(userInfo.getIndividuality_signature());
-        Glide.with(this).load(FileUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
+        Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
         tvSex.setText(BASE_ONE == userInfo.getSex() ? R.string.txt_male : R.string.txt_female);
         tvAge.setText(String.valueOf(userInfo.getAge()));
         tvAddress.setText(userInfo.getAddress());

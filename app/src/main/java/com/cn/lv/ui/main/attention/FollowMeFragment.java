@@ -29,7 +29,7 @@ import com.cn.lv.R;
 import com.cn.lv.ui.adapter.FollowAdapter;
 import com.cn.lv.ui.main.ChatActivity;
 import com.cn.lv.ui.main.UserInfoActivity;
-import com.cn.lv.utils.FileUrlUtil;
+import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +149,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 break;
             case R.id.iv_message:
                 //设置当前用户信息
-                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(bean.getUser_id()), bean.getNickname(), Uri.parse(FileUrlUtil.addTokenToUrl(bean.getHead_portrait()))));
+                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(bean.getUser_id()), bean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(bean.getHead_portrait()))));
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 intent.putExtra(CommonData.KEY_CHAT_TITLE, bean.getNickname());
                 intent.putExtra(CommonData.KEY_CHAT_ID, String.valueOf(bean.getUser_id()));

@@ -8,10 +8,11 @@ import com.cn.frame.data.bean.CityBean;
 import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.FollowNumBean;
 import com.cn.frame.data.bean.HelpBean;
+import com.cn.frame.data.bean.PaymentBean;
 import com.cn.frame.data.bean.ProvinceBean;
 import com.cn.frame.data.bean.RolesBean;
 import com.cn.frame.data.bean.UserBaseBean;
-import com.cn.frame.data.bean.UserDetailBean;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.data.bean.VersionBean;
 
 import java.util.ArrayList;
@@ -175,7 +176,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<BaseListData<HelpBean>>> shieldList(@Body Map<String, Object> info);
+    Observable<BaseResponse<BaseListData<RolesBean>>> shieldList(@Body Map<String, Object> info);
 
     /**
      * 会员卡信息
@@ -218,7 +219,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<String>> auth(@Body Map<String, Object> info);
+    Observable<BaseResponse<PaymentBean>> auth(@Body Map<String, Object> info);
 
     /**
      * 省信息
@@ -245,7 +246,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<UserDetailBean>> getUserInfo(@Body Map<String, Object> info);
+    Observable<BaseResponse<UserInfoBean>> getUserInfo(@Body Map<String, Object> info);
 
     /**
      * 屏蔽

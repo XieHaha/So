@@ -16,22 +16,25 @@ import android.text.TextUtils;
 
 import com.cn.frame.api.DirHelper;
 import com.cn.frame.utils.BaseUtils;
-import com.cn.frame.utils.SweetLog;
 import com.cn.frame.utils.MimeUtils;
+import com.cn.frame.utils.SweetLog;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.lv.SweetApplication;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 
 /**
  * 文件处理工具类
- *
  */
 public final class FileUtils {
     private static final String TAG = "FileUtils";
@@ -61,13 +64,11 @@ public final class FileUtils {
                     fileOutputStream.write(bytes, 0, c);
                 }
                 return true;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 SweetLog.w(TAG, "Exception error!", e);
                 throw new RuntimeException(e.getMessage(), e);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             SweetLog.w(TAG, "Exception error!", e);
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -86,8 +87,7 @@ public final class FileUtils {
                 int end = filepath.length();
                 return filepath.substring(start + 1, end);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             SweetLog.w(TAG, "Exception error!", e);
         }
         return "";
@@ -104,8 +104,7 @@ public final class FileUtils {
             int start = filepath.lastIndexOf(".");
             int end = filepath.length();
             return filepath.substring(start, end);
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -119,17 +118,14 @@ public final class FileUtils {
     public static String getFileName(String filepath) {
         if (filepath == null) {
             return null;
-        }
-        else if (filepath.lastIndexOf("/") != -1 && filepath.lastIndexOf(".") != -1) {
+        } else if (filepath.lastIndexOf("/") != -1 && filepath.lastIndexOf(".") != -1) {
             int strat = filepath.lastIndexOf("/") + 1;
             int end = filepath.lastIndexOf(".");
             return strat > end ? "" : filepath.substring(strat, end);
-        }
-        else if (filepath.lastIndexOf("/") == -1 && filepath.lastIndexOf(".") != -1) {
+        } else if (filepath.lastIndexOf("/") == -1 && filepath.lastIndexOf(".") != -1) {
             int end = filepath.lastIndexOf(".");
             return filepath.substring(0, end);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -153,22 +149,19 @@ public final class FileUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 uri = FileProvider.getUriForFile(context,
-                                                 SweetApplication.getInstance().getPackageName() + ".fileprovider",
-                                                 new File(filePath));
-            }
-            else {
+                        SweetApplication.getInstance().getPackageName() + ".fileprovider",
+                        new File(filePath));
+            } else {
                 uri = Uri.fromFile(new File(filePath));
             }
             //设置intent的data和Type属性。
             intent.setDataAndType(uri, type);
             //跳转
             context.startActivity(intent);
-        }
-        catch (ActivityNotFoundException e) {
+        } catch (ActivityNotFoundException e) {
             ToastUtil.toast(context, "无法打开文件");
             SweetLog.w(TAG, "Exception error!", e);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ToastUtil.toast(context, "无法打开文件");
             SweetLog.w(TAG, "Exception error!", ex);
         }
@@ -188,16 +181,13 @@ public final class FileUtils {
             return wrongSize;
         }
         if (fileLength < 1024) {
-            fileSizeString = df.format((double)fileLength) + "B";
-        }
-        else if (fileLength < 1048576) {
-            fileSizeString = df.format((double)fileLength / 1024) + "KB";
-        }
-        else if (fileLength < 1073741824) {
-            fileSizeString = df.format((double)fileLength / 1048576) + "MB";
-        }
-        else {
-            fileSizeString = df.format((double)fileLength / 1073741824) + "GB";
+            fileSizeString = df.format((double) fileLength) + "B";
+        } else if (fileLength < 1048576) {
+            fileSizeString = df.format((double) fileLength / 1024) + "KB";
+        } else if (fileLength < 1073741824) {
+            fileSizeString = df.format((double) fileLength / 1048576) + "MB";
+        } else {
+            fileSizeString = df.format((double) fileLength / 1073741824) + "GB";
         }
         return fileSizeString;
     }
@@ -227,8 +217,9 @@ public final class FileUtils {
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),
-                                                                  Long.valueOf(id));
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads" +
+                                "/public_downloads"),
+                        Long.valueOf(id));
                 return getDataColumn(context, contentUri, null, null);
             }
             // MediaProvider
@@ -239,16 +230,14 @@ public final class FileUtils {
                 Uri contentUri = null;
                 if ("image".equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                }
-                else if ("video".equals(type)) {
+                } else if ("video".equals(type)) {
                     contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                }
-                else if ("audio".equals(type)) {
+                } else if ("audio".equals(type)) {
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
-                        split[1] };
+                final String[] selectionArgs = new String[]{
+                        split[1]};
                 return getDataColumn(context, contentUri, selection, selectionArgs);
             }
         }
@@ -263,6 +252,48 @@ public final class FileUtils {
         return null;
     }
 
+    public static File getFileByUrl(String fileUrl) {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        BufferedOutputStream stream = null;
+        InputStream inputStream = null;
+        File file = null;
+        try {
+            URL imageUrl = new URL(fileUrl);
+            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT;" +
+                    " DigExt)");
+            inputStream = conn.getInputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, len);
+            }
+            file = File.createTempFile("pattern", ".jpg");
+            SweetLog.e(TAG, "临时文件创建成功={}");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            stream = new BufferedOutputStream(fileOutputStream);
+            stream.write(outStream.toByteArray());
+        } catch (Exception e) {
+            SweetLog.e(TAG, "获取服务器图片异常");
+        } finally {
+
+            try {
+
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (stream != null) {
+                    stream.close();
+                }
+                outStream.close();
+            } catch (Exception e) {
+                SweetLog.e(TAG, "关闭流异常");
+            }
+        }
+        return file;
+    }
+
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
@@ -273,19 +304,22 @@ public final class FileUtils {
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    public static String getDataColumn(Context context, Uri uri, String selection,
+                                       String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
-        final String[] projection = { column };
+        final String[] projection = {column};
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs
+                    , null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
-        }
-        finally {
-            if (cursor != null) { cursor.close(); }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
         return null;
     }
@@ -326,7 +360,9 @@ public final class FileUtils {
     }
 
     public static String getFileName(Uri uri) {
-        if (uri == null) { return null; }
+        if (uri == null) {
+            return null;
+        }
         String fileName = null;
         String path = uri.getPath();
         int cut = path.lastIndexOf('/');
@@ -339,16 +375,16 @@ public final class FileUtils {
     public static void copy(Context context, Uri srcUri, File dstFile) {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
-            if (inputStream == null) { return; }
+            if (inputStream == null) {
+                return;
+            }
             OutputStream outputStream = new FileOutputStream(dstFile);
             BaseUtils.copy(inputStream, outputStream);
             inputStream.close();
             outputStream.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

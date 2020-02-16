@@ -14,7 +14,7 @@ import com.cn.frame.data.CommonData;
 import com.cn.frame.data.NormImage;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.PicturePathBean;
-import com.cn.frame.data.bean.UserDetailBean;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
@@ -25,7 +25,7 @@ import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
-import com.cn.lv.utils.FileUrlUtil;
+import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     @BindView(R.id.tv_follow)
     TextView tvFollow;
 
-    private UserDetailBean userDetailBean;
+    private UserInfoBean userDetailBean;
     private int userId;
     private ArrayList<NormImage> images = new ArrayList<>();
 
@@ -135,7 +135,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         switch (view.getId()) {
             case R.id.tv_message:
                 //设置当前用户信息
-                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(userDetailBean.getUser_id()), userDetailBean.getNickname(), Uri.parse(FileUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
+                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(userDetailBean.getUser_id()), userDetailBean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
                 intent = new Intent(this, ChatActivity.class);
                 intent.putExtra(CommonData.KEY_CHAT_TITLE, userDetailBean.getNickname());
                 intent.putExtra(CommonData.KEY_CHAT_ID,
@@ -182,7 +182,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_USER_INFO) {
-            userDetailBean = (UserDetailBean) response.getData();
+            userDetailBean = (UserInfoBean) response.getData();
             bindData();
         } else if (task == Tasks.SHIELD_USER) {
             ToastUtil.toast(this, response.getMsg());
@@ -190,7 +190,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     }
 
     private void bindData() {
-        Glide.with(this).load(FileUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(this), 4))).into(ivHeader);
+        Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(this), 4))).into(ivHeader);
         tvName.setText(userDetailBean.getNickname());
         tvSign.setText(userDetailBean.getIndividuality_signature());
         tvCity.setText(userDetailBean.getAddress());
@@ -212,7 +212,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         if (paths != null && paths.size() > 0) {
             for (PicturePathBean path : paths) {
                 NormImage normImage = new NormImage();
-                normImage.setImageUrl(FileUrlUtil.addTokenToUrl(path.getPicture_path()));
+                normImage.setImageUrl(ImageUrlUtil.addTokenToUrl(path.getPicture_path()));
                 images.add(normImage);
             }
             gridViewPrivate.updateImg(images, false);

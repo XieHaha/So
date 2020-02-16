@@ -1,14 +1,13 @@
 package com.cn.frame.data.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class UserBaseBean implements Serializable {
     private static final long serialVersionUID = 271432271629996237L;
     private long due_time;
     private String session_id;
     private UserInfoBean userInfo;
-    private ArrayList<VipDetailsBean> vipDetails;
+    private VipDetailsBean vipDetails;
 
 
     public long getDue_time() {
@@ -35,11 +34,11 @@ public class UserBaseBean implements Serializable {
         this.userInfo = userInfo;
     }
 
-    public ArrayList<VipDetailsBean> getVipDetails() {
+    public VipDetailsBean getVipDetails() {
         return vipDetails;
     }
 
-    public void setVipDetails(ArrayList<VipDetailsBean> vipDetails) {
+    public void setVipDetails(VipDetailsBean vipDetails) {
         this.vipDetails = vipDetails;
     }
 }

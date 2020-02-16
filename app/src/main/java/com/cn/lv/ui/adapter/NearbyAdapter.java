@@ -16,7 +16,7 @@ import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
-import com.cn.lv.utils.FileUrlUtil;
+import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +37,7 @@ public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         ImageView ivVip = helper.getView(R.id.iv_vip);
         ImageView attention = helper.getView(R.id.iv_attention);
         ImageView ivHeader = helper.getView(R.id.iv_header);
-        Glide.with(mContext).load(FileUrlUtil.addTokenToUrl(item.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(mContext), 4))).into(ivHeader);
+        Glide.with(mContext).load(ImageUrlUtil.addTokenToUrl(item.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(mContext), 4))).into(ivHeader);
         helper.setText(R.id.tv_sex, BASE_ONE == item.getSex() ? R.string.txt_male :
                 R.string.txt_female)
                 .setText(R.id.tv_age, String.valueOf(item.getAge()))

@@ -96,9 +96,7 @@ public class WebViewActivity extends BaseActivity {
 
             /**
              * 这里进行无网络或错误处理，具体可以根据errorCode的值进行判断，做跟详细的处理。
-             *
              */
-            // 旧版本，会在新版本中也可能被调用，所以加上一个判断，防止重复显示
             @Override
             public void onReceivedError(WebView view, int errorCode, String description,
                                         String failingUrl) {

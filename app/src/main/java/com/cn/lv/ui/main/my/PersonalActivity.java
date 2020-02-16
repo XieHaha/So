@@ -12,14 +12,18 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.CommonData;
 import com.cn.frame.data.NormImage;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.CityBean;
+import com.cn.frame.data.bean.PaymentBean;
 import com.cn.frame.data.bean.ProvinceBean;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.permission.Permission;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.utils.SweetLog;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.dialog.DownDialog;
@@ -27,6 +31,9 @@ import com.cn.frame.widgets.dialog.listener.OnMediaItemClickListener;
 import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
+import com.cn.lv.ui.WebViewActivity;
+import com.cn.lv.utils.FileUtils;
+import com.cn.lv.utils.ImageUrlUtil;
 import com.cn.lv.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
@@ -105,8 +112,8 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     private ArrayList<String> cityNames = new ArrayList<>();
 
     private String name, introduction, purpose, address;
-    private int age, who, life, money, income, height, job, bodyType, race, education, marriage,
-            child, smoke, drink, addressPro, addressCity;
+    private int age, who, life, money, income, height, weight, job, bodyType, race, education,
+            marriage, child, smoke, drink, addressPro, addressCity;
 
     /**
      * 图片类型
@@ -131,23 +138,12 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        if (!TextUtils.isEmpty(userInfo.getNickname())) {
-            etName.setText(userInfo.getNickname());
-            etName.setSelection(userInfo.getNickname().length());
-        }
-        int status = userInfo.getIs_auth();
-        if (status == BASE_ONE) {
-            ivNext.setVisibility(View.VISIBLE);
-            tvNext.setVisibility(View.GONE);
-        } else {
-            tvNext.setVisibility(View.VISIBLE);
-            ivNext.setVisibility(View.GONE);
-        }
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        getUserInfo();
         getProvinceData();
     }
 
@@ -164,6 +160,72 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
         });
 
+    }
+
+    private void bindData(UserInfoBean data) {
+        if (!TextUtils.isEmpty(data.getNickname())) {
+            etName.setText(data.getNickname());
+            etName.setSelection(data.getNickname().length());
+        }
+        int status = data.getIs_auth();
+        if (status == BASE_ONE) {
+            ivNext.setVisibility(View.VISIBLE);
+            tvNext.setVisibility(View.GONE);
+        } else {
+            tvNext.setVisibility(View.VISIBLE);
+            ivNext.setVisibility(View.GONE);
+        }
+        if (TextUtils.isEmpty(data.getHead_portrait())) {
+            ivAdd.setVisibility(View.VISIBLE);
+        } else {
+            ivAdd.setVisibility(View.GONE);
+            Glide.with(this).load(ImageUrlUtil.addTokenToUrl(data.getHead_portrait())).apply(GlideHelper.getOptionsPic()).into(ivHeader);
+        }
+        //赋值
+        name = data.getNickname();
+        headerFile = FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(data.getHead_portrait()));
+        SweetLog.i(TAG, "file:" + headerFile);
+        height = data.getHeight();
+        weight = data.getWeight();
+        bodyType = data.getSomatotype();
+        race = data.getRace();
+        education = data.getEducation();
+        marriage = data.getMarriage();
+        child = data.getChildren();
+        smoke = data.getSmoke();
+        drink = data.getDrink();
+        income = data.getAnnual_income();
+        money = data.getNet_assets();
+        life = data.getLife_style();
+        who = data.getContact_object();
+        purpose = data.getMaking_friends_goals();
+        introduction = data.getIndividuality_signature();
+
+        tvHeight.setText(String.valueOf(height));
+        tvAge.setText(String.valueOf(age));
+        etTitle.setText(introduction);
+        etContent.setText(purpose);
+        tvWho.setText(dataDictBean.getBeInterestedIn().get(who));
+        tvLife.setText(dataDictBean.getLifeStyle().get(life));
+        tvMoney.setText(dataDictBean.getIncome().get(money));
+        tvIncome.setText(dataDictBean.getIncome().get(income));
+        tvJob.setText(dataDictBean.getOccupationInfo().get(job));
+        tvAddress.setText(data.getAddress());
+        tvBodyType.setText(dataDictBean.getSomatotype().get(bodyType));
+        tvRace.setText(dataDictBean.getRace().get(race));
+        tvEducation.setText(dataDictBean.getEducation().get(education));
+        tvMarriage.setText(dataDictBean.getMarriage().get(marriage));
+        tvChild.setText(dataDictBean.getChildren().get(child));
+        tvSmoke.setText(dataDictBean.getSmokeOrDrink().get(smoke));
+        tvDrink.setText(dataDictBean.getSmokeOrDrink().get(drink));
+    }
+
+    /**
+     * 获取用户信息
+     */
+    private void getUserInfo() {
+        RequestUtils.getUserInfo(this, signSession(InterfaceName.GET_USER_INFO),
+                userInfo.getUser_id(), this);
     }
 
     /**
@@ -402,6 +464,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
+            case GET_USER_INFO:
+                UserInfoBean data = (UserInfoBean) response.getData();
+                bindData(data);
+                break;
             case AUTH:
                 userInfo.setIs_auth(2);
                 userInfo.setNickname(name);
@@ -446,15 +512,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     public void onResponseCode(Tasks task, BaseResponse response) {
         super.onResponseCode(task, response);
         if (response.getCode() == 202) {
-            //todo  支付
-            userInfo.setIs_auth(2);
-            userInfo.setNickname(name);
-            userInfo.setIndividuality_signature(introduction);
-            userInfo.setAge(age);
-            loginBean.setUserInfo(userInfo);
-            SweetApplication.getInstance().setLoginBean(loginBean);
-            setResult(RESULT_OK);
-            finish();
+            PaymentBean paymentBean = (PaymentBean) response.getData();
+            Intent intent = new Intent(this, WebViewActivity.class);
+            intent.putExtra(CommonData.KEY_PUBLIC, paymentBean.getPayment_address());
+            startActivity(intent);
         }
     }
 

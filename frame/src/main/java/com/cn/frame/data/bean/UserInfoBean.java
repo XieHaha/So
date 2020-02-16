@@ -1,6 +1,7 @@
 package com.cn.frame.data.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * @创建者 顿顿
@@ -25,6 +26,7 @@ public class UserInfoBean implements Serializable {
     private int somatotype;
     private int contact_object;
     private int be_interested_in;
+    private int follow_state;
     private int race;
     private int net_assets;
     private int annual_income;
@@ -34,6 +36,7 @@ public class UserInfoBean implements Serializable {
     private int is_auth;
     private int collection_num;
     private int attention_num;
+    private int life_style;
     private String qq;
     private String mobile_number;
     private String nickname;
@@ -41,11 +44,14 @@ public class UserInfoBean implements Serializable {
     private String head_portrait;
     private String area_code;
     private String individuality_signature;
+    private String making_friends_goals;
     private String wechat;
     private String email;
     private String create_time;
     private String rong_cloud_token;
     private String address;
+    private int usage_state;
+    private ArrayList<PicturePathBean> album;
 
 
     public int getUser_id() {
@@ -343,5 +349,45 @@ public class UserInfoBean implements Serializable {
 
     public void setIs_auth(int is_auth) {
         this.is_auth = is_auth;
+    }
+
+    public int getLife_style() {
+        return life_style;
+    }
+
+    public void setLife_style(int life_style) {
+        this.life_style = life_style;
+    }
+
+    public String getMaking_friends_goals() {
+        return making_friends_goals;
+    }
+
+    public void setMaking_friends_goals(String making_friends_goals) {
+        this.making_friends_goals = making_friends_goals;
+    }
+
+    public int getUsage_state() {
+        return usage_state;
+    }
+
+    public void setUsage_state(int usage_state) {
+        this.usage_state = usage_state;
+    }
+
+    public int getFollow_state() {
+        return follow_state;
+    }
+
+    public void setFollow_state(int follow_state) {
+        this.follow_state = follow_state;
+    }
+
+    public ArrayList<PicturePathBean> getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(ArrayList<PicturePathBean> album) {
+        this.album = album;
     }
 }

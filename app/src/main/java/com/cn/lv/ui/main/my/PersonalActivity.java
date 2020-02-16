@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cn.frame.api.ThreadPoolHelper;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.NormImage;
@@ -183,8 +184,11 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         }
         //赋值
         name = data.getNickname();
-        headerFile = FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(data.getHead_portrait()));
-        SweetLog.i(TAG, "file:" + headerFile);
+        ThreadPoolHelper.getInstance().execInSingle(() -> {
+            headerFile =
+                    FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(data.getHead_portrait()));
+            SweetLog.i(TAG, "file:" + headerFile);
+        });
         height = data.getHeight();
         weight = data.getWeight();
         bodyType = data.getSomatotype();
@@ -515,7 +519,11 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             PaymentBean paymentBean = (PaymentBean) response.getData();
             Intent intent = new Intent(this, WebViewActivity.class);
             intent.putExtra(CommonData.KEY_PUBLIC, paymentBean.getPayment_address());
+            intent.putExtra(CommonData.KEY_TITLE, "认证");
             startActivity(intent);
+            //            Uri uri = Uri.parse(paymentBean.getPayment_address());
+            //            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            //            startActivity(intent);
         }
     }
 

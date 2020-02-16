@@ -1,5 +1,7 @@
 package com.cn.lv.ui.main.my;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.CardInfoBean;
+import com.cn.frame.data.bean.PaymentBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
@@ -91,10 +94,12 @@ public class VipActivity extends BaseActivity implements BaseQuickAdapter.OnItem
     public void onResponseCode(Tasks task, BaseResponse response) {
         super.onResponseCode(task, response);
         if (task == Tasks.UPGRADE_MEMBERSHIP) {
-//            loginBean.setUserInfo(userInfo);
-//            SweetApplication.getInstance().setLoginBean(loginBean);
-            setResult(RESULT_OK);
-            finish();
+            if (response.getCode() == 202) {
+                PaymentBean paymentBean = (PaymentBean) response.getData();
+                Uri uri = Uri.parse(paymentBean.getPayment_address());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
         }
     }
 }

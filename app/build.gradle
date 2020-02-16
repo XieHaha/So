@@ -85,4 +85,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
     //gif动图
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+
+    implementation 'com.tencent.tbs.tbssdk:sdk:43697'
 }

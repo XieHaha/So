@@ -238,7 +238,7 @@ public class MainActivity extends BaseActivity
         //消息碎片
         MessageFragment messageFragment = new MessageFragment();
         ConversationListFragment mConversationListFragment = new ConversationListFragment();
-        messageFragment.setmConversationListFragment(mConversationListFragment);
+        messageFragment.setConversationListFragment(mConversationListFragment);
         //我的碎片
         MyFragment myFragment = new MyFragment();
         List<Fragment> fragmentList = new ArrayList<>();

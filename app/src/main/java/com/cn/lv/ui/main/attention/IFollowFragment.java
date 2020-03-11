@@ -29,12 +29,12 @@ import com.cn.frame.ui.BaseFragment;
 import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.widgets.loadview.CustomLoadMoreView;
-import com.cn.frame.widgets.recycler.GridItemDecoration;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.adapter.FollowAdapter;
 import com.cn.lv.ui.main.ChatActivity;
 import com.cn.lv.ui.main.UserInfoActivity;
+import com.cn.lv.ui.view.FunctionRvItemDecoration;
 import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
                 android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerView.addItemDecoration(new GridItemDecoration(getContext(), 5, 5, 5));
+        recyclerView.addItemDecoration(new FunctionRvItemDecoration(0, 0));
         initAdapter();
     }
 

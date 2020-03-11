@@ -44,6 +44,9 @@ public class ChatActivity extends BaseActivity {
             if (TextUtils.isEmpty(title)) {
                 title = getIntent().getData().getQueryParameter("title");
             }
+            if (TextUtils.isEmpty(targetId)) {
+                targetId = getIntent().getData().getQueryParameter("targetId");
+            }
             publicTitleBarTitle.setText(title);
         }
         FragmentManager fragmentManage = getSupportFragmentManager();

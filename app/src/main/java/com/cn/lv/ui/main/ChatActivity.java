@@ -5,19 +5,34 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
+import com.cn.frame.data.Tasks;
+import com.cn.frame.http.InterfaceName;
+import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.ToastUtil;
+import com.cn.frame.widgets.menu.MenuItem;
+import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import io.rong.imkit.fragment.ConversationFragment;
 
-public class ChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuItemClickListener {
 
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    @BindView(R.id.public_title_bar_right_img)
+    ImageView publicTitleBarRightImg;
     private String title, targetId;
 
     @Override
@@ -49,6 +64,7 @@ public class ChatActivity extends BaseActivity {
             }
             publicTitleBarTitle.setText(title);
         }
+        publicTitleBarRightImg.setVisibility(View.VISIBLE);
         FragmentManager fragmentManage = getSupportFragmentManager();
         ConversationFragment fragement =
                 (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
@@ -57,6 +73,44 @@ public class ChatActivity extends BaseActivity {
                 .appendQueryParameter("title", title)
                 .appendQueryParameter("targetId", targetId).build();
         fragement.setUri(uri);
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        publicTitleBarRightImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMenu();
+            }
+        });
+    }
+
+    private void initMenu() {
+        TopRightMenu mTopRightMenu = new TopRightMenu(this);
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem(R.mipmap.ic_blacklist, "屏蔽用户"));
+        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 70)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(publicTitleBarRightImg, -BaseUtils.dp2px(this, 124), 10);
+    }
+
+    @Override
+    public void onMenuItemClick(int position) {
+        shieldUser(1);
+    }
+
+    private void shieldUser(int state) {
+        RequestUtils.shieldUser(this, signSession(InterfaceName.SHIELD_USER),
+                Integer.valueOf(targetId), state,
+                this);
+    }
+
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.SHIELD_USER) {
+            ToastUtil.toast(this, response.getMsg());
+        }
     }
 
 }

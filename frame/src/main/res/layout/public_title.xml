@@ -67,6 +67,6 @@
         android:paddingTop="12dp"
         android:paddingRight="16dp"
         android:paddingBottom="12dp"
-        android:src="@mipmap/ic_call"
+        android:src="@mipmap/ic_menu_more"
         android:visibility="gone" />
 </RelativeLayout>

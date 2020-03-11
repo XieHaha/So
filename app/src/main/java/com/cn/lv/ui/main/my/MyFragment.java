@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +16,7 @@ import com.cn.frame.api.notify.IChange;
 import com.cn.frame.api.notify.RegisterType;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.VipDetailsBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseFragment;
@@ -55,6 +58,12 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     TextView tvFollowNum;
     @BindView(R.id.tv_browse_num)
     TextView tvBrowseNum;
+    @BindView(R.id.vip)
+    ImageView vip;
+    @BindView(R.id.iv_verify_green)
+    ImageView ivVerifyGreen;
+    @BindView(R.id.layout_name)
+    RelativeLayout layoutName;
 
     @Override
     public void onChange(String data) {
@@ -89,6 +98,20 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         if (authState == BASE_ONE) {
             ivVip.setImageResource(R.mipmap.pic_my_bg1);
         } else {
+            VipDetailsBean detailsBean = loginBean.getVipDetails();
+            if (detailsBean != null) {
+                if (TextUtils.equals(detailsBean.getUsage_state(), "2")) {
+                    layoutName.setBackgroundResource(R.drawable.corner5_211d1d_bg);
+                    vip.setVisibility(View.VISIBLE);
+                    tvName.setSelected(true);
+                    ivVerifyGreen.setVisibility(View.GONE);
+                } else {
+                    layoutName.setBackground(null);
+                    vip.setVisibility(View.GONE);
+                    tvName.setSelected(false);
+                    ivVerifyGreen.setVisibility(View.VISIBLE);
+                }
+            }
             ivVip.setImageResource(R.mipmap.pic_my_bg);
         }
     }
@@ -204,4 +227,5 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         super.onDestroy();
         iNotifyChangeListenerServer.registerFollowNumChangeListener(this, RegisterType.UNREGISTER);
     }
+
 }

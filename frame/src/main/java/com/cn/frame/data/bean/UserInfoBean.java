@@ -37,6 +37,10 @@ public class UserInfoBean implements Serializable {
     private int collection_num;
     private int attention_num;
     private int life_style;
+    /**
+     * 1 普通  2  运营
+     */
+    private int attribute;
     private String qq;
     private String mobile_number;
     private String nickname;

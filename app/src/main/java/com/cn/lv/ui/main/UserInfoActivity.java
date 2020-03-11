@@ -25,6 +25,7 @@ import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
+import com.cn.lv.ui.main.my.ReportActivity;
 import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
@@ -69,6 +70,20 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     TextView tvMessage;
     @BindView(R.id.tv_follow)
     TextView tvFollow;
+    @BindView(R.id.tv_age)
+    TextView tvAge;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
+    @BindView(R.id.tv_life)
+    TextView tvLife;
+    @BindView(R.id.tv_money)
+    TextView tvMoney;
+    @BindView(R.id.tv_income)
+    TextView tvIncome;
+    @BindView(R.id.tv_height)
+    TextView tvHeight;
+    @BindView(R.id.tv_job)
+    TextView tvJob;
 
     private UserInfoBean userDetailBean;
     private int userId;
@@ -122,11 +137,13 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
         if (isBlack) {
-            menuItems.add(new MenuItem(R.mipmap.ic_blacklist, "取消屏蔽"));
+            menuItems.add(new MenuItem(0, "取消屏蔽"));
         } else {
-            menuItems.add(new MenuItem(R.mipmap.ic_blacklist, "屏蔽用户"));
+            menuItems.add(new MenuItem(0, "屏蔽用户"));
         }
-        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 70)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(ivMenu, -BaseUtils.dp2px(this, 124), 10);
+
+        menuItems.add(new MenuItem(0, "举报TA"));
+        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 130)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(ivMenu, -BaseUtils.dp2px(this, 94), 10);
     }
 
     @OnClick({R.id.tv_message, R.id.tv_follow, R.id.iv_menu})
@@ -175,6 +192,10 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
             } else {
                 shieldUser(1);
             }
+        } else {
+            Intent intent = new Intent(this, ReportActivity.class);
+            intent.putExtra(CommonData.KEY_PUBLIC, userId);
+            startActivity(intent);
         }
     }
 
@@ -192,8 +213,15 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     private void bindData() {
         Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(this), 4))).into(ivHeader);
         tvName.setText(userDetailBean.getNickname());
+        tvAge.setText(userDetailBean.getAge() + "");
         tvSign.setText(userDetailBean.getIndividuality_signature());
         tvCity.setText(userDetailBean.getAddress());
+        tvJob.setText(dataDictBean.getOccupationInfo().get(userDetailBean.getOccupation()));
+        tvAddress.setText(userDetailBean.getAddress());
+        tvLife.setText(dataDictBean.getLifeStyle().get(userDetailBean.getLife_style()));
+        tvMoney.setText(dataDictBean.getIncome().get(userDetailBean.getNet_assets()));
+        tvIncome.setText(dataDictBean.getIncome().get(userDetailBean.getAnnual_income()));
+        tvHeight.setText(userDetailBean.getHeight() + "");
         tvWho.setText(dataDictBean.getContactObject().get(userDetailBean.getContact_object()));
         tvBodyType.setText(dataDictBean.getSomatotype().get(userDetailBean.getSomatotype()));
         tvRace.setText(dataDictBean.getRace().get(userDetailBean.getRace()));
@@ -218,4 +246,5 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
             gridViewPrivate.updateImg(images, false);
         }
     }
+
 }

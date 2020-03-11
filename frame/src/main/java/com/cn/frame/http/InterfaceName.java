@@ -57,6 +57,10 @@ public interface InterfaceName {
      */
     String QUESTION_FEEDBACK = "questionFeedback";
     /**
+     * 举报
+     */
+    String REPORT = "questionFeedback";
+    /**
      * 屏蔽列表
      */
     String SHIELD_LIST = "shieldList";

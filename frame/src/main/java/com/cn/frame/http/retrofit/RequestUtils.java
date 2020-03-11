@@ -208,6 +208,18 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.QUESTION_FEEDBACK, l));
     }
 
+    public static void report(Context c, String sign, String title, String feedback,
+                              final ResponseListener<BaseResponse> l) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("title", title);
+        params.put("feedback", feedback);
+        RetrofitManager.getApiUrlManager(c)
+                .questionFeedback(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.REPORT, l));
+    }
+
     public static void shieldList(Context c, String sign, int page, int pageSize,
                                   final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);

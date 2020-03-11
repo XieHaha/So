@@ -61,6 +61,10 @@ public enum Tasks {
      */
     QUESTION_FEEDBACK,
     /**
+     * 举报
+     */
+    REPORT,
+    /**
      * 屏蔽列表
      */
     SHIELD_LIST,

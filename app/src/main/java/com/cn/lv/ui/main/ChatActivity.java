@@ -1,5 +1,6 @@
 package com.cn.lv.ui.main;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
+import com.cn.lv.ui.main.my.ReportActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,13 +91,20 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     private void initMenu() {
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(R.mipmap.ic_blacklist, "屏蔽用户"));
-        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 70)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(publicTitleBarRightImg, -BaseUtils.dp2px(this, 124), 10);
+        menuItems.add(new MenuItem(0, "屏蔽用户"));
+        menuItems.add(new MenuItem(0, "举报TA"));
+        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 130)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(publicTitleBarRightImg, -BaseUtils.dp2px(this, 94), 10);
     }
 
     @Override
     public void onMenuItemClick(int position) {
-        shieldUser(1);
+        if (position == 0) {
+            shieldUser(1);
+        } else {
+            Intent intent = new Intent(this, ReportActivity.class);
+            intent.putExtra(CommonData.KEY_PUBLIC, Integer.valueOf(targetId));
+            startActivity(intent);
+        }
     }
 
     private void shieldUser(int state) {

@@ -172,6 +172,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".ui.main.my.ReportActivity"
+            android:label="请提供详情"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name=".ui.main.ChatActivity"
             android:label=""
             android:screenOrientation="portrait"

@@ -20,16 +20,46 @@
             android:paddingEnd="15dp"
             android:paddingBottom="20dp">
 
-            <TextView
-                android:id="@+id/tv_name"
+            <RelativeLayout
+                android:id="@+id/layout_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@mipmap/ic_verify_green"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:textColor="@color/color_1e1c35"
-                android:textSize="@dimen/text_24"
-                tools:text="名字" />
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="20dp"
+                android:minHeight="20dp">
+
+                <ImageView
+                    android:id="@+id/vip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@mipmap/ic_vip"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@id/vip"
+                    android:gravity="center"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/dp_10"
+                    android:textColor="@color/txt_vip_color_selector"
+                    android:textSize="@dimen/text_24"
+                    tools:text="名字" />
+
+                <ImageView
+                    android:id="@+id/iv_verify_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_toEndOf="@id/tv_name"
+                    android:src="@mipmap/ic_verify_green" />
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/tv_edit"
@@ -50,7 +80,7 @@
                 android:id="@+id/tv_sign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_name"
+                android:layout_below="@id/layout_name"
                 android:layout_marginTop="23dp"
                 android:layout_marginEnd="80dp"
                 android:gravity="center"
@@ -62,7 +92,7 @@
                 android:id="@+id/iv_header"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_below="@id/tv_name"
+                android:layout_below="@id/layout_name"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="23dp"
                 android:src="@mipmap/ic_default_header_r" />

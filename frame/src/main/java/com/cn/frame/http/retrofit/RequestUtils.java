@@ -215,7 +215,7 @@ public class RequestUtils {
         params.put("title", title);
         params.put("feedback", feedback);
         RetrofitManager.getApiUrlManager(c)
-                .questionFeedback(params)
+                .report(params)
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.REPORT, l));
     }

@@ -21,10 +21,10 @@ import com.cn.lv.utils.ImageUrlUtil;
 import java.util.List;
 import java.util.Objects;
 
-public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> implements BaseData {
+public class OnlineAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> implements BaseData {
     private DataDictBean dataDictBean;
 
-    public NearbyAdapter(int layoutResId, @Nullable List<RolesBean> data) {
+    public OnlineAdapter(int layoutResId, @Nullable List<RolesBean> data) {
         super(layoutResId, data);
         dataDictBean = SweetApplication.getInstance().getDataDictBean();
     }
@@ -43,8 +43,7 @@ public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
                 .setText(R.id.tv_age, String.valueOf(item.getAge()))
                 .setText(R.id.tv_address, item.getAddress())
                 .setText(R.id.tv_sign, item.getIndividuality_signature())
-                .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()))
-                .setText(R.id.tv_time, item.getLast_login_time());
+                .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()));
         int vip = item.getUsage_state();
         if (vip == BASE_ONE) {
             layout.setBackground(null);
@@ -53,7 +52,7 @@ public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         } else {
             layout.setBackgroundResource(R.drawable.corner5_211d1d_bg);
             ivVip.setVisibility(View.VISIBLE);
-            name.setSelected(true);
+            name.setSelected(true); 
         }
         //关注
         int att = item.getCollection_state();

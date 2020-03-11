@@ -65,6 +65,8 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     @BindView(R.id.layout_name)
     RelativeLayout layoutName;
 
+    private long TEN_DAY = 60 * 60 * 24 * 1000;
+
     @Override
     public void onChange(String data) {
         updateFollowNum();
@@ -100,16 +102,22 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         } else {
             VipDetailsBean detailsBean = loginBean.getVipDetails();
             if (detailsBean != null) {
+                String endTime = detailsBean.getEnd_time_format();
+                long time =
+                        BaseUtils.date2TimeStamp(endTime, BaseUtils.YYYY_MM_DD_HH_MM_SS) - System.currentTimeMillis();
+                if (time > TEN_DAY) {
+                    ivVip.setVisibility(View.GONE);
+                } else {
+                    ivVip.setVisibility(View.VISIBLE);
+                }
                 if (TextUtils.equals(detailsBean.getUsage_state(), "2")) {
                     layoutName.setBackgroundResource(R.drawable.corner5_211d1d_bg);
-                    vip.setVisibility(View.VISIBLE);
                     tvName.setSelected(true);
-                    ivVerifyGreen.setVisibility(View.GONE);
+                    vip.setVisibility(View.VISIBLE);
                 } else {
                     layoutName.setBackground(null);
                     vip.setVisibility(View.GONE);
                     tvName.setSelected(false);
-                    ivVerifyGreen.setVisibility(View.VISIBLE);
                 }
             }
             ivVip.setImageResource(R.mipmap.pic_my_bg);

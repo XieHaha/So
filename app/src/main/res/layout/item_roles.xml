@@ -67,9 +67,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
+            android:text="当前在线"
             android:textColor="@color/color_211d1d"
-            android:textSize="@dimen/text_10"
-            tools:text="2020年1月9日 17:29:43" />
+            android:textSize="@dimen/text_10" />
 
         <ImageView
             android:id="@+id/iv_attention"

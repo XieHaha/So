@@ -25,7 +25,7 @@ import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.lv.R;
-import com.cn.lv.ui.adapter.NearbyAdapter;
+import com.cn.lv.ui.adapter.OnlineAdapter;
 import com.cn.lv.ui.main.UserInfoActivity;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class OnlineFragment extends BaseFragment implements BaseQuickAdapter.OnI
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.tv_none_message)
     TextView tvNoneMessage;
-    private NearbyAdapter nearbyAdapter;
+    private OnlineAdapter onlineAdapter;
 
     private BaseListData<RolesBean> baseListData;
     private List<RolesBean> rolesBeans = new ArrayList<>();
@@ -100,12 +100,12 @@ public class OnlineFragment extends BaseFragment implements BaseQuickAdapter.OnI
      * 适配器处理
      */
     private void initAdapter() {
-        nearbyAdapter = new NearbyAdapter(R.layout.item_roles, rolesBeans);
-        nearbyAdapter.setLoadMoreView(new CustomLoadMoreView());
-        nearbyAdapter.setOnLoadMoreListener(this, recyclerView);
-        nearbyAdapter.setOnItemClickListener(this);
-        nearbyAdapter.setOnItemChildClickListener(this);
-        recyclerView.setAdapter(nearbyAdapter);
+        onlineAdapter = new OnlineAdapter(R.layout.item_roles, rolesBeans);
+        onlineAdapter.setLoadMoreView(new CustomLoadMoreView());
+        onlineAdapter.setOnLoadMoreListener(this, recyclerView);
+        onlineAdapter.setOnItemClickListener(this);
+        onlineAdapter.setOnItemChildClickListener(this);
+        recyclerView.setAdapter(onlineAdapter);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class OnlineFragment extends BaseFragment implements BaseQuickAdapter.OnI
         renewCollection(curRolesBean.getUser_id(), state);
         //本地更新
         curRolesBean.setCollection_state(state);
-        nearbyAdapter.notifyItemChanged(curPosition);
+        onlineAdapter.notifyItemChanged(curPosition);
     }
 
     @Override
@@ -151,11 +151,11 @@ public class OnlineFragment extends BaseFragment implements BaseQuickAdapter.OnI
                     rolesBeans.clear();
                 }
                 rolesBeans.addAll(list);
-                nearbyAdapter.setNewData(rolesBeans);
+                onlineAdapter.setNewData(rolesBeans);
                 if (list != null && list.size() >= BaseData.PAGE_SIZE) {
-                    nearbyAdapter.loadMoreComplete();
+                    onlineAdapter.loadMoreComplete();
                 } else {
-                    nearbyAdapter.loadMoreEnd();
+                    onlineAdapter.loadMoreEnd();
                 }
                 if (rolesBeans != null && rolesBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);

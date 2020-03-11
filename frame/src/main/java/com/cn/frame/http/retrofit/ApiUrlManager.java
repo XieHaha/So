@@ -168,6 +168,14 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<String>> questionFeedback(@Body Map<String, String> info);
+    /**
+     * 举报
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> report(@Body Map<String, String> info);
 
     /**
      * 屏蔽列表
@@ -194,7 +202,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<String>> upgradeMembership(@Body Map<String, Object> info);
+    Observable<BaseResponse<PaymentBean>> upgradeMembership(@Body Map<String, Object> info);
 
     /**
      * 认证

@@ -84,6 +84,8 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     TextView tvHeight;
     @BindView(R.id.tv_job)
     TextView tvJob;
+    @BindView(R.id.tv_location)
+    TextView tvLocation;
 
     private UserInfoBean userDetailBean;
     private int userId;
@@ -216,20 +218,25 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         tvAge.setText(userDetailBean.getAge() + "");
         tvSign.setText(userDetailBean.getIndividuality_signature());
         tvCity.setText(userDetailBean.getAddress());
-        tvJob.setText(dataDictBean.getOccupationInfo().get(userDetailBean.getOccupation()));
+        tvLocation.setText(userDetailBean.getAddress());
         tvAddress.setText(userDetailBean.getAddress());
-        tvLife.setText(dataDictBean.getLifeStyle().get(userDetailBean.getLife_style()));
-        tvMoney.setText(dataDictBean.getIncome().get(userDetailBean.getNet_assets()));
-        tvIncome.setText(dataDictBean.getIncome().get(userDetailBean.getAnnual_income()));
         tvHeight.setText(userDetailBean.getHeight() + "");
-        tvWho.setText(dataDictBean.getContactObject().get(userDetailBean.getContact_object()));
-        tvBodyType.setText(dataDictBean.getSomatotype().get(userDetailBean.getSomatotype()));
-        tvRace.setText(dataDictBean.getRace().get(userDetailBean.getRace()));
-        tvEducation.setText(dataDictBean.getEducation().get(userDetailBean.getEducation()));
-        tvMarriage.setText(dataDictBean.getMarriage().get(userDetailBean.getMarriage()));
-        tvChild.setText(dataDictBean.getChildren().get(userDetailBean.getChildren()));
-        tvSmoke.setText(dataDictBean.getSmokeOrDrink().get(userDetailBean.getSmoke()));
-        tvDrink.setText(dataDictBean.getSmokeOrDrink().get(userDetailBean.getDrink()));
+        try {
+            tvJob.setText(dataDictBean.getOccupationInfo().get(userDetailBean.getOccupation()));
+            tvLife.setText(dataDictBean.getLifeStyle().get(userDetailBean.getLife_style()));
+            tvMoney.setText(dataDictBean.getIncome().get(userDetailBean.getNet_assets()));
+            tvIncome.setText(dataDictBean.getIncome().get(userDetailBean.getAnnual_income()));
+            tvWho.setText(dataDictBean.getContactObject().get(userDetailBean.getContact_object()));
+            tvBodyType.setText(dataDictBean.getSomatotype().get(userDetailBean.getSomatotype()));
+            tvRace.setText(dataDictBean.getRace().get(userDetailBean.getRace()));
+            tvEducation.setText(dataDictBean.getEducation().get(userDetailBean.getEducation()));
+            tvMarriage.setText(dataDictBean.getMarriage().get(userDetailBean.getMarriage()));
+            tvChild.setText(dataDictBean.getChildren().get(userDetailBean.getChildren()));
+            tvSmoke.setText(dataDictBean.getSmokeOrDrink().get(userDetailBean.getSmoke()));
+            tvDrink.setText(dataDictBean.getSmokeOrDrink().get(userDetailBean.getDrink()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int state = userDetailBean.getFollow_state();
         if (state == BASE_ONE) {
             tvFollow.setSelected(true);

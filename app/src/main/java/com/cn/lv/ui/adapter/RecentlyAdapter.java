@@ -22,14 +22,15 @@ import com.cn.lv.utils.ImageUrlUtil;
 import java.util.List;
 import java.util.Objects;
 
-public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> implements BaseData {
+public class RecentlyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> implements BaseData {
     private DataDictBean dataDictBean;
     private UserInfoBean infoBean;
 
-    public NearbyAdapter(int layoutResId, @Nullable List<RolesBean> data) {
+    public RecentlyAdapter(int layoutResId, @Nullable List<RolesBean> data) {
         super(layoutResId, data);
         dataDictBean = SweetApplication.getInstance().getDataDictBean();
     }
+
 
     public void setInfoBean(UserInfoBean infoBean) {
         this.infoBean = infoBean;

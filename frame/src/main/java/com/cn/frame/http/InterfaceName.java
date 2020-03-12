@@ -59,7 +59,7 @@ public interface InterfaceName {
     /**
      * 举报
      */
-    String REPORT = "questionFeedback";
+    String REPORT = "report";
     /**
      * 屏蔽列表
      */

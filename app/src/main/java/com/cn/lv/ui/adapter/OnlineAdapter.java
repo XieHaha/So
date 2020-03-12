@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.RolesBean;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.lv.R;
@@ -23,10 +24,15 @@ import java.util.Objects;
 
 public class OnlineAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> implements BaseData {
     private DataDictBean dataDictBean;
+    private UserInfoBean infoBean;
 
     public OnlineAdapter(int layoutResId, @Nullable List<RolesBean> data) {
         super(layoutResId, data);
         dataDictBean = SweetApplication.getInstance().getDataDictBean();
+    }
+
+    public void setInfoBean(UserInfoBean infoBean) {
+        this.infoBean = infoBean;
     }
 
     @Override
@@ -41,7 +47,6 @@ public class OnlineAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         helper.setText(R.id.tv_sex, BASE_ONE == item.getSex() ? R.string.txt_male :
                 R.string.txt_female)
                 .setText(R.id.tv_age, String.valueOf(item.getAge()))
-                .setText(R.id.tv_address, item.getAddress())
                 .setText(R.id.tv_sign, item.getIndividuality_signature())
                 .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()));
         int vip = item.getUsage_state();
@@ -52,7 +57,7 @@ public class OnlineAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         } else {
             layout.setBackgroundResource(R.drawable.corner5_211d1d_bg);
             ivVip.setVisibility(View.VISIBLE);
-            name.setSelected(true); 
+            name.setSelected(true);
         }
         //关注
         int att = item.getCollection_state();
@@ -62,6 +67,11 @@ public class OnlineAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
             attention.setSelected(false);
         }
         helper.addOnClickListener(R.id.iv_attention);
+        if (item.getAttribute() == 2) {
+            helper.setText(R.id.tv_address, infoBean.getAddress());
+        } else {
+            helper.setText(R.id.tv_address, item.getAddress());
+        }
     }
 
 }

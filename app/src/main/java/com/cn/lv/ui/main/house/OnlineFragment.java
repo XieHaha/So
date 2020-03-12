@@ -101,6 +101,7 @@ public class OnlineFragment extends BaseFragment implements BaseQuickAdapter.OnI
      */
     private void initAdapter() {
         onlineAdapter = new OnlineAdapter(R.layout.item_roles, rolesBeans);
+        onlineAdapter.setInfoBean(userInfo);
         onlineAdapter.setLoadMoreView(new CustomLoadMoreView());
         onlineAdapter.setOnLoadMoreListener(this, recyclerView);
         onlineAdapter.setOnItemClickListener(this);

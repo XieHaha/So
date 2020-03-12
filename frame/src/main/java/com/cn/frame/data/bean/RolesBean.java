@@ -17,6 +17,7 @@ public class RolesBean implements Serializable {
     private int auth_state;
     private int collection_state;
     private int user_id;
+    private int attribute;
     private String nickname;
     private String head_portrait;
     private String individuality_signature;
@@ -126,4 +127,13 @@ public class RolesBean implements Serializable {
     public void setLast_login_time(String last_login_time) {
         this.last_login_time = last_login_time;
     }
+
+    public int getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(int attribute) {
+        this.attribute = attribute;
+    }
+
 }

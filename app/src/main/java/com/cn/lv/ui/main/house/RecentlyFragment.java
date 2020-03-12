@@ -25,7 +25,7 @@ import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.lv.R;
-import com.cn.lv.ui.adapter.NearbyAdapter;
+import com.cn.lv.ui.adapter.RecentlyAdapter;
 import com.cn.lv.ui.main.UserInfoActivity;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class RecentlyFragment extends BaseFragment implements BaseQuickAdapter.O
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.tv_none_message)
     TextView tvNoneMessage;
-    private NearbyAdapter nearbyAdapter;
+    private RecentlyAdapter recentlyAdapter;
 
     private BaseListData<RolesBean> baseListData;
     private List<RolesBean> rolesBeans = new ArrayList<>();
@@ -100,12 +100,13 @@ public class RecentlyFragment extends BaseFragment implements BaseQuickAdapter.O
      * 适配器处理
      */
     private void initAdapter() {
-        nearbyAdapter = new NearbyAdapter(R.layout.item_roles, rolesBeans);
-        nearbyAdapter.setLoadMoreView(new CustomLoadMoreView());
-        nearbyAdapter.setOnLoadMoreListener(this, recyclerView);
-        nearbyAdapter.setOnItemClickListener(this);
-        nearbyAdapter.setOnItemChildClickListener(this);
-        recyclerView.setAdapter(nearbyAdapter);
+        recentlyAdapter = new RecentlyAdapter(R.layout.item_roles, rolesBeans);
+        recentlyAdapter.setInfoBean(userInfo);
+        recentlyAdapter.setLoadMoreView(new CustomLoadMoreView());
+        recentlyAdapter.setOnLoadMoreListener(this, recyclerView);
+        recentlyAdapter.setOnItemClickListener(this);
+        recentlyAdapter.setOnItemChildClickListener(this);
+        recyclerView.setAdapter(recentlyAdapter);
     }
 
     @Override
@@ -137,7 +138,7 @@ public class RecentlyFragment extends BaseFragment implements BaseQuickAdapter.O
         renewCollection(curRolesBean.getUser_id(), state);
         //本地更新
         curRolesBean.setCollection_state(state);
-        nearbyAdapter.notifyItemChanged(curPosition);
+        recentlyAdapter.notifyItemChanged(curPosition);
     }
 
     @Override
@@ -151,11 +152,11 @@ public class RecentlyFragment extends BaseFragment implements BaseQuickAdapter.O
                     rolesBeans.clear();
                 }
                 rolesBeans.addAll(list);
-                nearbyAdapter.setNewData(rolesBeans);
+                recentlyAdapter.setNewData(rolesBeans);
                 if (list != null && list.size() >= BaseData.PAGE_SIZE) {
-                    nearbyAdapter.loadMoreComplete();
+                    recentlyAdapter.loadMoreComplete();
                 } else {
-                    nearbyAdapter.loadMoreEnd();
+                    recentlyAdapter.loadMoreEnd();
                 }
                 if (rolesBeans != null && rolesBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);

@@ -31,9 +31,9 @@ public interface BaseNetConfig {
     /**
      * 用户使用协议
      */
-    String BASE_BASIC_USER_PROTOCOL_URL = "client/sys/protocol_by_doctor";
+    String BASE_BASIC_USER_PROTOCOL_URL = "http://sweet.uxuanxueche.com/static/about_us/user_agreement.html";
     /**
      * 隐私协议
      */
-    String BASE_BASIC_PRIVATE_PROTOCOL_URL = "client/sys/protocol_by_privacy";
+    String BASE_BASIC_PRIVATE_PROTOCOL_URL = "http://sweet.uxuanxueche.com/static/about_us/privacy_policy.html";
 }

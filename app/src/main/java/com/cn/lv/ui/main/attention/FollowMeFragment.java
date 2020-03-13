@@ -28,6 +28,7 @@ import com.cn.lv.R;
 import com.cn.lv.ui.adapter.FollowAdapter;
 import com.cn.lv.ui.main.ChatActivity;
 import com.cn.lv.ui.main.UserInfoActivity;
+import com.cn.lv.ui.main.my.AuthActivity;
 import com.cn.lv.ui.view.FunctionRvItemDecoration;
 import com.cn.lv.utils.ImageUrlUtil;
 
@@ -148,12 +149,16 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 updateFollow(state);
                 break;
             case R.id.iv_message:
-                //设置当前用户信息
-                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(bean.getUser_id()), bean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(bean.getHead_portrait()))));
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra(CommonData.KEY_CHAT_TITLE, bean.getNickname());
-                intent.putExtra(CommonData.KEY_CHAT_ID, String.valueOf(bean.getUser_id()));
-                startActivity(intent);
+                if (userInfo.getIs_auth() == 1) {
+                    startActivity(new Intent(getContext(), AuthActivity.class));
+                } else {
+                    //设置当前用户信息
+                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(bean.getUser_id()), bean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(bean.getHead_portrait()))));
+                    Intent intent = new Intent(getContext(), ChatActivity.class);
+                    intent.putExtra(CommonData.KEY_CHAT_TITLE, bean.getNickname());
+                    intent.putExtra(CommonData.KEY_CHAT_ID, String.valueOf(bean.getUser_id()));
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;

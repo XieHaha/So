@@ -37,10 +37,6 @@ public class WebViewActivity extends BaseActivity {
      * 源
      */
     private String url;
-    /**
-     * 是否是登录协议
-     */
-    private boolean isProtocol;
     private boolean isError;
 
     @Override
@@ -72,15 +68,10 @@ public class WebViewActivity extends BaseActivity {
             title = getIntent().getStringExtra(CommonData.KEY_TITLE);
             content = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
             url = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
-            isProtocol = getIntent().getBooleanExtra(CommonData.KEY_IS_PROTOCOL, false);
         }
         publicTitleBarTitle.setText(title);
         SweetLog.i(TAG, "url:" + url);
-        if (isProtocol) {
-            webView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null);
-        } else {
-            webView.loadUrl(url);
-        }
+        webView.loadUrl(url);
     }
 
     private void loadViewClient() {

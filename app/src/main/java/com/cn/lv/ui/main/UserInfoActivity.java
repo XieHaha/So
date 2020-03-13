@@ -25,6 +25,7 @@ import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
+import com.cn.lv.ui.main.my.AuthActivity;
 import com.cn.lv.ui.main.my.ReportActivity;
 import com.cn.lv.utils.ImageUrlUtil;
 
@@ -153,13 +154,17 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         Intent intent;
         switch (view.getId()) {
             case R.id.tv_message:
-                //设置当前用户信息
-                RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(userDetailBean.getUser_id()), userDetailBean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
-                intent = new Intent(this, ChatActivity.class);
-                intent.putExtra(CommonData.KEY_CHAT_TITLE, userDetailBean.getNickname());
-                intent.putExtra(CommonData.KEY_CHAT_ID,
-                        String.valueOf(userDetailBean.getUser_id()));
-                startActivity(intent);
+                if (userInfo.getIs_auth() == 1) {
+                    startActivity(new Intent(this, AuthActivity.class));
+                } else {
+                    //设置当前用户信息
+                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(userDetailBean.getUser_id()), userDetailBean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
+                    intent = new Intent(this, ChatActivity.class);
+                    intent.putExtra(CommonData.KEY_CHAT_TITLE, userDetailBean.getNickname());
+                    intent.putExtra(CommonData.KEY_CHAT_ID,
+                            String.valueOf(userDetailBean.getUser_id()));
+                    startActivity(intent);
+                }
                 break;
             case R.id.tv_follow:
                 int follow;

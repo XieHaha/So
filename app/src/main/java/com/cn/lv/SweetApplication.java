@@ -94,6 +94,10 @@ public class SweetApplication extends LitePalApplication {
         SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_BEAN, loginBean);
     }
 
+    public boolean isVip() {
+        return loginBean != null && loginBean.getVipDetails() != null && TextUtils.equals(loginBean.getVipDetails().getUsage_state(), "2");
+    }
+
     public DataDictBean getDataDictBean() {
         String data = (String) SharePreferenceUtil.getObject(this, CommonData.KEY_DATA_DICT_BEAN,
                 "");

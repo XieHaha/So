@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
+import com.cn.frame.data.BaseNetConfig;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
@@ -20,7 +21,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class AboutActivity extends BaseActivity {
-
     @BindView(R.id.tv_app_name)
     TextView tvAppName;
     @BindView(R.id.tv_version)
@@ -68,15 +68,14 @@ public class AboutActivity extends BaseActivity {
     public void onViewClicked(View view) {
         Intent intent;
         intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
         switch (view.getId()) {
             case R.id.layout_pri:
                 intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_pri));
-                intent.putExtra(CommonData.KEY_PUBLIC_STRING, aboutUsBean.getPrivacy_policy());
+                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
                 break;
             case R.id.layout_protocol:
                 intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_protocol));
-                intent.putExtra(CommonData.KEY_PUBLIC_STRING, aboutUsBean.getUser_agreement());
+                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
                 break;
             default:
                 break;

@@ -65,7 +65,7 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     @BindView(R.id.layout_name)
     RelativeLayout layoutName;
 
-    private long TEN_DAY = 60 * 60 * 24 * 1000;
+    private long TEN_DAY = 60 * 60 * 24 * 1000 * 10;
 
     @Override
     public void onChange(String data) {

@@ -11,14 +11,16 @@ import android.view.View;
 
 import com.cn.frame.data.CommonData;
 import com.cn.frame.ui.BaseFragment;
-import com.cn.frame.utils.SweetLog;
 import com.cn.lv.R;
 import com.cn.lv.ui.main.UserInfoActivity;
+import com.cn.lv.ui.main.my.AuthActivity;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.imlib.model.UserInfo;
 
 public class MessageFragment extends BaseFragment {
 
@@ -57,10 +59,13 @@ public class MessageFragment extends BaseFragment {
             @Override
             public boolean onConversationPortraitClick(Context context,
                                                        Conversation.ConversationType conversationType, String targetId) {
-                Intent intent = new Intent(getContext(), UserInfoActivity.class);
-                SweetLog.i(TAG, "id:" + targetId);
-                intent.putExtra(CommonData.KEY_PUBLIC, Integer.valueOf(targetId));
-                context.startActivity(intent);
+                try {
+                    Intent intent = new Intent(getContext(), UserInfoActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, Integer.valueOf(targetId));
+                    context.startActivity(intent);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
 
@@ -79,11 +84,51 @@ public class MessageFragment extends BaseFragment {
             @Override
             public boolean onConversationClick(Context context, View view,
                                                UIConversation conversation) {
+                if (userInfo.getIs_auth() == 1) {
+                    startActivity(new Intent(getContext(), AuthActivity.class));
+                    return true;
+                }
                 return false;
             }
         });
 
+        RongIM.setConversationClickListener(new RongIM.ConversationClickListener() {
+            @Override
+            public boolean onUserPortraitClick(Context context,
+                                               Conversation.ConversationType conversationType,
+                                               UserInfo userInfo, String s) {
+                try {
+                    Intent intent = new Intent(getContext(), UserInfoActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, Integer.valueOf(userInfo.getUserId()));
+                    context.startActivity(intent);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
 
+            @Override
+            public boolean onUserPortraitLongClick(Context context,
+                                                   Conversation.ConversationType conversationType
+                    , UserInfo userInfo, String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onMessageClick(Context context, View view, Message message) {
+                return false;
+            }
+
+            @Override
+            public boolean onMessageLinkClick(Context context, String s, Message message) {
+                return false;
+            }
+
+            @Override
+            public boolean onMessageLongClick(Context context, View view, Message message) {
+                return false;
+            }
+        });
     }
 
     public void setConversationListFragment(ConversationListFragment mConversationListFragment) {

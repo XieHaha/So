@@ -11,23 +11,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.ChatBean;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.BaseUtils;
+import com.cn.frame.utils.SweetLog;
 import com.cn.frame.utils.ToastUtil;
+import com.cn.frame.widgets.dialog.HintDialog;
+import com.cn.frame.widgets.dialog.listener.OnEnterClickListener;
 import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.main.my.ReportActivity;
+import com.cn.lv.ui.main.my.VipActivity;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
+import io.rong.imlib.model.Message;
 
 public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuItemClickListener {
 
@@ -36,6 +46,9 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     @BindView(R.id.public_title_bar_right_img)
     ImageView publicTitleBarRightImg;
     private String title, targetId;
+
+    private ChatBean chatBean;
+    private int msgCount = 0;
 
     @Override
     protected boolean isInitStatusBar() {
@@ -78,6 +91,23 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     }
 
     @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (!SweetApplication.getInstance().isVip()) {
+            List<ChatBean> chatBeans = LitePal.where("chatId = ?", targetId).find(ChatBean.class);
+            if (chatBeans != null && chatBeans.size() > 0) {
+                chatBean = chatBeans.get(0);
+                msgCount = chatBean.getMsgCount();
+            } else {
+                chatBean = new ChatBean();
+                chatBean.setChatId(targetId);
+                msgCount = 0;
+                save();
+            }
+        }
+    }
+
+    @Override
     public void initListener() {
         super.initListener();
         publicTitleBarRightImg.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +116,52 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
                 initMenu();
             }
         });
+
+        /**
+         * 设置发送消息的监听。
+         */
+        RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
+            @Override
+            public Message onSend(Message message) {
+                if (!SweetApplication.getInstance().isVip()) {
+                    if (msgCount >= 5) {
+                        showDialog();
+                        return null;
+                    } else {
+                        msgCount++;
+                    }
+                    save();
+                }
+                return message;
+            }
+
+            @Override
+            public boolean onSent(Message message,
+                                  RongIM.SentMessageErrorCode sentMessageErrorCode) {
+                return false;
+            }
+        });
+    }
+
+    private void showDialog() {
+        save();
+        HintDialog dialog = new HintDialog(this);
+        dialog.setTitleString("提示").setContentString("升级会员享受更好的服务").setCancelableAndTouch(false).setCancelBtnGone(true).setEnterBtnTxt("升级会员").setOnEnterClickListener(new OnEnterClickListener() {
+            @Override
+            public void onEnter() {
+                startActivity(new Intent(ChatActivity.this, VipActivity.class));
+                finish();
+            }
+        }).show();
+    }
+
+    private void save() {
+        chatBean.setMsgCount(msgCount);
+        if (chatBean.save()) {
+            SweetLog.i(TAG, "存储成功");
+        } else {
+            SweetLog.i(TAG, "存储失败");
+        }
     }
 
     private void initMenu() {

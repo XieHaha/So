@@ -337,8 +337,7 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
         ClickableSpan clickSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                Intent intent = new Intent(RegisterAndModifyPwdActivity.this,
-                        WebViewActivity.class);
+                Intent intent = new Intent(RegisterAndModifyPwdActivity.this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
                 startActivity(intent);
                 clearBackgroundColor(widget);
@@ -357,8 +356,7 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
             public void onClick(@NonNull View widget) {
                 Intent intent = new Intent(RegisterAndModifyPwdActivity.this,
                         WebViewActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC,
-                        BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
                 startActivity(intent);
                 clearBackgroundColor(widget);
             }

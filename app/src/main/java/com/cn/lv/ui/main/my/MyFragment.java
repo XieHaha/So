@@ -36,8 +36,8 @@ import butterknife.OnClick;
 public class MyFragment extends BaseFragment implements IChange<String> {
     private static final int REQUEST_CODE_AUTH = 100;
     private static final int REQUEST_CODE_VIP = 200;
-    @BindView(R.id.iv_vip)
-    ImageView ivVip;
+    @BindView(R.id.tv_text)
+    TextView tvText;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_sign)
@@ -98,17 +98,18 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
         int authState = userInfo.getIs_auth();
         if (authState == BASE_ONE) {
-            ivVip.setImageResource(R.mipmap.pic_my_bg1);
+            tvText.setText("去认证>>");
         } else {
+            tvText.setText("升级成为VIP>>");
             VipDetailsBean detailsBean = loginBean.getVipDetails();
             if (detailsBean != null) {
                 String endTime = detailsBean.getEnd_time_format();
                 long time =
                         BaseUtils.date2TimeStamp(endTime, BaseUtils.YYYY_MM_DD_HH_MM_SS) - System.currentTimeMillis();
                 if (time > TEN_DAY) {
-                    ivVip.setVisibility(View.GONE);
+                    tvText.setText("已经是高级会员");
                 } else {
-                    ivVip.setVisibility(View.VISIBLE);
+                    tvText.setText("升级续费");
                 }
                 if (TextUtils.equals(detailsBean.getUsage_state(), "2")) {
                     layoutName.setBackgroundResource(R.drawable.corner5_211d1d_bg);
@@ -120,7 +121,6 @@ public class MyFragment extends BaseFragment implements IChange<String> {
                     tvName.setSelected(false);
                 }
             }
-            ivVip.setImageResource(R.mipmap.pic_my_bg);
         }
     }
 
@@ -223,9 +223,9 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         userInfo = loginBean.getUserInfo();
         int authState = userInfo.getIs_auth();
         if (authState == BASE_ONE) {
-            ivVip.setImageResource(R.mipmap.pic_my_bg1);
+            tvText.setText("去认证>>");
         } else {
-            ivVip.setImageResource(R.mipmap.pic_my_bg);
+            tvText.setText("升级成为VIP>>");
         }
         tvName.setText(userInfo.getNickname());
     }

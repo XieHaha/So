@@ -101,7 +101,6 @@ public class RecentlyFragment extends BaseFragment implements BaseQuickAdapter.O
      */
     private void initAdapter() {
         recentlyAdapter = new RecentlyAdapter(R.layout.item_roles, rolesBeans);
-        recentlyAdapter.setInfoBean(userInfo);
         recentlyAdapter.setLoadMoreView(new CustomLoadMoreView());
         recentlyAdapter.setOnLoadMoreListener(this, recyclerView);
         recentlyAdapter.setOnItemClickListener(this);

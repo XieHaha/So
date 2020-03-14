@@ -26,6 +26,8 @@ public class SweetApplication extends LitePalApplication {
     private static SweetApplication instance;
     private UserBaseBean loginBean;
     private DataDictBean dataDictBean;
+
+    private String city;
     /**
      * 调试模式
      */
@@ -92,6 +94,14 @@ public class SweetApplication extends LitePalApplication {
     public void setLoginBean(UserBaseBean loginBean) {
         this.loginBean = loginBean;
         SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_BEAN, loginBean);
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public boolean isVip() {

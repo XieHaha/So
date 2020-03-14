@@ -19,10 +19,9 @@ public class CardInfoAdapter extends BaseQuickAdapter<CardInfoBean, BaseViewHold
 
     @Override
     protected void convert(BaseViewHolder helper, CardInfoBean item) {
-        helper.setText(R.id.tv_time, item.getCard_name())
+        helper.setText(R.id.tv_time, item.getCard_duration2())
                 .setText(R.id.tv_total_price, "￥" + item.getCard_money())
-                .setText(R.id.tv_unit_price, getUnitPrice(item.getCard_money(),
-                        item.getCard_duration())).addOnClickListener(R.id.iv_one);
+                .setText(R.id.tv_unit_price, item.getCard_name()).addOnClickListener(R.id.iv_one);
     }
 
     private String getUnitPrice(float cardMoney, long cardDuration) {

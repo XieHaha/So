@@ -37,6 +37,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <!-- Required -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission
@@ -56,6 +57,11 @@
         android:roundIcon="@mipmap/logo_icon"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme">
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="PgoSV4GxVB6Wf50SSQrj3u5MbOfGIlwM" >
+        </meta-data>
         <!--刘海屏适配-->
         <meta-data
             android:name="android.notch_support"
@@ -214,6 +220,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths_public" />
         </provider>
+
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
     </application>
 
 </manifest>

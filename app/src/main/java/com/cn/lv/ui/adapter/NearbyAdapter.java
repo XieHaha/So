@@ -12,7 +12,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.cn.frame.data.BaseData;
 import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.RolesBean;
-import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.lv.R;
@@ -24,15 +23,10 @@ import java.util.Objects;
 
 public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> implements BaseData {
     private DataDictBean dataDictBean;
-    private UserInfoBean infoBean;
 
     public NearbyAdapter(int layoutResId, @Nullable List<RolesBean> data) {
         super(layoutResId, data);
         dataDictBean = SweetApplication.getInstance().getDataDictBean();
-    }
-
-    public void setInfoBean(UserInfoBean infoBean) {
-        this.infoBean = infoBean;
     }
 
     @Override
@@ -70,7 +64,7 @@ public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         helper.addOnClickListener(R.id.iv_attention);
 
         if (item.getAttribute() == 2) {
-            helper.setText(R.id.tv_address, infoBean.getAddress());
+            helper.setText(R.id.tv_address, SweetApplication.getInstance().getCity());
         } else {
             helper.setText(R.id.tv_address, item.getAddress());
         }

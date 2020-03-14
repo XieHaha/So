@@ -180,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:gravity="center"
-                    android:text="地址"
+                    android:text="常驻地址"
                     android:textColor="@color/color_1e1c35"
                     android:textSize="@dimen/text_14" />
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,7 @@ import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
+import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.main.my.AuthActivity;
 import com.cn.lv.ui.main.my.ReportActivity;
 import com.cn.lv.utils.ImageUrlUtil;
@@ -87,6 +89,10 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     TextView tvJob;
     @BindView(R.id.tv_location)
     TextView tvLocation;
+    @BindView(R.id.iv_vip)
+    ImageView ivVip;
+    @BindView(R.id.layout)
+    RelativeLayout layout;
 
     private UserInfoBean userDetailBean;
     private int userId;
@@ -220,10 +226,25 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     private void bindData() {
         Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(this), 4))).into(ivHeader);
         tvName.setText(userDetailBean.getNickname());
+        int vip = userDetailBean.getUsage_state();
+        if (vip == BASE_ONE) {
+            layout.setBackground(null);
+            ivVip.setVisibility(View.GONE);
+            tvName.setSelected(false);
+        } else {
+            layout.setBackgroundResource(R.drawable.corner5_211d1d_bg);
+            ivVip.setVisibility(View.VISIBLE);
+            tvName.setSelected(true);
+        }
+
         tvAge.setText(userDetailBean.getAge() + "");
         tvSign.setText(userDetailBean.getIndividuality_signature());
         tvCity.setText(userDetailBean.getAddress());
-        tvLocation.setText(userDetailBean.getAddress());
+        if (userDetailBean.getAttribute() == 2) {
+            tvLocation.setText(SweetApplication.getInstance().getCity());
+        } else {
+            tvLocation.setText(userDetailBean.getAddress());
+        }
         tvAddress.setText(userDetailBean.getAddress());
         tvHeight.setText(userDetailBean.getHeight() + "");
         try {

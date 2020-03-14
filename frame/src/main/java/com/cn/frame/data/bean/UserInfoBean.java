@@ -394,4 +394,12 @@ public class UserInfoBean implements Serializable {
     public void setAlbum(ArrayList<PicturePathBean> album) {
         this.album = album;
     }
+
+    public int getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(int attribute) {
+        this.attribute = attribute;
+    }
 }

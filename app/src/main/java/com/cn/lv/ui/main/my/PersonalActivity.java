@@ -18,6 +18,7 @@ import com.cn.frame.data.NormImage;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.CityBean;
 import com.cn.frame.data.bean.PaymentBean;
+import com.cn.frame.data.bean.PicturePathBean;
 import com.cn.frame.data.bean.ProvinceBean;
 import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.InterfaceName;
@@ -222,6 +223,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         tvChild.setText(dataDictBean.getChildren().get(child));
         tvSmoke.setText(dataDictBean.getSmokeOrDrink().get(smoke));
         tvDrink.setText(dataDictBean.getSmokeOrDrink().get(drink));
+
+        ArrayList<PicturePathBean> paths = data.getAlbum();
+        if (paths != null && paths.size() > 0) {
+        }
     }
 
     /**

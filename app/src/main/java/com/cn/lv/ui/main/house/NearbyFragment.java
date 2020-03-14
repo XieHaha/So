@@ -101,7 +101,6 @@ public class NearbyFragment extends BaseFragment implements BaseQuickAdapter.OnI
      */
     private void initAdapter() {
         nearbyAdapter = new NearbyAdapter(R.layout.item_roles, rolesBeans);
-        nearbyAdapter.setInfoBean(userInfo);
         nearbyAdapter.setLoadMoreView(new CustomLoadMoreView());
         nearbyAdapter.setOnLoadMoreListener(this, recyclerView);
         nearbyAdapter.setOnItemClickListener(this);

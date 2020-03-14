@@ -36,18 +36,48 @@
                     android:src="@mipmap/ic_menu_more" />
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:drawableEnd="@mipmap/ic_verify_green"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:textColor="@color/color_1e1c35"
-                android:textSize="@dimen/text_24"
-                tools:text="名字" />
+                android:layout_marginTop="15dp"
+                android:gravity="center_vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:background="@drawable/corner5_211d1d_bg"
+                    android:minHeight="20dp">
+
+                    <ImageView
+                        android:id="@+id/iv_vip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@mipmap/ic_vip" />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@id/iv_vip"
+                        android:textColor="@color/txt_vip_color_selector"
+                        android:textSize="@dimen/text_24"
+                        tools:text="名字" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_verify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:src="@mipmap/ic_verify_green" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_sign"

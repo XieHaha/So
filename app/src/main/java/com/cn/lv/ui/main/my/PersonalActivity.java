@@ -259,7 +259,9 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
 
         ArrayList<PicturePathBean> paths = data.getAlbum();
         publicPaths.clear();
+        publicFiles.clear();
         privatePaths.clear();
+        privateFiles.clear();
         if (paths != null && paths.size() > 0) {
             for (int i = 0; i < paths.size(); i++) {
                 PicturePathBean bean = paths.get(i);
@@ -267,8 +269,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 normImage.setImageUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path()));
                 if (bean.getPicture_type() == 1) {
                     publicPaths.add(normImage);
+                    publicFiles.add(FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path())));
                 } else {
                     privatePaths.add(normImage);
+                    privateFiles.add(FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path())));
                 }
             }
         }
@@ -614,7 +618,6 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                             publicFiles.add(new File(path));
                             NormImage normImage = new NormImage();
                             normImage.setImageUrl(path);
-                            normImage.setImagePath(path);
                             publicPaths.add(normImage);
                         }
                         boolean isAdd = false;
@@ -630,7 +633,6 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                             privateFiles.add(new File(path));
                             NormImage normImage = new NormImage();
                             normImage.setImageUrl(path);
-                            normImage.setImagePath(path);
                             privatePaths.add(normImage);
                         }
                         boolean isAdd = false;

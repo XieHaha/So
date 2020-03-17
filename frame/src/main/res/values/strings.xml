@@ -21,6 +21,8 @@
     <string name="txt_exit_sure">确认退出？</string>
     <string name="txt_unit_price">￥%s/日</string>
 
+    <string name="txt_auth_hint">1.致力于打造100%真实健康交友平台，通过收取基本的认证费用，筛选掉大部分酒托饭托，微商广告等虚假用户及保证交友安全。\n2.进行严格的身份认证需要耗费大量的人力成本，收取基本的认证奋勇可以保证持续稳定运营</string>
+
     <!--main -->
     <string name="txt_house">首页</string>
     <string name="txt_attention">关注</string>

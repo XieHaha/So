@@ -67,7 +67,7 @@ public class RecentlyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder>
         if (item.getAttribute() == 2) {
             helper.setText(R.id.tv_address, SweetApplication.getInstance().getCity());
         } else {
-            helper.setText(R.id.tv_address, item.getAddress());
+            helper.setText(R.id.tv_address, item.getLocation());
         }
     }
 

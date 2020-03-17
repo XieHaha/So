@@ -20,11 +20,13 @@ import com.cn.frame.data.bean.CityBean;
 import com.cn.frame.data.bean.PaymentBean;
 import com.cn.frame.data.bean.PicturePathBean;
 import com.cn.frame.data.bean.ProvinceBean;
+import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.permission.Permission;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.SweetLog;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.utils.glide.GlideHelper;
@@ -33,6 +35,7 @@ import com.cn.frame.widgets.dialog.listener.OnMediaItemClickListener;
 import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
+import com.cn.lv.ui.ImagePreviewActivity;
 import com.cn.lv.ui.WebViewActivity;
 import com.cn.lv.utils.FileUtils;
 import com.cn.lv.utils.ImageUrlUtil;
@@ -122,6 +125,8 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      */
     private int imageType;
 
+    private int proId, cityId;
+
     @Override
     protected boolean isInitBackBtn() {
         return true;
@@ -152,16 +157,42 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     @Override
     public void initListener() {
         super.initListener();
+        gridViewPublic.setOnDeleteClickListener(position -> {
+            publicFiles.remove(position);
+            publicPaths.remove(position);
+            gridViewPublic.updateImg(publicPaths, true);
+        });
         gridViewPublic.setOnItemClickListener((parent, view, position, id) -> {
-            imageType = BASE_TWO;
-            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
-
+            if (publicPaths.size() > position) {
+                //查看大图
+                Intent intent = new Intent(PersonalActivity.this, ImagePreviewActivity.class);
+                intent.putExtra(ImagePreviewActivity.INTENT_URLS, publicPaths);
+                intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+            } else {
+                imageType = BASE_TWO;
+                permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
+            }
+        });
+        gridViewPrivate.setOnDeleteClickListener(position -> {
+            privateFiles.remove(position);
+            privatePaths.remove(position);
+            gridViewPrivate.updateImg(privatePaths, true);
         });
         gridViewPrivate.setOnItemClickListener((parent, view, position, id) -> {
-            imageType = BASE_THREE;
-            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
+            if (privatePaths.size() > position) {
+                //查看大图
+                Intent intent = new Intent(PersonalActivity.this, ImagePreviewActivity.class);
+                intent.putExtra(ImagePreviewActivity.INTENT_URLS, privatePaths);
+                intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+            } else {
+                imageType = BASE_THREE;
+                permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
+            }
         });
-
     }
 
     private void bindData(UserInfoBean data) {
@@ -192,6 +223,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         });
         height = data.getHeight();
         weight = data.getWeight();
+        age = data.getAge();
         bodyType = data.getSomatotype();
         race = data.getRace();
         education = data.getEducation();
@@ -205,6 +237,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         who = data.getContact_object();
         purpose = data.getMaking_friends_goals();
         introduction = data.getIndividuality_signature();
+        job = data.getOccupation();
 
         tvHeight.setText(String.valueOf(height));
         tvAge.setText(String.valueOf(age));
@@ -225,8 +258,22 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         tvDrink.setText(dataDictBean.getSmokeOrDrink().get(drink));
 
         ArrayList<PicturePathBean> paths = data.getAlbum();
+        publicPaths.clear();
+        privatePaths.clear();
         if (paths != null && paths.size() > 0) {
+            for (int i = 0; i < paths.size(); i++) {
+                PicturePathBean bean = paths.get(i);
+                NormImage normImage = new NormImage();
+                normImage.setImageUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path()));
+                if (bean.getPicture_type() == 1) {
+                    publicPaths.add(normImage);
+                } else {
+                    privatePaths.add(normImage);
+                }
+            }
         }
+        gridViewPublic.updateImg(publicPaths, publicPaths.size() < 4);
+        gridViewPrivate.updateImg(privatePaths, privatePaths.size() < 4);
     }
 
     /**
@@ -253,16 +300,27 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
 
     private void auth() {
         RequestUtils.auth(this, signSession(InterfaceName.AUTH), name, headerFile, age, height, 0
-                , bodyType, race, education, marriage, child, smoke, drink,
-                userInfo.getBe_interested_in(), income, money, life, who, purpose, introduction,
-                publicFiles, privateFiles, this);
+                , bodyType, race, education, marriage, child, smoke, drink, job,
+                userInfo.getBe_interested_in(), proId + "," + cityId, income, money, life, who,
+                purpose, introduction, publicFiles, privateFiles, this);
     }
 
     private void edit() {
         RequestUtils.edit(this, signSession(InterfaceName.EDIT_USER_INFO), name, headerFile, age,
-                height, 0, bodyType, race, education, marriage, child, smoke, drink,
-                userInfo.getBe_interested_in(), income, money, life, who, purpose, introduction,
-                publicFiles, privateFiles, this);
+                height, 0, bodyType, race, education, marriage, child, smoke, drink, job,
+                userInfo.getBe_interested_in(), income, money, life, who, proId + "," + cityId,
+                purpose, introduction, publicFiles, privateFiles, this);
+    }
+
+    /**
+     * 登录
+     */
+    private void login() {
+        String pwd = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_PWD);
+        RequestUtils.login(this, BaseUtils.signSpan(this, userInfo.getMobile_number(),
+                InterfaceName.SIGN_IN), pwd,
+                String.valueOf(SweetApplication.getInstance().getLat()),
+                String.valueOf(SweetApplication.getInstance().getLng()), this);
     }
 
     @OnClick({R.id.iv_header, R.id.iv_add, R.id.layout_who, R.id.layout_life, R.id.layout_money,
@@ -429,10 +487,12 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 break;
             case R.id.layout_address:
                 addressPro = value;
-                getCityData(provinceBeans.get(value).getId());
+                proId = provinceBeans.get(value).getId();
+                getCityData(proId);
                 break;
             case R.id.text:
                 addressCity = value;
+                cityId = cityBeans.get(addressCity).getId();
                 tvAddress.setText(provinceNames.get(addressPro) + cityNames.get(addressCity));
                 break;
             case R.id.layout_body_type:
@@ -488,13 +548,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 finish();
                 break;
             case EDIT_USER_INFO:
-                userInfo.setNickname(name);
-                userInfo.setIndividuality_signature(introduction);
-                userInfo.setAge(age);
-                loginBean.setUserInfo(userInfo);
-                SweetApplication.getInstance().setLoginBean(loginBean);
-                setResult(RESULT_OK);
-                finish();
+                login();
                 break;
             case GET_PROVINCE_INFO:
                 provinceBeans = (ArrayList<ProvinceBean>) response.getData();
@@ -512,6 +566,12 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 new DownDialog(this).setData(cityNames)
                         .setOnMediaItemClickListener(R.id.text, this).show();
                 break;
+            case LOGIN:
+                loginBean = (UserBaseBean) response.getData();
+                //存储登录结果
+                SweetApplication.getInstance().setLoginBean(loginBean);
+                setResult(RESULT_OK);
+                finish();
             default:
                 break;
         }
@@ -554,6 +614,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                             publicFiles.add(new File(path));
                             NormImage normImage = new NormImage();
                             normImage.setImageUrl(path);
+                            normImage.setImagePath(path);
                             publicPaths.add(normImage);
                         }
                         boolean isAdd = false;
@@ -569,6 +630,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                             privateFiles.add(new File(path));
                             NormImage normImage = new NormImage();
                             normImage.setImageUrl(path);
+                            normImage.setImagePath(path);
                             privatePaths.add(normImage);
                         }
                         boolean isAdd = false;

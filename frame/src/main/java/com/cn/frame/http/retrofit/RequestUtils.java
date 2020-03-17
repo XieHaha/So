@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -257,14 +258,11 @@ public class RequestUtils {
 
     public static void auth(Context c, String sign, String name, File headerFile, int age,
                             int height, int weight, int bodyType, int race, int education,
-                            int marriage, int child, int smoke, int drink, int be_interested_in,
-                            int income, int money, int life, int who, String purpose,
-                            String introduction, ArrayList<File> publicFiles,
-                            ArrayList<File> privateFiles,
+                            int marriage, int child, int smoke, int drink, int job,
+                            int be_interested_in, String area_code, int income, int money,
+                            int life, int who, String purpose, String introduction,
+                            ArrayList<File> publicFiles, ArrayList<File> privateFiles,
                             final ResponseListener<BaseResponse> l) {
-        Map<String, Object> params = new HashMap<>(16);
-        params.put("sign", sign);
-        params.put("nickname", name);
         RequestBody header = RequestBody.create(MediaType.parse("multipart/form-data"),
                 headerFile);
         MultipartBody.Part headerBody = null;
@@ -274,27 +272,9 @@ public class RequestUtils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        params.put("head_portrait", headerFile);
-        params.put("age", age);
-        params.put("height", height);
-        params.put("weight", weight);
-        params.put("somatotype", bodyType);
-        params.put("race", race);
-        params.put("education", education);
-        params.put("marriage", marriage);
-        params.put("children", child);
-        params.put("smoke", smoke);
-        params.put("drink", drink);
-        params.put("be_interested_in", be_interested_in);
-        params.put("annual_income", income);
-        params.put("net_assets", money);
-        params.put("life_style", life);
-        params.put("contact_object", who);
-        params.put("making_friends_goals", purpose);
-        params.put("individuality_signature", introduction);
-        ArrayList<MultipartBody.Part> publicData = null, privateData = null;
+
+        List<MultipartBody.Part> photos = new ArrayList<>();
         if (publicFiles.size() > 0) {
-            publicData = new ArrayList<>();
             for (int i = 0, publicFilesSize = publicFiles.size(); i < publicFilesSize; i++) {
                 File file = publicFiles.get(i);
                 RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
@@ -306,12 +286,10 @@ public class RequestUtils {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                publicData.add(body);
-                params.put("publicImgs_" + (i + 1), file);
+                photos.add(body);
             }
         }
         if (privateFiles.size() > 0) {
-            privateData = new ArrayList<>();
             for (int i = 0, privateFilesSize = privateFiles.size(); i < privateFilesSize; i++) {
                 File file = privateFiles.get(i);
                 RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
@@ -323,27 +301,83 @@ public class RequestUtils {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                privateData.add(body);
-                params.put("privateImgs_" + (i + 1), file);
-
+                photos.add(body);
             }
         }
+
+        MultipartBody.Part data1 = MultipartBody.Part.createFormData("sign", sign);
+        MultipartBody.Part data2 = MultipartBody.Part.createFormData("nickname", name);
+        MultipartBody.Part data3 = MultipartBody.Part.createFormData("age", String.valueOf(age));
+        MultipartBody.Part data4 = MultipartBody.Part.createFormData("height",
+                String.valueOf(height));
+        MultipartBody.Part data5 = MultipartBody.Part.createFormData("weight",
+                String.valueOf(weight));
+        MultipartBody.Part data6 = MultipartBody.Part.createFormData("somatotype",
+                String.valueOf(bodyType));
+        MultipartBody.Part data7 = MultipartBody.Part.createFormData("race", String.valueOf(race));
+        MultipartBody.Part data8 = MultipartBody.Part.createFormData("education",
+                String.valueOf(education));
+        MultipartBody.Part data9 = MultipartBody.Part.createFormData("marriage",
+                String.valueOf(marriage));
+        MultipartBody.Part data11 = MultipartBody.Part.createFormData("children",
+                String.valueOf(child));
+        MultipartBody.Part data12 = MultipartBody.Part.createFormData("smoke",
+                String.valueOf(smoke));
+        MultipartBody.Part data13 = MultipartBody.Part.createFormData("drink",
+                String.valueOf(drink));
+        MultipartBody.Part data14 = MultipartBody.Part.createFormData("occupation",
+                String.valueOf(job));
+        MultipartBody.Part data15 = MultipartBody.Part.createFormData("area_code", area_code);
+        MultipartBody.Part data16 = MultipartBody.Part.createFormData("be_interested_in",
+                String.valueOf(be_interested_in));
+        MultipartBody.Part data17 = MultipartBody.Part.createFormData("annual_income",
+                String.valueOf(income));
+        MultipartBody.Part data18 = MultipartBody.Part.createFormData("net_assets",
+                String.valueOf(money));
+        MultipartBody.Part data19 = MultipartBody.Part.createFormData("life_style",
+                String.valueOf(life));
+        MultipartBody.Part data20 = MultipartBody.Part.createFormData("contact_object",
+                String.valueOf(who));
+        MultipartBody.Part data21 = MultipartBody.Part.createFormData("making_friends_goals",
+                purpose);
+        MultipartBody.Part data22 = MultipartBody.Part.createFormData("individuality_signature",
+                introduction);
+        photos.add(data1);
+        photos.add(data2);
+        photos.add(data3);
+        photos.add(data4);
+        photos.add(data5);
+        photos.add(data6);
+        photos.add(data7);
+        photos.add(data8);
+        photos.add(data9);
+        photos.add(data11);
+        photos.add(data12);
+        photos.add(data14);
+        photos.add(data13);
+        photos.add(data15);
+        photos.add(data16);
+        photos.add(data17);
+        photos.add(data18);
+        photos.add(data19);
+        photos.add(data20);
+        photos.add(data21);
+        photos.add(data22);
+        photos.add(headerBody);
+
         RetrofitManager.getApiUrlManager(c)
-                .auth(params)
+                .auth(photos)
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.AUTH, l));
     }
 
     public static void edit(Context c, String sign, String name, File headerFile, int age,
                             int height, int weight, int bodyType, int race, int education,
-                            int marriage, int child, int smoke, int drink, int be_interested_in,
-                            int income, int money, int life, int who, String purpose,
-                            String introduction, ArrayList<File> publicFiles,
-                            ArrayList<File> privateFiles,
+                            int marriage, int child, int smoke, int drink, int job,
+                            int be_interested_in, int income, int money, int life, int who,
+                            String areaCode, String purpose, String introduction,
+                            ArrayList<File> publicFiles, ArrayList<File> privateFiles,
                             final ResponseListener<BaseResponse> l) {
-        Map<String, Object> params = new HashMap<>(16);
-        params.put("sign", sign);
-        params.put("nickname", name);
         RequestBody header = RequestBody.create(MediaType.parse("multipart/form-data"),
                 headerFile);
         MultipartBody.Part headerBody = null;
@@ -353,27 +387,9 @@ public class RequestUtils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        params.put("head_portrait", headerFile);
-        params.put("age", age);
-        params.put("height", height);
-        params.put("weight", weight);
-        params.put("somatotype", bodyType);
-        params.put("race", race);
-        params.put("education", education);
-        params.put("marriage", marriage);
-        params.put("children", child);
-        params.put("smoke", smoke);
-        params.put("drink", drink);
-        params.put("be_interested_in", be_interested_in);
-        params.put("annual_income", income);
-        params.put("net_assets", money);
-        params.put("life_style", life);
-        params.put("contact_object", who);
-        params.put("making_friends_goals", purpose);
-        params.put("individuality_signature", introduction);
-        ArrayList<MultipartBody.Part> publicData = null, privateData = null;
+
+        List<MultipartBody.Part> photos = new ArrayList<>();
         if (publicFiles.size() > 0) {
-            publicData = new ArrayList<>();
             for (int i = 0, publicFilesSize = publicFiles.size(); i < publicFilesSize; i++) {
                 File file = publicFiles.get(i);
                 RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
@@ -385,12 +401,10 @@ public class RequestUtils {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                publicData.add(body);
-                params.put("publicImgs_" + (i + 1), file);
+                photos.add(body);
             }
         }
         if (privateFiles.size() > 0) {
-            privateData = new ArrayList<>();
             for (int i = 0, privateFilesSize = privateFiles.size(); i < privateFilesSize; i++) {
                 File file = privateFiles.get(i);
                 RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
@@ -402,13 +416,72 @@ public class RequestUtils {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                privateData.add(body);
-                params.put("privateImgs_" + (i + 1), file);
-
+                photos.add(body);
             }
         }
+
+        MultipartBody.Part data1 = MultipartBody.Part.createFormData("sign", sign);
+        MultipartBody.Part data2 = MultipartBody.Part.createFormData("nickname", name);
+        MultipartBody.Part data3 = MultipartBody.Part.createFormData("age", String.valueOf(age));
+        MultipartBody.Part data4 = MultipartBody.Part.createFormData("height",
+                String.valueOf(height));
+        MultipartBody.Part data5 = MultipartBody.Part.createFormData("weight",
+                String.valueOf(weight));
+        MultipartBody.Part data6 = MultipartBody.Part.createFormData("somatotype",
+                String.valueOf(bodyType));
+        MultipartBody.Part data7 = MultipartBody.Part.createFormData("race", String.valueOf(race));
+        MultipartBody.Part data8 = MultipartBody.Part.createFormData("education",
+                String.valueOf(education));
+        MultipartBody.Part data9 = MultipartBody.Part.createFormData("marriage",
+                String.valueOf(marriage));
+        MultipartBody.Part data11 = MultipartBody.Part.createFormData("children",
+                String.valueOf(child));
+        MultipartBody.Part data12 = MultipartBody.Part.createFormData("smoke",
+                String.valueOf(smoke));
+        MultipartBody.Part data13 = MultipartBody.Part.createFormData("drink",
+                String.valueOf(drink));
+        MultipartBody.Part data14 = MultipartBody.Part.createFormData("occupation",
+                String.valueOf(job));
+        MultipartBody.Part data15 = MultipartBody.Part.createFormData("area_code", areaCode);
+        MultipartBody.Part data16 = MultipartBody.Part.createFormData("be_interested_in",
+                String.valueOf(be_interested_in));
+        MultipartBody.Part data17 = MultipartBody.Part.createFormData("annual_income",
+                String.valueOf(income));
+        MultipartBody.Part data18 = MultipartBody.Part.createFormData("net_assets",
+                String.valueOf(money));
+        MultipartBody.Part data19 = MultipartBody.Part.createFormData("life_style",
+                String.valueOf(life));
+        MultipartBody.Part data20 = MultipartBody.Part.createFormData("contact_object",
+                String.valueOf(who));
+        MultipartBody.Part data21 = MultipartBody.Part.createFormData("making_friends_goals",
+                purpose);
+        MultipartBody.Part data22 = MultipartBody.Part.createFormData("individuality_signature",
+                introduction);
+        photos.add(data1);
+        photos.add(data2);
+        photos.add(data3);
+        photos.add(data4);
+        photos.add(data5);
+        photos.add(data6);
+        photos.add(data7);
+        photos.add(data8);
+        photos.add(data9);
+        photos.add(data11);
+        photos.add(data12);
+        photos.add(data14);
+        photos.add(data13);
+        photos.add(data15);
+        photos.add(data16);
+        photos.add(data17);
+        photos.add(data18);
+        photos.add(data19);
+        photos.add(data20);
+        photos.add(data21);
+        photos.add(data22);
+        photos.add(headerBody);
+
         RetrofitManager.getApiUrlManager(c)
-                .auth(params)
+                .auth(photos)
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.EDIT_USER_INFO, l));
     }

@@ -91,12 +91,21 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
         tvSex.setText(BASE_ONE == userInfo.getSex() ? R.string.txt_male : R.string.txt_female);
         tvAge.setText(String.valueOf(userInfo.getAge()));
-        //        tvAddress.setText(userInfo.getAddress());
         tvAddress.setText(SweetApplication.getInstance().getCity());
         tvJob.setText(dataDictBean.getOccupationInfo().get(userInfo.getOccupation()));
         tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
         tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
         tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
+        uiStatus();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        iNotifyChangeListenerServer.registerFollowNumChangeListener(this, RegisterType.REGISTER);
+    }
+
+    private void uiStatus() {
         int authState = userInfo.getIs_auth();
         if (authState == BASE_ONE) {
             tvText.setText("去认证>>");
@@ -123,12 +132,6 @@ public class MyFragment extends BaseFragment implements IChange<String> {
                 }
             }
         }
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-        iNotifyChangeListenerServer.registerFollowNumChangeListener(this, RegisterType.REGISTER);
     }
 
     private void signOut() {
@@ -222,13 +225,10 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     private void update() {
         loginBean = SweetApplication.getInstance().getLoginBean();
         userInfo = loginBean.getUserInfo();
-        int authState = userInfo.getIs_auth();
-        if (authState == BASE_ONE) {
-            tvText.setText("去认证>>");
-        } else {
-            tvText.setText("升级成为VIP>>");
-        }
+        uiStatus();
         tvName.setText(userInfo.getNickname());
+        tvSign.setText(userInfo.getIndividuality_signature());
+        Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
     }
 
     @Override

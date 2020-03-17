@@ -29,6 +29,10 @@ public class SweetApplication extends LitePalApplication {
 
     private String city;
     /**
+     * 坐标
+     */
+    private double lat = 0.0f, lng = 0.0f;
+    /**
      * 调试模式
      */
     public final boolean debugMode = true;
@@ -102,6 +106,22 @@ public class SweetApplication extends LitePalApplication {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
     public boolean isVip() {

@@ -19,6 +19,7 @@ public class RolesBean implements Serializable {
     private int user_id;
     private int attribute;
     private String nickname;
+    private String location;
     private String head_portrait;
     private String individuality_signature;
     private String address;
@@ -136,4 +137,11 @@ public class RolesBean implements Serializable {
         this.attribute = attribute;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

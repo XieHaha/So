@@ -15,7 +15,6 @@ import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.data.bean.VersionBean;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -168,6 +167,7 @@ public interface ApiUrlManager {
      */
     @POST("api/")
     Observable<BaseResponse<String>> questionFeedback(@Body Map<String, String> info);
+
     /**
      * 举报
      *
@@ -205,29 +205,14 @@ public interface ApiUrlManager {
     Observable<BaseResponse<PaymentBean>> upgradeMembership(@Body Map<String, Object> info);
 
     /**
-     * 认证
-     *
-     * @param info        map参数
-     * @param headerBody  头像
-     * @param publicData  公开
-     * @param privateData 私有
-     * @return 返回值
-     */
-    @Multipart
-    @POST("api/")
-    Observable<BaseResponse<String>> auth(@Body Map<String, Object> info,
-                                          @Part MultipartBody.Part headerBody,
-                                          @Part ArrayList<MultipartBody.Part> publicData,
-                                          @Part ArrayList<MultipartBody.Part> privateData);
-
-    /**
      * 认证 or 信息编辑
      *
      * @param info map参数
      * @return 返回值
      */
+    @Multipart
     @POST("api/")
-    Observable<BaseResponse<PaymentBean>> auth(@Body Map<String, Object> info);
+    Observable<BaseResponse<PaymentBean>> auth(@Part List<MultipartBody.Part> info);
 
     /**
      * 省信息

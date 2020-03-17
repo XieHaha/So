@@ -3,6 +3,7 @@ package com.cn.frame.widgets.gridview;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,12 +146,23 @@ public class AutoGridView extends RelativeLayout {
                         parent, false);
                 holder.imageView = convertView.findViewById(R.id.image);
                 holder.ivUpload = convertView.findViewById(R.id.iv_upload);
+                holder.ivDelete = convertView.findViewById(R.id.iv_delete);
                 holder.tvNum = convertView.findViewById(R.id.tv_num);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             String url = images.get(position).getImageUrl();
+            if (!TextUtils.isEmpty(url) && isAdd) {
+                holder.ivDelete.setVisibility(VISIBLE);
+                holder.ivDelete.setOnClickListener(v -> {
+                    if (onDeleteClickListener != null) {
+                        onDeleteClickListener.onDeleteClick(position);
+                    }
+                });
+            } else {
+                holder.ivDelete.setVisibility(GONE);
+            }
             if (isAdd) {
                 holder.imageView.setVisibility(VISIBLE);
             } else {
@@ -170,7 +182,7 @@ public class AutoGridView extends RelativeLayout {
     }
 
     private class ViewHolder {
-        private ImageView imageView, ivUpload;
+        private ImageView imageView, ivUpload, ivDelete;
         private TextView tvNum;
     }
 

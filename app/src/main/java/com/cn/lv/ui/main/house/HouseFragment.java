@@ -176,6 +176,8 @@ public class HouseFragment extends BaseFragment {
             String city = location.getCity();    //获取城市
             lat = location.getLatitude();
             lng = location.getLongitude();
+            SweetApplication.getInstance().setLat(lat);
+            SweetApplication.getInstance().setLng(lng);
             SweetApplication.getInstance().setCity(city);
             SweetLog.i(TAG, "house --->city:" + city + " Lat: " + lat + "  Lng: " + lng);
         }

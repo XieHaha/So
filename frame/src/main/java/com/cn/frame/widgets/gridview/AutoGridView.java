@@ -34,9 +34,13 @@ public class AutoGridView extends RelativeLayout {
     private ArrayList<NormImage> images;
     private Context context;
     /**
-     * 是否显示添加按钮及删除按钮
+     * 是否显示添加按钮
      */
     private boolean isAdd;
+    /**
+     * 是否显示删除按钮
+     */
+    private boolean isShowDelete;
     /**
      * 是否显示数量统计
      */
@@ -69,7 +73,7 @@ public class AutoGridView extends RelativeLayout {
         gridView.setNumColumns(numColumns);
         gridView.setPadding(imgPadding, 0, imgPadding, 0);
         gridView.setVerticalSpacing(imgSpace);
-        updateImg(images, true);
+        updateImg(images, true, true);
         addView(gridView);
     }
 
@@ -95,8 +99,9 @@ public class AutoGridView extends RelativeLayout {
         this.showNum = showNum;
     }
 
-    public void updateImg(ArrayList<NormImage> bitmaps, boolean isAdd) {
+    public void updateImg(ArrayList<NormImage> bitmaps, boolean showDelete, boolean isAdd) {
         this.isAdd = isAdd;
+        this.isShowDelete = showDelete;
         images.clear();
         images.addAll(bitmaps);
         if (bitmaps.size() < BaseData.BASE_IMAGE_SIZE_MAX && isAdd) {
@@ -153,7 +158,8 @@ public class AutoGridView extends RelativeLayout {
                 holder = (ViewHolder) convertView.getTag();
             }
             String url = images.get(position).getImageUrl();
-            if (!TextUtils.isEmpty(url) && isAdd) {
+            String path = images.get(position).getImagePath();
+            if ((!TextUtils.isEmpty(url) || !TextUtils.isEmpty(path)) && isShowDelete) {
                 holder.ivDelete.setVisibility(VISIBLE);
                 holder.ivDelete.setOnClickListener(v -> {
                     if (onDeleteClickListener != null) {
@@ -168,13 +174,20 @@ public class AutoGridView extends RelativeLayout {
             } else {
                 holder.imageView.setVisibility(GONE);
             }
-            if (showNum) {
-                holder.tvNum.setVisibility(VISIBLE);
+            //            if (showNum) {
+            //                holder.tvNum.setVisibility(VISIBLE);
+            //            } else {
+            //                holder.tvNum.setVisibility(GONE);
+            //            }
+
+            String value;
+            if (TextUtils.isEmpty(url)) {
+                value = path;
             } else {
-                holder.tvNum.setVisibility(GONE);
+                value = url;
             }
             Glide.with(context)
-                    .load(url)
+                    .load(value)
                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(context, 4)))
                     .into(holder.ivUpload);
             return convertView;

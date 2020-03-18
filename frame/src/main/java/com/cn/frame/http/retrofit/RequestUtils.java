@@ -529,5 +529,16 @@ public class RequestUtils {
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.SHIELD_USER, l));
     }
+
+    public static void pictureDel(Context c, String sign, int imageId,
+                                  final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        params.put("id", imageId);
+        RetrofitManager.getApiUrlManager(c)
+                .pictureDel(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.PICTURE_DEL, l));
+    }
 }
 

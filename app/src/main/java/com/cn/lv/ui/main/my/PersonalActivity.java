@@ -99,9 +99,18 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     @BindView(R.id.tv_next)
     TextView tvNext;
 
+    /**
+     * 支付数据
+     */
+    private PaymentBean paymentBean;
+
     private File headerFile;
     private ArrayList<NormImage> publicPaths = new ArrayList<>();
     private ArrayList<NormImage> privatePaths = new ArrayList<>();
+    /**
+     * 已有的图片
+     */
+    private ArrayList<PicturePathBean> paths;
     /**
      * 公开照片
      */
@@ -124,6 +133,14 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      * 图片类型
      */
     private int imageType;
+    /**
+     * 删除的图片类型
+     */
+    private int deleteType;
+    /**
+     * 当前操作的图片
+     */
+    private int curPosition = -1;
 
     private int proId, cityId;
 
@@ -158,10 +175,16 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     public void initListener() {
         super.initListener();
         gridViewPublic.setOnDeleteClickListener(position -> {
-            publicFiles.remove(position);
-            publicPaths.remove(position);
-            gridViewPublic.updateImg(publicPaths, true);
+            curPosition = position;
+            int imageId = publicPaths.get(position).getId();
+            if (-1 == imageId) {
+                deletePublic();
+            } else {
+                deleteType = BASE_ONE;
+                pictureDel(imageId);
+            }
         });
+
         gridViewPublic.setOnItemClickListener((parent, view, position, id) -> {
             if (publicPaths.size() > position) {
                 //查看大图
@@ -175,11 +198,18 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
             }
         });
+
         gridViewPrivate.setOnDeleteClickListener(position -> {
-            privateFiles.remove(position);
-            privatePaths.remove(position);
-            gridViewPrivate.updateImg(privatePaths, true);
+            curPosition = position;
+            int imageId = privatePaths.get(position).getId();
+            if (-1 == imageId) {
+                deletePrivate();
+            } else {
+                deleteType = BASE_TWO;
+                pictureDel(imageId);
+            }
         });
+
         gridViewPrivate.setOnItemClickListener((parent, view, position, id) -> {
             if (privatePaths.size() > position) {
                 //查看大图
@@ -257,7 +287,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         tvSmoke.setText(dataDictBean.getSmokeOrDrink().get(smoke));
         tvDrink.setText(dataDictBean.getSmokeOrDrink().get(drink));
 
-        ArrayList<PicturePathBean> paths = data.getAlbum();
+        paths = data.getAlbum();
         publicPaths.clear();
         publicFiles.clear();
         privatePaths.clear();
@@ -267,6 +297,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 PicturePathBean bean = paths.get(i);
                 NormImage normImage = new NormImage();
                 normImage.setImageUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path()));
+                normImage.setId(bean.getId());
                 if (bean.getPicture_type() == 1) {
                     publicPaths.add(normImage);
                     publicFiles.add(FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path())));
@@ -276,8 +307,20 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 }
             }
         }
-        gridViewPublic.updateImg(publicPaths, publicPaths.size() < 4);
-        gridViewPrivate.updateImg(privatePaths, privatePaths.size() < 4);
+        gridViewPublic.updateImg(publicPaths, true, publicPaths.size() < 4);
+        gridViewPrivate.updateImg(privatePaths, true, privatePaths.size() < 4);
+    }
+
+    private void deletePublic() {
+        publicFiles.remove(curPosition);
+        publicPaths.remove(curPosition);
+        gridViewPublic.updateImg(publicPaths, true, true);
+    }
+
+    private void deletePrivate() {
+        privateFiles.remove(curPosition);
+        privatePaths.remove(curPosition);
+        gridViewPrivate.updateImg(privatePaths, true, true);
     }
 
     /**
@@ -300,6 +343,13 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      */
     private void getCityData(int parentId) {
         RequestUtils.getCityData(this, signSession(InterfaceName.GET_CITY_INFO), parentId, this);
+    }
+
+    /**
+     * 获取市信息
+     */
+    private void pictureDel(int imageId) {
+        RequestUtils.pictureDel(this, signSession(InterfaceName.PICTURE_DEL), imageId, this);
     }
 
     private void auth() {
@@ -542,14 +592,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 bindData(data);
                 break;
             case AUTH:
-                userInfo.setIs_auth(2);
-                userInfo.setNickname(name);
-                userInfo.setIndividuality_signature(introduction);
-                userInfo.setAge(age);
-                loginBean.setUserInfo(userInfo);
-                SweetApplication.getInstance().setLoginBean(loginBean);
-                setResult(RESULT_OK);
-                finish();
+                login();
                 break;
             case EDIT_USER_INFO:
                 login();
@@ -574,8 +617,24 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 loginBean = (UserBaseBean) response.getData();
                 //存储登录结果
                 SweetApplication.getInstance().setLoginBean(loginBean);
-                setResult(RESULT_OK);
-                finish();
+                if (ivNext.isShown()) {
+                    Intent intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, paymentBean.getPayment_address());
+                    intent.putExtra(CommonData.KEY_TITLE, "认证");
+                    startActivity(intent);
+                    finish();
+                } else {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+                break;
+            case PICTURE_DEL:
+                if (BASE_ONE == deleteType) {
+                    deletePublic();
+                } else {
+                    deletePrivate();
+                }
+                break;
             default:
                 break;
         }
@@ -585,14 +644,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     public void onResponseCode(Tasks task, BaseResponse response) {
         super.onResponseCode(task, response);
         if (response.getCode() == 202) {
-            PaymentBean paymentBean = (PaymentBean) response.getData();
-            Intent intent = new Intent(this, WebViewActivity.class);
-            intent.putExtra(CommonData.KEY_PUBLIC, paymentBean.getPayment_address());
-            intent.putExtra(CommonData.KEY_TITLE, "认证");
-            startActivity(intent);
-            //            Uri uri = Uri.parse(paymentBean.getPayment_address());
-            //            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            //            startActivity(intent);
+            if (task == Tasks.AUTH) {
+                paymentBean = (PaymentBean) response.getData();
+                login();
+            }
         }
     }
 
@@ -617,14 +672,15 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                         for (String path : paths) {
                             publicFiles.add(new File(path));
                             NormImage normImage = new NormImage();
-                            normImage.setImageUrl(path);
+                            normImage.setImagePath(path);
+                            normImage.setId(-1);
                             publicPaths.add(normImage);
                         }
                         boolean isAdd = false;
                         if (publicPaths.size() < 4) {
                             isAdd = true;
                         }
-                        gridViewPublic.updateImg(publicPaths, isAdd);
+                        gridViewPublic.updateImg(publicPaths, true, isAdd);
                     }
                     break;
                 case BASE_THREE:
@@ -632,14 +688,15 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                         for (String path : paths) {
                             privateFiles.add(new File(path));
                             NormImage normImage = new NormImage();
-                            normImage.setImageUrl(path);
+                            normImage.setImagePath(path);
+                            normImage.setId(-1);
                             privatePaths.add(normImage);
                         }
                         boolean isAdd = false;
                         if (privatePaths.size() < 4) {
                             isAdd = true;
                         }
-                        gridViewPrivate.updateImg(privatePaths, isAdd);
+                        gridViewPrivate.updateImg(privatePaths, true, isAdd);
                     }
                     break;
                 default:

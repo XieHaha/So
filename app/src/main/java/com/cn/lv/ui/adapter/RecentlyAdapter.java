@@ -39,9 +39,10 @@ public class RecentlyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder>
         ImageView attention = helper.getView(R.id.iv_attention);
         ImageView ivHeader = helper.getView(R.id.iv_header);
         Glide.with(mContext).load(ImageUrlUtil.addTokenToUrl(item.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(mContext), 4))).into(ivHeader);
-        helper.setText(R.id.tv_sex, BASE_ONE == item.getSex() ? R.string.txt_male :
-                R.string.txt_female)
-                .setText(R.id.tv_age, String.valueOf(item.getAge()))
+        TextView tvSex = helper.getView(R.id.tv_sex);
+        tvSex.setText(BASE_ONE == item.getSex() ? R.string.txt_male : R.string.txt_female);
+        tvSex.setSelected(BASE_ONE != item.getSex());
+        helper.setText(R.id.tv_age, String.valueOf(item.getAge()))
                 .setText(R.id.tv_sign, item.getIndividuality_signature())
                 .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()))
                 .setText(R.id.tv_time, item.getLast_login_time());

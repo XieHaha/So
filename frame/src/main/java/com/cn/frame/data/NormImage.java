@@ -17,6 +17,8 @@ public class NormImage implements Serializable {
      */
     String imagePath;
 
+    int id;
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -31,5 +33,13 @@ public class NormImage implements Serializable {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -8,6 +8,7 @@ public class PicturePathBean implements Serializable {
     private String picture_path;
     private int picture_type;
     private int position;
+    private int id;
 
     public String getPicture_path() {
         return picture_path;
@@ -31,5 +32,13 @@ public class PicturePathBean implements Serializable {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

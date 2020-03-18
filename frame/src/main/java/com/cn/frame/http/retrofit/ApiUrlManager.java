@@ -250,4 +250,13 @@ public interface ApiUrlManager {
     @POST("api/")
     Observable<BaseResponse<String>> shieldUser(@Body Map<String, Object> info);
 
+    /**
+     * 图片删除
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> pictureDel(@Body Map<String, Object> info);
+
 }

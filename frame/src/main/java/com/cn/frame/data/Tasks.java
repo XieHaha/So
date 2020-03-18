@@ -100,5 +100,9 @@ public enum Tasks {
      * 屏蔽
      */
     SHIELD_USER,
+    /**
+     * 图片删除
+     */
+    PICTURE_DEL,
 }
 

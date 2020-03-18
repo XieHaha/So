@@ -96,5 +96,9 @@ public interface InterfaceName {
      * 用户屏蔽
      */
     String SHIELD_USER = "shieldUser";
+    /**
+     * 图片删除
+     */
+    String PICTURE_DEL = "pictureDel";
 
 }

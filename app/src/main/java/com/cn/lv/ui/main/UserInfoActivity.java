@@ -125,7 +125,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
             userId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
             isBlack = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
         }
-        gridViewPrivate.updateImg(images, false);
+        gridViewPrivate.updateImg(images, false, false);
     }
 
     @Override
@@ -276,7 +276,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
                 normImage.setImageUrl(ImageUrlUtil.addTokenToUrl(path.getPicture_path()));
                 images.add(normImage);
             }
-            gridViewPrivate.updateImg(images, false);
+            gridViewPrivate.updateImg(images, false, false);
         }
     }
 

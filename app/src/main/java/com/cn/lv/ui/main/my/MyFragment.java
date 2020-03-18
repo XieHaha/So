@@ -78,6 +78,12 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        bindData();
+    }
+
+    @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
@@ -86,16 +92,6 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        tvName.setText(userInfo.getNickname());
-        tvSign.setText(userInfo.getIndividuality_signature());
-        Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
-        tvSex.setText(BASE_ONE == userInfo.getSex() ? R.string.txt_male : R.string.txt_female);
-        tvAge.setText(String.valueOf(userInfo.getAge()));
-        tvAddress.setText(SweetApplication.getInstance().getCity());
-        tvJob.setText(dataDictBean.getOccupationInfo().get(userInfo.getOccupation()));
-        tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
-        tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
-        tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
         uiStatus();
     }
 
@@ -103,6 +99,21 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     public void initListener() {
         super.initListener();
         iNotifyChangeListenerServer.registerFollowNumChangeListener(this, RegisterType.REGISTER);
+    }
+
+    private void bindData() {
+        userInfo = getLoginBean().getUserInfo();
+        tvName.setText(userInfo.getNickname());
+        tvSign.setText(userInfo.getIndividuality_signature());
+        Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
+        tvSex.setText(BASE_ONE == userInfo.getSex() ? R.string.txt_male : R.string.txt_female);
+        tvSex.setSelected(BASE_ONE != userInfo.getSex());
+        tvAge.setText(String.valueOf(userInfo.getAge()));
+        tvAddress.setText(SweetApplication.getInstance().getCity());
+        tvJob.setText(dataDictBean.getOccupationInfo().get(userInfo.getOccupation()));
+        tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
+        tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
+        tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
     }
 
     private void uiStatus() {
@@ -226,9 +237,6 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         loginBean = SweetApplication.getInstance().getLoginBean();
         userInfo = loginBean.getUserInfo();
         uiStatus();
-        tvName.setText(userInfo.getNickname());
-        tvSign.setText(userInfo.getIndividuality_signature());
-        Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
     }
 
     @Override

@@ -17,7 +17,6 @@ import com.cn.frame.data.CommonData;
 import com.cn.frame.data.NormImage;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.CityBean;
-import com.cn.frame.data.bean.PaymentBean;
 import com.cn.frame.data.bean.PicturePathBean;
 import com.cn.frame.data.bean.ProvinceBean;
 import com.cn.frame.data.bean.UserBaseBean;
@@ -36,7 +35,6 @@ import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.ImagePreviewActivity;
-import com.cn.lv.ui.WebViewActivity;
 import com.cn.lv.utils.FileUtils;
 import com.cn.lv.utils.ImageUrlUtil;
 import com.cn.lv.utils.MatisseUtils;
@@ -99,11 +97,6 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     @BindView(R.id.tv_next)
     TextView tvNext;
 
-    /**
-     * 支付数据
-     */
-    private PaymentBean paymentBean;
-
     private File headerFile;
     private ArrayList<NormImage> publicPaths = new ArrayList<>();
     private ArrayList<NormImage> privatePaths = new ArrayList<>();
@@ -115,10 +108,12 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      * 公开照片
      */
     private ArrayList<File> publicFiles = new ArrayList<>();
+    private ArrayList<String> publicString = new ArrayList<>();
     /**
      * 私密照片
      */
     private ArrayList<File> privateFiles = new ArrayList<>();
+    private ArrayList<String> privateString = new ArrayList<>();
 
     private ArrayList<ProvinceBean> provinceBeans = new ArrayList<>();
     private ArrayList<String> provinceNames = new ArrayList<>();
@@ -141,6 +136,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      * 当前操作的图片
      */
     private int curPosition = -1;
+    private int publicSize, privateSize;
 
     private int proId, cityId;
 
@@ -178,7 +174,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             curPosition = position;
             int imageId = publicPaths.get(position).getId();
             if (-1 == imageId) {
-                deletePublic();
+                deletePublic(true);
             } else {
                 deleteType = BASE_ONE;
                 pictureDel(imageId);
@@ -203,7 +199,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             curPosition = position;
             int imageId = privatePaths.get(position).getId();
             if (-1 == imageId) {
-                deletePrivate();
+                deletePrivate(true);
             } else {
                 deleteType = BASE_TWO;
                 pictureDel(imageId);
@@ -289,9 +285,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
 
         paths = data.getAlbum();
         publicPaths.clear();
-        publicFiles.clear();
         privatePaths.clear();
-        privateFiles.clear();
         if (paths != null && paths.size() > 0) {
             for (int i = 0; i < paths.size(); i++) {
                 PicturePathBean bean = paths.get(i);
@@ -300,25 +294,40 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 normImage.setId(bean.getId());
                 if (bean.getPicture_type() == 1) {
                     publicPaths.add(normImage);
-                    publicFiles.add(FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path())));
                 } else {
                     privatePaths.add(normImage);
-                    privateFiles.add(FileUtils.getFileByUrl(ImageUrlUtil.addTokenToUrl(bean.getPicture_path())));
                 }
             }
         }
+        publicSize = publicPaths.size();
+        privateSize = privatePaths.size();
         gridViewPublic.updateImg(publicPaths, true, publicPaths.size() < 4);
         gridViewPrivate.updateImg(privatePaths, true, privatePaths.size() < 4);
     }
 
-    private void deletePublic() {
-        publicFiles.remove(curPosition);
+    /**
+     * @param local 本地
+     */
+    private void deletePublic(boolean local) {
+        if (local) {
+            int value = publicPaths.size() - publicSize;
+            int value1 = publicPaths.size() - curPosition;
+            publicString.remove(value - value1);
+        } else {
+            publicSize--;
+        }
         publicPaths.remove(curPosition);
         gridViewPublic.updateImg(publicPaths, true, true);
     }
 
-    private void deletePrivate() {
-        privateFiles.remove(curPosition);
+    private void deletePrivate(boolean local) {
+        if (local) {
+            int value = privatePaths.size() - privateSize;
+            int value1 = privatePaths.size() - curPosition;
+            privateString.remove(value - value1);
+        } else {
+            privateSize--;
+        }
         privatePaths.remove(curPosition);
         gridViewPrivate.updateImg(privatePaths, true, true);
     }
@@ -352,16 +361,9 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         RequestUtils.pictureDel(this, signSession(InterfaceName.PICTURE_DEL), imageId, this);
     }
 
-    private void auth() {
-        RequestUtils.auth(this, signSession(InterfaceName.AUTH), name, headerFile, age, height, 0
-                , bodyType, race, education, marriage, child, smoke, drink, job,
-                userInfo.getBe_interested_in(), proId + "," + cityId, income, money, life, who,
-                purpose, introduction, publicFiles, privateFiles, this);
-    }
-
-    private void edit() {
-        RequestUtils.edit(this, signSession(InterfaceName.EDIT_USER_INFO), name, headerFile, age,
-                height, 0, bodyType, race, education, marriage, child, smoke, drink, job,
+    private void edit(int type) {
+        RequestUtils.edit(this, signSession(InterfaceName.EDIT_USER_INFO), type, name, headerFile
+                , age, height, 0, bodyType, race, education, marriage, child, smoke, drink, job,
                 userInfo.getBe_interested_in(), income, money, life, who, proId + "," + cityId,
                 purpose, introduction, publicFiles, privateFiles, this);
     }
@@ -503,16 +505,16 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         } else {
             height = Integer.valueOf(str);
         }
-        switch (type) {
-            case BASE_ONE:
-                auth();
-                break;
-            case BASE_TWO:
-                edit();
-                break;
-            default:
-                break;
+
+        for (String path : publicString) {
+            publicFiles.add(new File(path));
         }
+
+        for (String path : privateString) {
+            privateFiles.add(new File(path));
+        }
+
+        edit(type);
     }
 
 
@@ -592,8 +594,6 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 bindData(data);
                 break;
             case AUTH:
-                login();
-                break;
             case EDIT_USER_INFO:
                 login();
                 break;
@@ -618,10 +618,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 //存储登录结果
                 SweetApplication.getInstance().setLoginBean(loginBean);
                 if (ivNext.isShown()) {
-                    Intent intent = new Intent(this, WebViewActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, paymentBean.getPayment_address());
-                    intent.putExtra(CommonData.KEY_TITLE, "认证");
-                    startActivity(intent);
+                    startActivity(new Intent(this, AuthActivity.class));
                     finish();
                 } else {
                     setResult(RESULT_OK);
@@ -630,9 +627,9 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 break;
             case PICTURE_DEL:
                 if (BASE_ONE == deleteType) {
-                    deletePublic();
+                    deletePublic(false);
                 } else {
-                    deletePrivate();
+                    deletePrivate(false);
                 }
                 break;
             default:
@@ -645,7 +642,6 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         super.onResponseCode(task, response);
         if (response.getCode() == 202) {
             if (task == Tasks.AUTH) {
-                paymentBean = (PaymentBean) response.getData();
                 login();
             }
         }
@@ -670,7 +666,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 case BASE_TWO:
                     if (paths != null && paths.size() > 0) {
                         for (String path : paths) {
-                            publicFiles.add(new File(path));
+                            publicString.add(path);
                             NormImage normImage = new NormImage();
                             normImage.setImagePath(path);
                             normImage.setId(-1);
@@ -686,7 +682,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 case BASE_THREE:
                     if (paths != null && paths.size() > 0) {
                         for (String path : paths) {
-                            privateFiles.add(new File(path));
+                            privateString.add(path);
                             NormImage normImage = new NormImage();
                             normImage.setImagePath(path);
                             normImage.setId(-1);
@@ -725,10 +721,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 MatisseUtils.open(this, true, 1);
                 break;
             case BASE_TWO:
-                MatisseUtils.open(this, true, 4 - publicFiles.size());
+                MatisseUtils.open(this, true, 4 - publicString.size());
                 break;
             case BASE_THREE:
-                MatisseUtils.open(this, true, 4 - privateFiles.size());
+                MatisseUtils.open(this, true, 4 - privateString.size());
                 break;
             default:
                 break;

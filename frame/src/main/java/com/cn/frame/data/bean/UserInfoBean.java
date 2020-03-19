@@ -54,6 +54,7 @@ public class UserInfoBean implements Serializable {
     private String create_time;
     private String rong_cloud_token;
     private String address;
+    private String location;
     private int usage_state;
     private ArrayList<PicturePathBean> album;
 
@@ -401,5 +402,13 @@ public class UserInfoBean implements Serializable {
 
     public void setAttribute(int attribute) {
         this.attribute = attribute;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

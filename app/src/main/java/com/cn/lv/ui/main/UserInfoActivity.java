@@ -243,7 +243,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         if (userDetailBean.getAttribute() == 2) {
             tvLocation.setText(SweetApplication.getInstance().getCity());
         } else {
-            tvLocation.setText(userDetailBean.getAddress());
+            tvLocation.setText(userDetailBean.getLocation());
         }
         tvAddress.setText(userDetailBean.getAddress());
         tvHeight.setText(userDetailBean.getHeight() + "");

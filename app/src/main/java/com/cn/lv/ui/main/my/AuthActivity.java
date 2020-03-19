@@ -73,11 +73,9 @@ public class AuthActivity extends BaseActivity implements com.cn.frame.data.PayR
             ToastUtil.toast(this, "发生未知错误，请稍候再试");
             return;
         }
-        showLoadingView(false);
         AdaPay.doPay(AuthActivity.this, new Gson().toJson(paymentBean), new PayCallback() {
             @Override
             public void onPayment(PayResult payResult) {
-                closeLoadingView();
                 ToastUtil.toast(AuthActivity.this, payResult.getResultMsg());
                 //处理支付结果
                 String code = payResult.getResultCode();
@@ -118,7 +116,6 @@ public class AuthActivity extends BaseActivity implements com.cn.frame.data.PayR
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         if (response.getCode() == 202) {
             if (task == Tasks.AUTH) {
                 paymentBean = (PaymentBean) response.getData();

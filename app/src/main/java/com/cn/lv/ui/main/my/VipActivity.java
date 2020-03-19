@@ -9,8 +9,6 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chinapnr.android.adapay.AdaPay;
-import com.chinapnr.android.adapay.PayCallback;
-import com.chinapnr.android.adapay.bean.PayResult;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
@@ -131,32 +129,28 @@ public class VipActivity extends BaseActivity implements BaseQuickAdapter.OnItem
             ToastUtil.toast(this, "发生未知错误，请稍候再试");
             return;
         }
-        AdaPay.doPay(VipActivity.this, url, new PayCallback() {
-            @Override
-            public void onPayment(PayResult payResult) {
-                closeLoadingView();
-                ToastUtil.toast(VipActivity.this, payResult.getResultMsg());
-                //处理支付结果
-                String code = payResult.getResultCode();
-                switch (code) {
-                    case ORDER_SUCCESS:
-                        login();
-                        break;
-                    case ORDER_FAILED:
-                        break;
-                    case ORDER_PAYING:
-                        break;
-                    case ORDER_CANCEL:
-                        break;
-                    case ORDER_PARAM_ERROR:
-                        break;
-                    case ORDER_NETWORK_ERROR:
-                        break;
-                    case ORDER_OTHER_ERROR:
-                        break;
-                    default:
-                        break;
-                }
+        AdaPay.doPay(VipActivity.this, url, payResult -> {
+            ToastUtil.toast(VipActivity.this, payResult.getResultMsg());
+            //处理支付结果
+            String code = payResult.getResultCode();
+            switch (code) {
+                case ORDER_SUCCESS:
+                    login();
+                    break;
+                case ORDER_FAILED:
+                    break;
+                case ORDER_PAYING:
+                    break;
+                case ORDER_CANCEL:
+                    break;
+                case ORDER_PARAM_ERROR:
+                    break;
+                case ORDER_NETWORK_ERROR:
+                    break;
+                case ORDER_OTHER_ERROR:
+                    break;
+                default:
+                    break;
             }
         });
     }

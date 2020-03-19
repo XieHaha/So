@@ -33,6 +33,7 @@ import com.cn.lv.ui.main.attention.FollowFragment;
 import com.cn.lv.ui.main.fragment.MessageFragment;
 import com.cn.lv.ui.main.house.HouseFragment;
 import com.cn.lv.ui.main.my.MyFragment;
+import com.cn.lv.utils.BadgeUtils;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;
 
@@ -177,6 +178,12 @@ public class MainActivity extends BaseActivity
                     tvMessageNum.setText(integer > 99 ? "99+" : String.valueOf(integer));
                 } else {
                     layout.setVisibility(View.INVISIBLE);
+                }
+
+                if (BadgeUtils.setCount(integer, MainActivity.this)) {
+                    SweetLog.i(TAG, "设置成功");
+                } else {
+                    SweetLog.i(TAG, "设置失败");
                 }
             }
 

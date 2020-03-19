@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,19 +17,23 @@ import com.cn.frame.data.NormImage;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.PicturePathBean;
 import com.cn.frame.data.bean.UserInfoBean;
+import com.cn.frame.data.bean.VipDetailsBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
 import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.utils.glide.GlideHelper;
+import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.frame.widgets.gridview.AutoGridView;
 import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
+import com.cn.lv.ui.ImagePreviewActivity;
 import com.cn.lv.ui.main.my.AuthActivity;
 import com.cn.lv.ui.main.my.ReportActivity;
+import com.cn.lv.ui.main.my.VipActivity;
 import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
@@ -97,6 +102,9 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     private UserInfoBean userDetailBean;
     private int userId;
     private ArrayList<NormImage> images = new ArrayList<>();
+    private ArrayList<NormImage> publicImages = new ArrayList<>();
+
+    private ArrayList<PicturePathBean> paths;
 
     /**
      * 是否已屏蔽
@@ -132,6 +140,31 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         getUserInfo();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        gridViewPrivate.setOnItemClickListener((parent, view, position, id) -> {
+            VipDetailsBean detailsBean = loginBean.getVipDetails();
+            if (paths.get(position).getPicture_type() == 1 || (detailsBean!=null && TextUtils.equals(detailsBean.getUsage_state(),"2"))) {
+                //查看大图
+                Intent intent = new Intent(UserInfoActivity.this, ImagePreviewActivity.class);
+                intent.putExtra(ImagePreviewActivity.INTENT_URLS, publicImages);
+                intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+            } else {
+                HintDialog dialog = new HintDialog(UserInfoActivity.this);
+                dialog.setTitleString("提示")
+                        .setContentString("升级会员享受更好的服务")
+                        .setCancelableAndTouch(false).setCancelBtnGone(true)
+                        .setEnterBtnTxt("升级会员").setOnEnterClickListener(() -> {
+                    startActivity(new Intent(UserInfoActivity.this, VipActivity.class));
+                    finish();
+                }).show();
+            }
+        });
     }
 
     private void getUserInfo() {
@@ -269,11 +302,23 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         } else {
             tvFollow.setSelected(false);
         }
-        ArrayList<PicturePathBean> paths = userDetailBean.getAlbum();
+        paths = userDetailBean.getAlbum();
         if (paths != null && paths.size() > 0) {
             for (PicturePathBean path : paths) {
                 NormImage normImage = new NormImage();
                 normImage.setImageUrl(ImageUrlUtil.addTokenToUrl(path.getPicture_path()));
+                VipDetailsBean detailsBean = loginBean.getVipDetails();
+                if (path.getPicture_type() == 1) {
+                    publicImages.add(normImage);
+                } else {
+                    //vip
+                    if (detailsBean != null && TextUtils.equals(detailsBean.getUsage_state(),
+                            "2")) {
+                        publicImages.add(normImage);
+                    } else {
+                        normImage.setHide(true);
+                    }
+                }
                 images.add(normImage);
             }
             gridViewPrivate.updateImg(images, false, false);

@@ -13,7 +13,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cn.frame.R;
@@ -152,13 +151,14 @@ public class AutoGridView extends RelativeLayout {
                 holder.imageView = convertView.findViewById(R.id.image);
                 holder.ivUpload = convertView.findViewById(R.id.iv_upload);
                 holder.ivDelete = convertView.findViewById(R.id.iv_delete);
-                holder.tvNum = convertView.findViewById(R.id.tv_num);
+                holder.lookLayout = convertView.findViewById(R.id.look_layout);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            String url = images.get(position).getImageUrl();
-            String path = images.get(position).getImagePath();
+            NormImage normImage = images.get(position);
+            String url = normImage.getImageUrl();
+            String path = normImage.getImagePath();
             if ((!TextUtils.isEmpty(url) || !TextUtils.isEmpty(path)) && isShowDelete) {
                 holder.ivDelete.setVisibility(VISIBLE);
                 holder.ivDelete.setOnClickListener(v -> {
@@ -174,11 +174,11 @@ public class AutoGridView extends RelativeLayout {
             } else {
                 holder.imageView.setVisibility(GONE);
             }
-            //            if (showNum) {
-            //                holder.tvNum.setVisibility(VISIBLE);
-            //            } else {
-            //                holder.tvNum.setVisibility(GONE);
-            //            }
+            if (normImage.isHide()) {
+                holder.lookLayout.setVisibility(VISIBLE);
+            } else {
+                holder.lookLayout.setVisibility(GONE);
+            }
 
             String value;
             if (TextUtils.isEmpty(url)) {
@@ -196,7 +196,7 @@ public class AutoGridView extends RelativeLayout {
 
     private class ViewHolder {
         private ImageView imageView, ivUpload, ivDelete;
-        private TextView tvNum;
+        private RelativeLayout lookLayout;
     }
 
     public interface OnDeleteClickListener {

@@ -370,7 +370,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager(c)
                 .getUserInfo(params)
                 .compose(RxJavaHelper.observableIO2Main(c))
-                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_USER_INFO, l));
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false, Tasks.GET_USER_INFO, l));
     }
 
     public static void shieldUser(Context c, String sign, int user_id, int state,

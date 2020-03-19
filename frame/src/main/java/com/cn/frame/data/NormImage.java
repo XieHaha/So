@@ -18,6 +18,7 @@ public class NormImage implements Serializable {
     String imagePath;
 
     int id;
+    boolean hide;
 
     public String getImageUrl() {
         return imageUrl;
@@ -41,5 +42,13 @@ public class NormImage implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
     }
 }

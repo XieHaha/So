@@ -60,8 +60,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="PgoSV4GxVB6Wf50SSQrj3u5MbOfGIlwM" >
-        </meta-data>
+            android:value="PgoSV4GxVB6Wf50SSQrj3u5MbOfGIlwM"></meta-data>
         <!--刘海屏适配-->
         <meta-data
             android:name="android.notch_support"
@@ -80,6 +79,7 @@
             android:name="com.cn.lv.ui.main.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -184,6 +184,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.main.ChatActivity"
+            android:exported="true"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -196,6 +197,7 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
+
         <!--登出-->
         <receiver
             android:name="com.cn.lv.receiver.LoginOutBroadcastReceiver"
@@ -221,7 +223,10 @@
                 android:resource="@xml/file_paths_public" />
         </provider>
 
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
     </application>
 
 </manifest>

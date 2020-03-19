@@ -10,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cn.frame.api.ApiManager;
 import com.cn.frame.data.BaseResponse;
@@ -61,6 +63,10 @@ public class MainActivity extends BaseActivity
     LinearLayout actMainTab3;
     @BindView(R.id.act_main_tab4)
     LinearLayout actMainTab4;
+    @BindView(R.id.layout_receiving_transfer_num)
+    RelativeLayout layout;
+    @BindView(R.id.tv_receiving_transfer_num)
+    TextView tvMessageNum;
     /**
      * 首页碎片
      */
@@ -100,6 +106,12 @@ public class MainActivity extends BaseActivity
     @Override
     public int getLayoutID() {
         return R.layout.act_main;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateMessage();
     }
 
     @Override
@@ -151,6 +163,28 @@ public class MainActivity extends BaseActivity
     private void renewSign() {
         RequestUtils.renewSign(this, BaseUtils.signSpan(this, userInfo.getMobile_number(),
                 loginBean.getSession_id(), InterfaceName.RENEW_SIGN), this);
+    }
+
+    /**
+     * 未读消息
+     */
+    private void updateMessage() {
+        RongIM.getInstance().getTotalUnreadCount(new RongIMClient.ResultCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer integer) {
+                if (integer > 0) {
+                    layout.setVisibility(View.VISIBLE);
+                    tvMessageNum.setText(integer > 99 ? "99+" : String.valueOf(integer));
+                } else {
+                    layout.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                layout.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     /**

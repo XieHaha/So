@@ -163,7 +163,7 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.COLLECTION_LIST, l));
     }
 
-    public static void renewCollection(Context c, String sign, int userId, int collection,
+    public static void renewCollection(Context c, String sign, String userId, int collection,
                                        final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
@@ -372,9 +372,9 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_CITY_INFO, l));
     }
 
-    public static void getUserInfo(Context c, String sign, int user_id,
+    public static void getUserInfo(Context c, String sign, String user_id,
                                    final ResponseListener<BaseResponse> l) {
-        Map<String, Object> params = new HashMap<>(16);
+        Map<String, String> params = new HashMap<>(16);
         params.put("sign", sign);
         params.put("user_id", user_id);
         RetrofitManager.getApiUrlManager(c)
@@ -383,7 +383,7 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, true, false, Tasks.GET_USER_INFO, l));
     }
 
-    public static void shieldUser(Context c, String sign, int user_id, int state,
+    public static void shieldUser(Context c, String sign, String user_id, int state,
                                   final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);

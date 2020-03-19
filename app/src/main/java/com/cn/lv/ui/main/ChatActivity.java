@@ -48,6 +48,7 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     private String title, targetId;
 
     private ChatBean chatBean;
+    private boolean black;
     private int msgCount = 0;
 
     @Override
@@ -71,6 +72,7 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
         if (getIntent() != null) {
             targetId = getIntent().getStringExtra(CommonData.KEY_CHAT_ID);
             title = getIntent().getStringExtra(CommonData.KEY_CHAT_TITLE);
+            black = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
             if (TextUtils.isEmpty(title)) {
                 title = getIntent().getData().getQueryParameter("title");
             }
@@ -167,7 +169,11 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     private void initMenu() {
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(0, "屏蔽用户"));
+        if (black) {
+            menuItems.add(new MenuItem(0, "取消屏蔽"));
+        } else {
+            menuItems.add(new MenuItem(0, "屏蔽用户"));
+        }
         menuItems.add(new MenuItem(0, "举报TA"));
         mTopRightMenu.setHeight(BaseUtils.dp2px(this, 130)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(publicTitleBarRightImg, -BaseUtils.dp2px(this, 94), 10);
     }
@@ -175,17 +181,20 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     @Override
     public void onMenuItemClick(int position) {
         if (position == 0) {
-            shieldUser(1);
+            if (black) {
+                shieldUser(2);
+            } else {
+                shieldUser(1);
+            }
         } else {
             Intent intent = new Intent(this, ReportActivity.class);
-            intent.putExtra(CommonData.KEY_PUBLIC, Integer.valueOf(targetId));
+            intent.putExtra(CommonData.KEY_PUBLIC, targetId);
             startActivity(intent);
         }
     }
 
     private void shieldUser(int state) {
-        RequestUtils.shieldUser(this, signSession(InterfaceName.SHIELD_USER),
-                Integer.valueOf(targetId), state,
+        RequestUtils.shieldUser(this, signSession(InterfaceName.SHIELD_USER), targetId, state,
                 this);
     }
 
@@ -195,6 +204,7 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
         super.onResponseSuccess(task, response);
         if (task == Tasks.SHIELD_USER) {
             ToastUtil.toast(this, response.getMsg());
+            black = !black;
         }
     }
 

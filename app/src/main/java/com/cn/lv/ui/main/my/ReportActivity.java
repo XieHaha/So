@@ -34,7 +34,7 @@ public class ReportActivity extends BaseActivity implements OnMediaItemClickList
 
     private ArrayList<String> data;
 
-    private int userId;
+    private String userId;
     private String title, content;
 
     @Override
@@ -57,7 +57,7 @@ public class ReportActivity extends BaseActivity implements OnMediaItemClickList
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            userId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
+            userId = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
         }
         data = new ArrayList<>();
         data.add("语言暴力");

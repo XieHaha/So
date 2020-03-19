@@ -96,11 +96,13 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     TextView tvLocation;
     @BindView(R.id.iv_vip)
     ImageView ivVip;
+    @BindView(R.id.iv_verify)
+    ImageView ivVerify;
     @BindView(R.id.layout)
     RelativeLayout layout;
 
     private UserInfoBean userDetailBean;
-    private int userId;
+    private String userId;
     private ArrayList<NormImage> images = new ArrayList<>();
     private ArrayList<NormImage> publicImages = new ArrayList<>();
 
@@ -130,7 +132,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            userId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
+            userId = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
         }
         gridViewPrivate.updateImg(images, false, false);
     }
@@ -259,6 +261,11 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
     private void bindData() {
         Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(this), 4))).into(ivHeader);
         tvName.setText(userDetailBean.getNickname());
+        if (userDetailBean.getIs_auth() == 1) {
+            ivVerify.setVisibility(View.GONE);
+        } else {
+            ivVerify.setVisibility(View.VISIBLE);
+        }
         int vip = userDetailBean.getUsage_state();
         if (vip == BASE_ONE) {
             layout.setBackground(null);
@@ -312,7 +319,8 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
                     publicImages.add(normImage);
                 } else {
                     //vip
-                    if (detailsBean != null && TextUtils.equals(detailsBean.getUsage_state(), "2")) {
+                    if (detailsBean != null && TextUtils.equals(detailsBean.getUsage_state(),
+                            "2")) {
                         publicImages.add(normImage);
                     } else {
                         normImage.setHide(true);

@@ -239,7 +239,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("api/")
-    Observable<BaseResponse<UserInfoBean>> getUserInfo(@Body Map<String, Object> info);
+    Observable<BaseResponse<UserInfoBean>> getUserInfo(@Body Map<String, String> info);
 
     /**
      * 屏蔽

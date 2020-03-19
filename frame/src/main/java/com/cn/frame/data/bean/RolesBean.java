@@ -16,7 +16,7 @@ public class RolesBean implements Serializable {
     private int usage_state;
     private int auth_state;
     private int collection_state;
-    private int user_id;
+    private String user_id;
     private int attribute;
     private String nickname;
     private String location;
@@ -81,11 +81,11 @@ public class RolesBean implements Serializable {
         this.collection_state = collection_state;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 

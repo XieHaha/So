@@ -97,7 +97,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
     /**
      * 关注
      */
-    private void renewCollection(int userId, int state) {
+    private void renewCollection(String userId, int state) {
         RequestUtils.renewCollection(getContext(), signSession(InterfaceName.RENEW_COLLECTION),
                 userId, state, this);
     }

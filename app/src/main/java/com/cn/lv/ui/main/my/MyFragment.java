@@ -113,22 +113,24 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         int authState = userInfo.getIs_auth();
         if (authState == BASE_ONE) {
             tvText.setText("去认证>>");
+            ivVerifyGreen.setVisibility(View.GONE);
         } else {
             tvText.setText("升级成为VIP>>");
+            ivVerifyGreen.setVisibility(View.VISIBLE);
             VipDetailsBean detailsBean = loginBean.getVipDetails();
             if (detailsBean != null) {
                 String endTime = detailsBean.getEnd_time_format();
                 long time =
                         BaseUtils.date2TimeStamp(endTime, BaseUtils.YYYY_MM_DD_HH_MM_SS) - System.currentTimeMillis();
-                if (time > TEN_DAY) {
-                    tvText.setText("已经是高级会员");
-                } else {
-                    tvText.setText("升级续费");
-                }
                 if (TextUtils.equals(detailsBean.getUsage_state(), "2")) {
                     layoutName.setBackgroundResource(R.drawable.corner5_211d1d_bg);
                     tvName.setSelected(true);
                     vip.setVisibility(View.VISIBLE);
+                    if (time > TEN_DAY) {
+                        tvText.setText("已经是高级会员");
+                    } else {
+                        tvText.setText("升级续费");
+                    }
                 } else {
                     layoutName.setBackground(null);
                     vip.setVisibility(View.GONE);

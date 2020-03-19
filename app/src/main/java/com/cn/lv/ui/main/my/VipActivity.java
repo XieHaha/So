@@ -68,7 +68,7 @@ public class VipActivity extends BaseActivity implements BaseQuickAdapter.OnItem
 
     private void upgradeMembership(int cardId, float cardMoney, long cardDuration) {
         RequestUtils.upgradeMembership(this, signSession(InterfaceName.UPGRADE_MEMBERSHIP),
-                cardId, 0.01f, cardDuration, this);
+                cardId, cardMoney, cardDuration, this);
     }
 
     /**

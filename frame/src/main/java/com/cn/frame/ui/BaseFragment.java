@@ -112,19 +112,17 @@ public abstract class BaseFragment extends Fragment
         unbinder = ButterKnife.bind(this, view);
         permissionHelper = PermissionHelper.getInstance(getActivity());
         sharePreferenceUtil = new SharePreferenceUtil(getContext());
-        loginBean = getLoginBean();
-        if (loginBean != null) {
-            userInfo = loginBean.getUserInfo();
-        }
         dataDictBean = getDataDictBean();
+        getLoginBean();
         isPrepared = true;
         init(view, savedInstanceState);
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        getLoginBean();
     }
 
     private void initLoadingView() {
@@ -179,6 +177,9 @@ public abstract class BaseFragment extends Fragment
                 CommonData.KEY_LOGIN_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
             loginBean = new Gson().fromJson(userStr, UserBaseBean.class);
+            if (loginBean != null) {
+                userInfo = loginBean.getUserInfo();
+            }
         }
         return loginBean;
     }

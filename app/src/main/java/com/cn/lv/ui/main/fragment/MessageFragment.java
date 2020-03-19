@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.cn.frame.data.CommonData;
@@ -61,7 +62,7 @@ public class MessageFragment extends BaseFragment {
                                                        Conversation.ConversationType conversationType, String targetId) {
                 try {
                     Intent intent = new Intent(getContext(), UserInfoActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, Integer.valueOf(targetId));
+                    intent.putExtra(CommonData.KEY_PUBLIC, targetId);
                     context.startActivity(intent);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -97,9 +98,12 @@ public class MessageFragment extends BaseFragment {
             public boolean onUserPortraitClick(Context context,
                                                Conversation.ConversationType conversationType,
                                                UserInfo userInfo, String s) {
+                if (TextUtils.equals(userInfo.getUserId(), loginBean.getUserInfo().getUser_id())) {
+                    return true;
+                }
                 try {
                     Intent intent = new Intent(getContext(), UserInfoActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, Integer.valueOf(userInfo.getUserId()));
+                    intent.putExtra(CommonData.KEY_PUBLIC, userInfo.getUserId());
                     context.startActivity(intent);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();

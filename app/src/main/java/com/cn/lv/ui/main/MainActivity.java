@@ -232,6 +232,7 @@ public class MainActivity extends BaseActivity
                 @Override
                 public void onSuccess(String s) {
                     SweetLog.i(TAG, "connect  success：" + s);
+                    updateMessage();
                 }
 
                 @Override

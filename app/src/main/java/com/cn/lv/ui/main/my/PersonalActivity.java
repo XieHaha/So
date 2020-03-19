@@ -17,6 +17,7 @@ import com.cn.frame.data.CommonData;
 import com.cn.frame.data.NormImage;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.CityBean;
+import com.cn.frame.data.bean.PaymentBean;
 import com.cn.frame.data.bean.PicturePathBean;
 import com.cn.frame.data.bean.ProvinceBean;
 import com.cn.frame.data.bean.UserBaseBean;
@@ -362,8 +363,14 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     }
 
     private void edit(int type) {
-        RequestUtils.edit(this, signSession(InterfaceName.EDIT_USER_INFO), type, name, headerFile
-                , age, height, 0, bodyType, race, education, marriage, child, smoke, drink, job,
+        String interfaceName;
+        if (type == 1) {
+            interfaceName = InterfaceName.AUTH;
+        } else {
+            interfaceName = InterfaceName.EDIT_USER_INFO;
+        }
+        RequestUtils.edit(this, signSession(interfaceName), type, name, headerFile, age, height,
+                0, bodyType, race, education, marriage, child, smoke, drink, job,
                 userInfo.getBe_interested_in(), income, money, life, who, proId + "," + cityId,
                 purpose, introduction, publicFiles, privateFiles, this);
     }
@@ -618,7 +625,11 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 //存储登录结果
                 SweetApplication.getInstance().setLoginBean(loginBean);
                 if (ivNext.isShown()) {
-                    startActivity(new Intent(this, AuthActivity.class));
+                    Intent intent = new Intent(this, AuthActivity.class);
+                    if (paymentBean != null) {
+                        intent.putExtra(CommonData.KEY_PUBLIC, paymentBean);
+                    }
+                    startActivity(intent);
                     finish();
                 } else {
                     setResult(RESULT_OK);
@@ -637,11 +648,14 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         }
     }
 
+    private PaymentBean paymentBean;
+
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
         super.onResponseCode(task, response);
         if (response.getCode() == 202) {
             if (task == Tasks.AUTH) {
+                paymentBean = (PaymentBean) response.getData();
                 login();
             }
         }

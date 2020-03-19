@@ -239,7 +239,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager(c)
                 .getCardInfo(params)
                 .compose(RxJavaHelper.observableIO2Main(c))
-                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.GET_CARD_INFO, l));
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false, Tasks.GET_CARD_INFO, l));
     }
 
     public static void upgradeMembership(Context c, String sign, int card_id, float card_money,
@@ -253,7 +253,17 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager(c)
                 .upgradeMembership(params)
                 .compose(RxJavaHelper.observableIO2Main(c))
-                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.UPGRADE_MEMBERSHIP, l));
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false,
+                        Tasks.UPGRADE_MEMBERSHIP, l));
+    }
+
+    public static void edit(Context c, String sign, final ResponseListener<BaseResponse> l) {
+        List<MultipartBody.Part> photos = new ArrayList<>();
+        photos.add(MultipartBody.Part.createFormData("sign", sign));
+        RetrofitManager.getApiUrlManager(c)
+                .auth(photos)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false, Tasks.AUTH, l));
     }
 
     public static void edit(Context c, String sign, int type, String name, File headerFile, int age,

@@ -1,6 +1,5 @@
 package com.cn.lv.ui.main.my;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,7 +20,6 @@ import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.frame.utils.BaseUtils;
-import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
@@ -90,12 +88,6 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        uiStatus();
-    }
-
-    @Override
     public void initListener() {
         super.initListener();
         iNotifyChangeListenerServer.registerFollowNumChangeListener(this, RegisterType.REGISTER);
@@ -114,6 +106,7 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
         tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
         tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));
+        uiStatus();
     }
 
     private void uiStatus() {
@@ -215,28 +208,6 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         if (task == Tasks.SIGN_OUT) {
             exit();
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if (requestCode == REQUEST_CODE_AUTH) {
-            update();
-        } else if (requestCode == REQUEST_CODE_VIP) {
-            ToastUtil.toast(getContext(), "最贵的vip");
-        }
-    }
-
-    /**
-     * 认证后更新
-     */
-    private void update() {
-        loginBean = SweetApplication.getInstance().getLoginBean();
-        userInfo = loginBean.getUserInfo();
-        uiStatus();
     }
 
     @Override

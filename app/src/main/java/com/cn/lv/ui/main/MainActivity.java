@@ -224,7 +224,6 @@ public class MainActivity extends BaseActivity
      */
     private void loginChat() {
         if (userInfo != null) {
-            SweetLog.i(TAG, "connect...");
             RongIM.connect(userInfo.getRong_cloud_token(), new RongIMClient.ConnectCallbackEx() {
                 @Override
                 public void OnDatabaseOpened(RongIMClient.DatabaseOpenStatus code) {

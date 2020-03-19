@@ -131,7 +131,6 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             userId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
-            isBlack = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
         }
         gridViewPrivate.updateImg(images, false, false);
     }
@@ -147,7 +146,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         super.initListener();
         gridViewPrivate.setOnItemClickListener((parent, view, position, id) -> {
             VipDetailsBean detailsBean = loginBean.getVipDetails();
-            if (paths.get(position).getPicture_type() == 1 || (detailsBean!=null && TextUtils.equals(detailsBean.getUsage_state(),"2"))) {
+            if (paths.get(position).getPicture_type() == 1 || (detailsBean != null && TextUtils.equals(detailsBean.getUsage_state(), "2"))) {
                 //查看大图
                 Intent intent = new Intent(UserInfoActivity.this, ImagePreviewActivity.class);
                 intent.putExtra(ImagePreviewActivity.INTENT_URLS, publicImages);
@@ -252,6 +251,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
             userDetailBean = (UserInfoBean) response.getData();
             bindData();
         } else if (task == Tasks.SHIELD_USER) {
+            isBlack = !isBlack;
             ToastUtil.toast(this, response.getMsg());
         }
     }
@@ -312,8 +312,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
                     publicImages.add(normImage);
                 } else {
                     //vip
-                    if (detailsBean != null && TextUtils.equals(detailsBean.getUsage_state(),
-                            "2")) {
+                    if (detailsBean != null && TextUtils.equals(detailsBean.getUsage_state(), "2")) {
                         publicImages.add(normImage);
                     } else {
                         normImage.setHide(true);
@@ -323,6 +322,8 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
             }
             gridViewPrivate.updateImg(images, false, false);
         }
+
+        isBlack = (userDetailBean.getShield_state() == 1);
     }
 
 }

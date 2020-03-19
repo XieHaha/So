@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * @创建者 顿顿
- * @创建时间 ${DATA} 13:54
- * @描述
+ *
  */
 public class UserInfoBean implements Serializable {
     private static final long serialVersionUID = -4807152809361865645L;
@@ -56,6 +54,8 @@ public class UserInfoBean implements Serializable {
     private String address;
     private String location;
     private int usage_state;
+    private int shield_state;
+
     private ArrayList<PicturePathBean> album;
 
 
@@ -410,5 +410,13 @@ public class UserInfoBean implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getShield_state() {
+        return shield_state;
+    }
+
+    public void setShield_state(int shield_state) {
+        this.shield_state = shield_state;
     }
 }

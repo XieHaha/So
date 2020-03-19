@@ -107,7 +107,6 @@ public class BlackActivity extends BaseActivity implements BaseQuickAdapter.OnIt
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, UserInfoActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, rolesBeans.get(position).getUser_id());
-        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
         startActivity(intent);
     }
 

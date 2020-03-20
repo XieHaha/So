@@ -187,7 +187,7 @@ public interface ApiUrlManager {
     Observable<BaseResponse<BaseListData<RolesBean>>> shieldList(@Body Map<String, Object> info);
 
     /**
-     * 会员卡信息
+     * 卡信息
      *
      * @param info map参数
      * @return 返回值
@@ -196,8 +196,6 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<CardInfoBean>>> getCardInfo(@Body Map<String, Object> info);
 
     /**
-     * 会员
-     *
      * @param info map参数
      * @return 返回值
      */
@@ -205,7 +203,7 @@ public interface ApiUrlManager {
     Observable<BaseResponse<PaymentBean>> upgradeMembership(@Body Map<String, Object> info);
 
     /**
-     * 认证 or 信息编辑
+     * or 信息编辑
      *
      * @param info map参数
      * @return 返回值

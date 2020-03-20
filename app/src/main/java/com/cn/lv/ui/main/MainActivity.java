@@ -2,6 +2,7 @@ package com.cn.lv.ui.main;
 
 import android.app.NotificationManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.UserBaseBean;
+import com.cn.frame.data.bean.UserInfoBean;
 import com.cn.frame.data.bean.VersionBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
@@ -34,6 +36,7 @@ import com.cn.lv.ui.main.fragment.MessageFragment;
 import com.cn.lv.ui.main.house.HouseFragment;
 import com.cn.lv.ui.main.my.MyFragment;
 import com.cn.lv.utils.BadgeUtils;
+import com.cn.lv.utils.ImageUrlUtil;
 import com.cn.lv.version.ConstantsVersionMode;
 import com.cn.lv.version.presenter.VersionPresenter;
 
@@ -50,10 +53,14 @@ import butterknife.OnClick;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
+import io.rong.imlib.model.UserInfo;
 
 
 public class MainActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
+        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener,
+        RongIMClient.OnReceiveMessageListener, RongIM.OnSendMessageListener,
+        RongIMClient.ConnectionStatusListener {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     @BindView(R.id.act_main_tab1)
@@ -166,6 +173,11 @@ public class MainActivity extends BaseActivity
                 loginBean.getSession_id(), InterfaceName.RENEW_SIGN), this);
     }
 
+    private UserInfo getUserInfoById(String userId) {
+        RequestUtils.getUserInfo(this, signSession(InterfaceName.GET_USER_INFO), userId, this);
+        return null;
+    }
+
     /**
      * 未读消息
      */
@@ -246,6 +258,19 @@ public class MainActivity extends BaseActivity
                     SweetLog.i(TAG, "connect  error:" + e.getMessage());
                 }
             });
+
+            //设置消息接收监听器
+            RongIM.setOnReceiveMessageListener(this);
+            RongIM.getInstance().setSendMessageListener(this);
+            RongIM.setConnectionStatusListener(this);
+
+            RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+                @Override
+                public UserInfo getUserInfo(String userId) {
+                    SweetLog.i(TAG, "userId:" + userId);
+                    return getUserInfoById(userId);
+                }
+            }, true);
         }
     }
 
@@ -342,6 +367,15 @@ public class MainActivity extends BaseActivity
                 SweetApplication.getInstance().setLoginBean(loginBean);
                 updateSession();
                 break;
+            case GET_USER_INFO:
+                UserInfoBean infoBean = (UserInfoBean) response.getData();
+                UserInfo rongUserInfo = new UserInfo(infoBean.getRong_cloud_user_id(),
+                        infoBean.getNickname(),
+                        Uri.parse(ImageUrlUtil.addTokenToUrl(infoBean.getHead_portrait())));
+                //因为是异步任务，所以在获取到用户信息之后需要刷讯融云缓存
+                SweetLog.i(TAG, "getUserInfo success!");
+                RongIM.getInstance().refreshUserInfoCache(rongUserInfo);
+                break;
             default:
                 break;
         }
@@ -431,5 +465,26 @@ public class MainActivity extends BaseActivity
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onReceived(Message message, int i) {
+        updateMessage();
+        return false;
+    }
+
+    @Override
+    public Message onSend(Message message) {
+        return null;
+    }
+
+    @Override
+    public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+        return false;
+    }
+
+    @Override
+    public void onChanged(ConnectionStatus connectionStatus) {
+        updateMessage();
     }
 }

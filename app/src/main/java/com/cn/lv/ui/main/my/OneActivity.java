@@ -30,7 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class VipActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, com.cn.frame.data.PayResult {
+public class OneActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, com.cn.frame.data.PayResult {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -49,7 +49,7 @@ public class VipActivity extends BaseActivity implements BaseQuickAdapter.OnItem
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_vip;
+        return R.layout.act_one;
     }
 
     @Override
@@ -129,8 +129,8 @@ public class VipActivity extends BaseActivity implements BaseQuickAdapter.OnItem
             ToastUtil.toast(this, "发生未知错误，请稍候再试");
             return;
         }
-        AdaPay.doPay(VipActivity.this, url, payResult -> {
-            ToastUtil.toast(VipActivity.this, payResult.getResultMsg());
+        AdaPay.doPay(OneActivity.this, url, payResult -> {
+            ToastUtil.toast(OneActivity.this, payResult.getResultMsg());
             //处理支付结果
             String code = payResult.getResultCode();
             switch (code) {

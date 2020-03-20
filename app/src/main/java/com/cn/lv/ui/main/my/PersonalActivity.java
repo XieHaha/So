@@ -625,7 +625,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 //存储登录结果
                 SweetApplication.getInstance().setLoginBean(loginBean);
                 if (ivNext.isShown()) {
-                    Intent intent = new Intent(this, AuthActivity.class);
+                    Intent intent = new Intent(this, UpActivity.class);
                     if (paymentBean != null) {
                         intent.putExtra(CommonData.KEY_PUBLIC, paymentBean);
                     }

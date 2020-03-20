@@ -26,8 +26,8 @@ import com.cn.frame.widgets.menu.MenuItem;
 import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
+import com.cn.lv.ui.main.my.OneActivity;
 import com.cn.lv.ui.main.my.ReportActivity;
-import com.cn.lv.ui.main.my.VipActivity;
 
 import org.litepal.LitePal;
 
@@ -146,7 +146,7 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
         dialog.setTitleString("提示").setContentString("升级会员享受更好的服务").setCancelableAndTouch(false).setCancelBtnGone(true).setEnterBtnTxt("升级会员").setOnEnterClickListener(new OnEnterClickListener() {
             @Override
             public void onEnter() {
-                startActivity(new Intent(ChatActivity.this, VipActivity.class));
+                startActivity(new Intent(ChatActivity.this, OneActivity.class));
                 finish();
             }
         }).show();

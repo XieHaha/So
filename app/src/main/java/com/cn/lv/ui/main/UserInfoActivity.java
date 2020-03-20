@@ -1,7 +1,6 @@
 package com.cn.lv.ui.main;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -31,9 +30,9 @@ import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.ImagePreviewActivity;
-import com.cn.lv.ui.main.my.AuthActivity;
+import com.cn.lv.ui.main.my.UpActivity;
+import com.cn.lv.ui.main.my.OneActivity;
 import com.cn.lv.ui.main.my.ReportActivity;
-import com.cn.lv.ui.main.my.VipActivity;
 import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
@@ -42,8 +41,6 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.model.UserInfo;
 
 public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMenuItemClickListener {
     @BindView(R.id.iv_header)
@@ -161,7 +158,7 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
                         .setContentString("升级会员享受更好的服务")
                         .setCancelableAndTouch(false).setCancelBtnGone(true)
                         .setEnterBtnTxt("升级会员").setOnEnterClickListener(() -> {
-                    startActivity(new Intent(UserInfoActivity.this, VipActivity.class));
+                    startActivity(new Intent(UserInfoActivity.this, OneActivity.class));
                     finish();
                 }).show();
             }
@@ -195,10 +192,10 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         switch (view.getId()) {
             case R.id.tv_message:
                 if (userInfo.getIs_auth() == 1) {
-                    startActivity(new Intent(this, AuthActivity.class));
+                    startActivity(new Intent(this, UpActivity.class));
                 } else {
                     //设置当前用户信息
-                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(userDetailBean.getRong_cloud_user_id(), userDetailBean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
+//                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(userDetailBean.getRong_cloud_user_id(), userDetailBean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
                     intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_TITLE, userDetailBean.getNickname());
                     intent.putExtra(CommonData.KEY_CHAT_ID, userDetailBean.getRong_cloud_user_id());

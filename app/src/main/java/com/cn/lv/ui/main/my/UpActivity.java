@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 
 import butterknife.OnClick;
 
-public class AuthActivity extends BaseActivity implements com.cn.frame.data.PayResult {
+public class UpActivity extends BaseActivity implements com.cn.frame.data.PayResult {
 
     private PaymentBean paymentBean;
 
@@ -36,7 +36,7 @@ public class AuthActivity extends BaseActivity implements com.cn.frame.data.PayR
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_auth;
+        return R.layout.act_up;
     }
 
     @Override
@@ -71,8 +71,8 @@ public class AuthActivity extends BaseActivity implements com.cn.frame.data.PayR
             ToastUtil.toast(this, "发生未知错误，请稍候再试");
             return;
         }
-        AdaPay.doPay(AuthActivity.this, new Gson().toJson(paymentBean), payResult -> {
-            ToastUtil.toast(AuthActivity.this, payResult.getResultMsg());
+        AdaPay.doPay(UpActivity.this, new Gson().toJson(paymentBean), payResult -> {
+            ToastUtil.toast(UpActivity.this, payResult.getResultMsg());
             //处理支付结果
             String code = payResult.getResultCode();
             switch (code) {

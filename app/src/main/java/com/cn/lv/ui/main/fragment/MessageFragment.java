@@ -14,7 +14,7 @@ import com.cn.frame.data.CommonData;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.lv.R;
 import com.cn.lv.ui.main.UserInfoActivity;
-import com.cn.lv.ui.main.my.AuthActivity;
+import com.cn.lv.ui.main.my.UpActivity;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -84,7 +84,7 @@ public class MessageFragment extends BaseFragment {
             public boolean onConversationClick(Context context, View view,
                                                UIConversation conversation) {
                 if (userInfo.getIs_auth() == 1) {
-                    startActivity(new Intent(getContext(), AuthActivity.class));
+                    startActivity(new Intent(getContext(), UpActivity.class));
                     return true;
                 }
                 return false;

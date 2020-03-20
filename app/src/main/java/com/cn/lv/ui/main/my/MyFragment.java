@@ -172,10 +172,10 @@ public class MyFragment extends BaseFragment implements IChange<String> {
                 break;
             case R.id.iv_vip:
                 if (userInfo.getIs_auth() == BASE_ONE) {
-                    startActivityForResult(new Intent(getContext(), AuthActivity.class),
+                    startActivityForResult(new Intent(getContext(), UpActivity.class),
                             REQUEST_CODE_AUTH);
                 } else {
-                    startActivityForResult(new Intent(getContext(), VipActivity.class),
+                    startActivityForResult(new Intent(getContext(), OneActivity.class),
                             REQUEST_CODE_VIP);
                 }
                 break;

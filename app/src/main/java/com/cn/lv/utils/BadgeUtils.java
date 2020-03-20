@@ -68,7 +68,8 @@ public class BadgeUtils {
                 case "sony":
                     return setSonyBadge(count, context);
                 default:
-                    return setNotificationBadge(count, context);
+                    return true;
+//                    return setNotificationBadge(count, context);
             }
         } else {
             return false;

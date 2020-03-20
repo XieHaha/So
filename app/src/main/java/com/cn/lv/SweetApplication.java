@@ -59,8 +59,8 @@ public class SweetApplication extends LitePalApplication {
     }
 
     private void initRongIM() {
-        RongIM.init(this, "");
-        RongIM.getInstance().setMessageAttachedUserInfo(true);
+        RongIM.init(this);
+//        RongIM.getInstance().setMessageAttachedUserInfo(true);
     }
 
     @Override

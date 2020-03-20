@@ -198,11 +198,10 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
                     startActivity(new Intent(this, AuthActivity.class));
                 } else {
                     //设置当前用户信息
-                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(userDetailBean.getUser_id()), userDetailBean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
+                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(userDetailBean.getRong_cloud_user_id(), userDetailBean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(userDetailBean.getHead_portrait()))));
                     intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_TITLE, userDetailBean.getNickname());
-                    intent.putExtra(CommonData.KEY_CHAT_ID,
-                            String.valueOf(userDetailBean.getUser_id()));
+                    intent.putExtra(CommonData.KEY_CHAT_ID, userDetailBean.getRong_cloud_user_id());
                     startActivity(intent);
                 }
                 break;

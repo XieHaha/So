@@ -54,8 +54,6 @@ public class MessageFragment extends BaseFragment {
 
     @Override
     public void initListener() {
-        super.initListener();
-
         RongIM.setConversationListBehaviorListener(new RongIM.ConversationListBehaviorListener() {
             @Override
             public boolean onConversationPortraitClick(Context context,
@@ -98,7 +96,8 @@ public class MessageFragment extends BaseFragment {
             public boolean onUserPortraitClick(Context context,
                                                Conversation.ConversationType conversationType,
                                                UserInfo userInfo, String s) {
-                if (TextUtils.equals(userInfo.getUserId(), loginBean.getUserInfo().getUser_id())) {
+                if (TextUtils.equals(userInfo.getUserId(),
+                        loginBean.getUserInfo().getRong_cloud_user_id())) {
                     return true;
                 }
                 try {

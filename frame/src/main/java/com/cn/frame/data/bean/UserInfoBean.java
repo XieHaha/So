@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class UserInfoBean implements Serializable {
     private static final long serialVersionUID = -4807152809361865645L;
     private String user_id;
+    private String rong_cloud_user_id;
     private int sex;
     private int register_type;
     private int age;
@@ -64,6 +65,14 @@ public class UserInfoBean implements Serializable {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String getRong_cloud_user_id() {
+        return rong_cloud_user_id;
+    }
+
+    public void setRong_cloud_user_id(String rong_cloud_user_id) {
+        this.rong_cloud_user_id = rong_cloud_user_id;
     }
 
     public int getSex() {

@@ -112,12 +112,7 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     @Override
     public void initListener() {
         super.initListener();
-        publicTitleBarRightImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initMenu();
-            }
-        });
+        publicTitleBarRightImg.setOnClickListener(v -> initMenu());
 
         /**
          * 设置发送消息的监听。

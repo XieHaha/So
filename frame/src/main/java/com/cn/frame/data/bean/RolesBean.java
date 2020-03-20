@@ -3,9 +3,7 @@ package com.cn.frame.data.bean;
 import java.io.Serializable;
 
 /**
- * @创建者 顿顿
- * @创建时间 ${DATA} 17:02
- * @描述
+ *
  */
 public class RolesBean implements Serializable {
     private static final long serialVersionUID = 1214351172233327897L;
@@ -17,6 +15,7 @@ public class RolesBean implements Serializable {
     private int auth_state;
     private int collection_state;
     private String user_id;
+    private String rong_cloud_user_id;
     private int attribute;
     private String nickname;
     private String location;
@@ -24,6 +23,14 @@ public class RolesBean implements Serializable {
     private String individuality_signature;
     private String address;
     private String last_login_time;
+
+    public String getRong_cloud_user_id() {
+        return rong_cloud_user_id;
+    }
+
+    public void setRong_cloud_user_id(String rong_cloud_user_id) {
+        this.rong_cloud_user_id = rong_cloud_user_id;
+    }
 
     public int getSex() {
         return sex;

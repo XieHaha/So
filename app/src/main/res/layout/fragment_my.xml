@@ -438,39 +438,6 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout_exit"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp">
-
-            <TextView
-                android:id="@+id/text4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:text="@string/txt_exit"
-                android:textColor="@color/color_1e1c35"
-                android:textSize="@dimen/text_14" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/ic_exit" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/app_hei_line"
-                android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@id/text4"
-                android:background="#f0f0f0" />
-
-        </RelativeLayout>
-
     </LinearLayout>
 
 </ScrollView>

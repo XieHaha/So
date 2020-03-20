@@ -13,15 +13,10 @@ import com.bumptech.glide.Glide;
 import com.cn.frame.api.ApiManager;
 import com.cn.frame.api.notify.IChange;
 import com.cn.frame.api.notify.RegisterType;
-import com.cn.frame.data.BaseResponse;
-import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.VipDetailsBean;
-import com.cn.frame.http.InterfaceName;
-import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.glide.GlideHelper;
-import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.utils.ImageUrlUtil;
@@ -140,12 +135,6 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         }
     }
 
-    private void signOut() {
-        RequestUtils.signOut(getContext(), BaseUtils.signSpan(getContext(),
-                userInfo.getMobile_number(), loginBean.getSession_id(), InterfaceName.SIGN_OUT)
-                , this);
-    }
-
     /**
      * 更新
      */
@@ -156,8 +145,7 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     }
 
     @OnClick({R.id.tv_edit, R.id.layout_followed, R.id.layout_follow, R.id.layout_browse,
-            R.id.iv_vip, R.id.layout_set, R.id.layout_help, R.id.layout_about, R.id.layout_black,
-            R.id.layout_exit})
+            R.id.iv_vip, R.id.layout_set, R.id.layout_help, R.id.layout_about, R.id.layout_black})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_edit:
@@ -191,24 +179,8 @@ public class MyFragment extends BaseFragment implements IChange<String> {
             case R.id.layout_black:
                 startActivity(new Intent(getContext(), BlackActivity.class));
                 break;
-            case R.id.layout_exit:
-                new HintDialog(getContext()).setTitleString(getString(R.string.APP_NAME))
-                        .setContentString(getString(R.string.txt_exit_sure))
-                        .setEnterBtnTxt(getString(R.string.txt_exit))
-                        .setEnterSelect(true)
-                        .setOnEnterClickListener(this::signOut)
-                        .show();
-                break;
             default:
                 break;
-        }
-    }
-
-    @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
-        super.onResponseSuccess(task, response);
-        if (task == Tasks.SIGN_OUT) {
-            exit();
         }
     }
 

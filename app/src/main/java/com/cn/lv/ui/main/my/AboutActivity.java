@@ -14,6 +14,7 @@ import com.cn.frame.data.bean.AboutUsBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseActivity;
+import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
 import com.cn.lv.ui.WebViewActivity;
 
@@ -25,10 +26,6 @@ public class AboutActivity extends BaseActivity {
     TextView tvAppName;
     @BindView(R.id.tv_version)
     TextView tvVersion;
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.tv_phone)
-    TextView tvPhone;
 
     private AboutUsBean aboutUsBean;
 
@@ -60,27 +57,36 @@ public class AboutActivity extends BaseActivity {
     private void bindData() {
         tvAppName.setText(aboutUsBean.getClient_app_name());
         tvVersion.setText(aboutUsBean.getClient_app_version());
-        tvName.setText(aboutUsBean.getClient_nickname());
-        tvPhone.setText(aboutUsBean.getClient_customer_service());
     }
 
-    @OnClick({R.id.layout_pri, R.id.layout_protocol})
+    @OnClick({R.id.layout_pri, R.id.layout_protocol, R.id.layout_contact})
     public void onViewClicked(View view) {
         Intent intent;
-        intent = new Intent(this, WebViewActivity.class);
         switch (view.getId()) {
             case R.id.layout_pri:
+                intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_pri));
-                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_PUBLIC,
+                        BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
+                startActivity(intent);
                 break;
             case R.id.layout_protocol:
+                intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_protocol));
                 intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                startActivity(intent);
+                break;
+            case R.id.layout_contact:
+                HintDialog dialog =
+                        new HintDialog(this).setTitleString(R.string.txt_official_service)
+                                .setContentString(String.format(getString(R.string.txt_official_contact),
+                                        aboutUsBean.getClient_customer_service()))
+                                .setCancelBtnGone(true);
+                dialog.show();
                 break;
             default:
                 break;
         }
-        startActivity(intent);
     }
 
     @Override

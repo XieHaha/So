@@ -52,8 +52,11 @@
     <string name="txt_version">版本</string>
     <string name="txt_name">昵称</string>
     <string name="txt_mobile">手机</string>
+    <string name="txt_contact">联系客服</string>
     <string name="txt_protocol">用户协议</string>
     <string name="txt_pri">隐私政策</string>
+    <string name="txt_official_service">官方客服</string>
+    <string name="txt_official_contact">有任何问题您可以联系我们的工作人员\n工作日：9:00&#8211;18:00\nQQ：%s</string>
 
     <!--登录注册-->
     <string name="txt_hello">您好</string>

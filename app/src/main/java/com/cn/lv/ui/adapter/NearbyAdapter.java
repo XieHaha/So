@@ -17,6 +17,7 @@ import com.cn.frame.utils.glide.GlideHelper;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.utils.ImageUrlUtil;
+import com.cn.lv.utils.TimeUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         helper.setText(R.id.tv_age, String.valueOf(item.getAge()))
                 .setText(R.id.tv_sign, item.getIndividuality_signature())
                 .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()))
-                .setText(R.id.tv_time, item.getLast_login_time());
+                .setText(R.id.tv_time,  TimeUtil.getTimeString(item.getLast_login_timestamp() * 1000));
         int vip = item.getUsage_state();
         if (vip == BASE_ONE) {
             layout.setBackground(null);

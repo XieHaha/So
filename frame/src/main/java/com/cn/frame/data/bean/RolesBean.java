@@ -23,6 +23,8 @@ public class RolesBean implements Serializable {
     private String individuality_signature;
     private String address;
     private String last_login_time;
+    private long last_login_timestamp;
+
 
     public String getRong_cloud_user_id() {
         return rong_cloud_user_id;
@@ -150,5 +152,13 @@ public class RolesBean implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public long getLast_login_timestamp() {
+        return last_login_timestamp;
+    }
+
+    public void setLast_login_timestamp(long last_login_timestamp) {
+        this.last_login_timestamp = last_login_timestamp;
     }
 }

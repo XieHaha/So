@@ -45,6 +45,7 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
     TextView publicTitleBarTitle;
     @BindView(R.id.public_title_bar_right_img)
     ImageView publicTitleBarRightImg;
+
     private String title, targetId;
 
     private ChatBean chatBean;
@@ -165,7 +166,10 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(0, "举报TA"));
-        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 130)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(publicTitleBarRightImg, -BaseUtils.dp2px(this, 94), 10);
+        mTopRightMenu.setHeight(BaseUtils.dp2px(this, 70))
+                .addMenuList(menuItems)
+                .setOnMenuItemClickListener(this)
+                .showAsDropDown(publicTitleBarRightImg, -BaseUtils.dp2px(this, 60), 7);
     }
 
     @Override

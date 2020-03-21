@@ -209,10 +209,12 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.QUESTION_FEEDBACK, l));
     }
 
-    public static void report(Context c, String sign, String report_reason, String report_content,
+    public static void report(Context c, String sign, String userId, String report_reason,
+                              String report_content,
                               final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);
         params.put("sign", sign);
+        params.put("report_user_id", userId);
         params.put("report_reason", report_reason);
         params.put("report_content", report_content);
         RetrofitManager.getApiUrlManager(c)

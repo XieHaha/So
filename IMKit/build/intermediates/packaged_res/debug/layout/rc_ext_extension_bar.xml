@@ -99,8 +99,7 @@
                 <ImageView
                     android:id="@+id/rc_plugin_toggle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rc_plugin_toggle_selector" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

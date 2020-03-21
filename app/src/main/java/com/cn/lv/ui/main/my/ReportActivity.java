@@ -72,7 +72,7 @@ public class ReportActivity extends BaseActivity implements OnMediaItemClickList
      * 提交
      */
     private void commit() {
-        RequestUtils.report(this, signSession(InterfaceName.REPORT), title, content, this);
+        RequestUtils.report(this, signSession(InterfaceName.REPORT),userId, title, content, this);
     }
 
     @Override

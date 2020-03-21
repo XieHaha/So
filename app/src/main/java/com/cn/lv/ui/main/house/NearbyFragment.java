@@ -58,6 +58,24 @@ public class NearbyFragment extends BaseFragment implements BaseQuickAdapter.OnI
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isPrepared) {
+            if (getUserVisibleHint()) {
+                getData(false);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //当前用户可见才刷新列表
+        if (getUserVisibleHint()) {
+            getData(false);
+        }
+    }
+    @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -72,7 +90,6 @@ public class NearbyFragment extends BaseFragment implements BaseQuickAdapter.OnI
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (BaseUtils.isNetworkAvailable(getContext())) {
-            getData(true);
             tvNoneMessage.setVisibility(View.GONE);
         } else {
             tvNoneMessage.setVisibility(View.VISIBLE);

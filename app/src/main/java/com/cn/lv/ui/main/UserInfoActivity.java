@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cn.frame.api.notify.NotifyChangeListenerManager;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.NormImage;
@@ -30,9 +31,9 @@ import com.cn.frame.widgets.menu.TopRightMenu;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.ImagePreviewActivity;
-import com.cn.lv.ui.main.my.UpActivity;
 import com.cn.lv.ui.main.my.OneActivity;
 import com.cn.lv.ui.main.my.ReportActivity;
+import com.cn.lv.ui.main.my.UpActivity;
 import com.cn.lv.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
@@ -173,6 +174,15 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         RequestUtils.shieldUser(this, signSession(InterfaceName.SHIELD_USER), userId, state, this);
     }
 
+    /**
+     * 关注
+     */
+    private void renewCollection(int state) {
+        RequestUtils.renewCollection(this, signSession(InterfaceName.RENEW_COLLECTION),
+                userDetailBean.getUser_id(), state, this);
+    }
+
+
     private void initMenu() {
         TopRightMenu mTopRightMenu = new TopRightMenu(this);
         List<MenuItem> menuItems = new ArrayList<>();
@@ -202,18 +212,13 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
                 }
                 break;
             case R.id.tv_follow:
-                int follow;
                 if (tvFollow.isSelected()) {
                     tvFollow.setSelected(false);
-                    follow = 2;
+                    renewCollection(2);
                 } else {
                     tvFollow.setSelected(true);
-                    follow = 1;
-
+                    renewCollection(1);
                 }
-                intent = new Intent();
-                intent.putExtra(CommonData.KEY_PUBLIC, follow);
-                setResult(RESULT_OK, intent);
                 break;
             case R.id.iv_menu:
                 initMenu();
@@ -250,6 +255,9 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         } else if (task == Tasks.SHIELD_USER) {
             isBlack = !isBlack;
             ToastUtil.toast(this, response.getMsg());
+        } else if (task == Tasks.RENEW_COLLECTION) {
+            ToastUtil.toast(this, response.getMsg());
+            NotifyChangeListenerManager.getInstance().notifyFollowListChange("");
         }
     }
 

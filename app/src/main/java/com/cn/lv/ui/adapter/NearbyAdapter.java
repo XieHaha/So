@@ -40,12 +40,12 @@ public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         ImageView ivHeader = helper.getView(R.id.iv_header);
         Glide.with(mContext).load(ImageUrlUtil.addTokenToUrl(item.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(mContext), 4))).into(ivHeader);
         TextView tvSex = helper.getView(R.id.tv_sex);
+        TextView tvTime = helper.getView(R.id.tv_time);
         tvSex.setText(BASE_ONE == item.getSex() ? R.string.txt_male : R.string.txt_female);
         tvSex.setSelected(BASE_ONE != item.getSex());
         helper.setText(R.id.tv_age, String.valueOf(item.getAge()))
                 .setText(R.id.tv_sign, item.getIndividuality_signature())
-                .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()))
-                .setText(R.id.tv_time,  TimeUtil.getTimeString(item.getLast_login_timestamp() * 1000));
+                .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()));
         int vip = item.getUsage_state();
         if (vip == BASE_ONE) {
             layout.setBackground(null);
@@ -67,8 +67,10 @@ public class NearbyAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
 
         if (item.getAttribute() == 2) {
             helper.setText(R.id.tv_address, SweetApplication.getInstance().getCity());
+            tvTime.setText("当前在线");
         } else {
             helper.setText(R.id.tv_address, item.getLocation());
+            tvTime.setText(TimeUtil.getTimeString(item.getLast_login_timestamp() * 1000));
         }
     }
 

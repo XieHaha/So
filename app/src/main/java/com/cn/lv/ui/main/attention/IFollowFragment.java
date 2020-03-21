@@ -153,8 +153,6 @@ public class IFollowFragment extends BaseFragment implements BaseQuickAdapter.On
                 if (userInfo.getIs_auth() == 1) {
                     startActivity(new Intent(getContext(), UpActivity.class));
                 } else {
-                    //设置当前用户信息
-//                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(bean.getRong_cloud_user_id(), bean.getNickname(), Uri.parse(ImageUrlUtil.addTokenToUrl(bean.getHead_portrait()))));
                     Intent intent = new Intent(getContext(), ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_TITLE, bean.getNickname());
                     intent.putExtra(CommonData.KEY_CHAT_ID, bean.getRong_cloud_user_id());

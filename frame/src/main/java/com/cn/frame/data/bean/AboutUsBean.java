@@ -8,6 +8,8 @@ public class AboutUsBean implements Serializable {
     private String client_app_name;
     private String client_app_version;
     private String client_customer_service;
+    private String client_customer_qq;
+    private String client_customer_wechat;
     private String client_nickname;
     private String privacy_policy;
     private String user_agreement;
@@ -58,5 +60,21 @@ public class AboutUsBean implements Serializable {
 
     public void setUser_agreement(String user_agreement) {
         this.user_agreement = user_agreement;
+    }
+
+    public String getClient_customer_qq() {
+        return client_customer_qq;
+    }
+
+    public void setClient_customer_qq(String client_customer_qq) {
+        this.client_customer_qq = client_customer_qq;
+    }
+
+    public String getClient_customer_wechat() {
+        return client_customer_wechat;
+    }
+
+    public void setClient_customer_wechat(String client_customer_wechat) {
+        this.client_customer_wechat = client_customer_wechat;
     }
 }

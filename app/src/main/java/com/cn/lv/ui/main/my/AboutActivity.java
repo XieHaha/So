@@ -80,6 +80,8 @@ public class AboutActivity extends BaseActivity {
                 HintDialog dialog =
                         new HintDialog(this).setTitleString(R.string.txt_official_service)
                                 .setContentString(String.format(getString(R.string.txt_official_contact),
+                                        aboutUsBean.getClient_customer_qq(),
+                                        aboutUsBean.getClient_customer_wechat(),
                                         aboutUsBean.getClient_customer_service()))
                                 .setCancelBtnGone(true);
                 dialog.show();

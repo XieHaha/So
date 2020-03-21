@@ -58,7 +58,7 @@ public class MyFragment extends BaseFragment implements IChange<String> {
     @BindView(R.id.layout_name)
     RelativeLayout layoutName;
 
-    private long TEN_DAY = 60 * 60 * 24 * 1000 * 10;
+    private static final long TEN_DAY = 60 * 60 * 24 * 1000 * 10;
 
     @Override
     public void onChange(String data) {
@@ -95,7 +95,7 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         Glide.with(this).load(ImageUrlUtil.addTokenToUrl(userInfo.getHead_portrait())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivHeader);
         tvSex.setText(BASE_ONE == userInfo.getSex() ? R.string.txt_male : R.string.txt_female);
         tvSex.setSelected(BASE_ONE != userInfo.getSex());
-        tvAge.setText(String.valueOf(userInfo.getAge()));
+        tvAge.setText(userInfo.getAge() + "岁");
         tvAddress.setText(SweetApplication.getInstance().getCity());
         tvJob.setText(dataDictBean.getOccupationInfo().get(userInfo.getOccupation()));
         tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));

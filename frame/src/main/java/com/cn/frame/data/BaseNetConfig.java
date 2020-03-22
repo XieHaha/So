@@ -19,7 +19,7 @@ public interface BaseNetConfig {
     /**
      * 账号禁用
      */
-    int REQUEST_ACCOUNT_ERROR = 4005;
+    int REQUEST_ACCOUNT_ERROR = 403;
     /**
      * 服务器
      */

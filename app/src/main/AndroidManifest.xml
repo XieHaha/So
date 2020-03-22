@@ -60,7 +60,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="PgoSV4GxVB6Wf50SSQrj3u5MbOfGIlwM"></meta-data>
+            android:value="PgoSV4GxVB6Wf50SSQrj3u5MbOfGIlwM"/>
         <!--刘海屏适配-->
         <meta-data
             android:name="android.notch_support"
@@ -206,10 +206,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data
-                    android:host="${applicationId}"
-                    android:path="/subconversationlist"
-                    android:scheme="rong" />
+                <!--<data-->
+                    <!--android:host="${applicationId}"-->
+                    <!--android:path="/subconversationlist"-->
+                    <!--android:scheme="rong" />-->
             </intent-filter>
         </activity>
         <!--登出-->

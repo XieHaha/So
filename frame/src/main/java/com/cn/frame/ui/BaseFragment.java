@@ -384,13 +384,11 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
+        if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR
+                || response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
             token(response.getMsg());
-        } else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
-                response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
+        } else {
             ToastUtil.toast(getContext(), response.getMsg());
-        } else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
-            accountError();
         }
     }
 

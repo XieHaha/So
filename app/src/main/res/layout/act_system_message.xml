@@ -7,10 +7,10 @@
 
     <include layout="@layout/public_title" />
 
-    <fragment
-        android:id="@+id/subconversationlist"
-        android:name="io.rong.imkit.fragment.SubConversationListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<fragment-->
+        <!--android:id="@+id/subconversationlist"-->
+        <!--android:name="io.rong.imkit.fragment.SubConversationListFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 
 </LinearLayout>

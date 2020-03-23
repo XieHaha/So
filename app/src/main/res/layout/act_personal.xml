@@ -145,7 +145,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_toStartOf="@id/image"
                     android:background="@null"
-                    android:gravity="center"
+                    android:gravity="end|center_vertical"
                     android:hint="请输入年龄"
                     android:inputType="number"
                     android:maxLength="3"
@@ -235,6 +235,43 @@
                     android:textColor="#918F9B"
                     android:textSize="@dimen/text_12"
                     tools:text="20" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:layout_alignParentBottom="true"
+                    android:background="#f0f0f0" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_wish"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="期望对象"
+                    android:textColor="@color/color_1e1c35"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/tv_wish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@mipmap/ic_arrow"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:textColor="#918F9B"
+                    android:textSize="@dimen/text_12"
+                    tools:text="" />
 
                 <View
                     android:layout_width="match_parent"
@@ -379,7 +416,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_toStartOf="@id/image2"
                     android:background="@null"
-                    android:gravity="center"
+                    android:gravity="end|center_vertical"
                     android:hint="请输入身高"
                     android:inputType="number"
                     android:maxLength="3"

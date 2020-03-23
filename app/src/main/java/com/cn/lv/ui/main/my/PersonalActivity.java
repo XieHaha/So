@@ -65,6 +65,8 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     TextView tvAddress;
     @BindView(R.id.tv_who)
     TextView tvWho;
+    @BindView(R.id.tv_wish)
+    TextView tvWish;
     @BindView(R.id.tv_life)
     TextView tvLife;
     @BindView(R.id.tv_money)
@@ -122,7 +124,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     private ArrayList<String> cityNames = new ArrayList<>();
 
     private String name, introduction, purpose, address;
-    private int age, who, life, money, income, height, weight, job, bodyType, race, education,
+    private int age, who, wish, life, money, income, height, weight, job, bodyType, race, education,
             marriage, child, smoke, drink, addressPro, addressCity;
 
     /**
@@ -261,7 +263,8 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         income = data.getAnnual_income();
         money = data.getNet_assets();
         life = data.getLife_style();
-        who = data.getContact_object();
+        who = data.getBe_interested_in();
+        wish = data.getContact_object();
         purpose = data.getMaking_friends_goals();
         introduction = data.getIndividuality_signature();
         job = data.getOccupation();
@@ -271,6 +274,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
         etTitle.setText(introduction);
         etContent.setText(purpose);
         tvWho.setText(dataDictBean.getBeInterestedIn().get(who));
+        tvWish.setText(dataDictBean.getContactObject().get(wish));
         tvLife.setText(dataDictBean.getLifeStyle().get(life));
         tvMoney.setText(dataDictBean.getIncome().get(money));
         tvIncome.setText(dataDictBean.getIncome().get(income));
@@ -370,9 +374,9 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             interfaceName = InterfaceName.EDIT_USER_INFO;
         }
         RequestUtils.edit(this, signSession(interfaceName), type, name, headerFile, age, height,
-                0, bodyType, race, education, marriage, child, smoke, drink, job,
-                userInfo.getBe_interested_in(), income, money, life, who, proId + "," + cityId,
-                purpose, introduction, publicFiles, privateFiles, this);
+                0, bodyType, race, education, marriage, child, smoke, drink, job, who, income,
+                money, life, wish, proId + "," + cityId, purpose, introduction, publicFiles,
+                privateFiles, this);
     }
 
     /**
@@ -386,10 +390,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 String.valueOf(SweetApplication.getInstance().getLng()), this);
     }
 
-    @OnClick({R.id.iv_header, R.id.iv_add, R.id.layout_who, R.id.layout_life, R.id.layout_money,
-            R.id.layout_income, R.id.layout_job, R.id.layout_body_type, R.id.layout_race,
-            R.id.layout_address, R.id.layout_education, R.id.layout_marriage, R.id.layout_child,
-            R.id.layout_smoke, R.id.layout_drink, R.id.iv_next, R.id.tv_next})
+    @OnClick({R.id.iv_header, R.id.iv_add, R.id.layout_who, R.id.layout_wish, R.id.layout_life,
+            R.id.layout_money, R.id.layout_income, R.id.layout_job, R.id.layout_body_type,
+            R.id.layout_race, R.id.layout_address, R.id.layout_education, R.id.layout_marriage,
+            R.id.layout_child, R.id.layout_smoke, R.id.layout_drink, R.id.iv_next, R.id.tv_next})
     public void onViewClicked(View view) {
         List<String> data;
         switch (view.getId()) {
@@ -402,6 +406,11 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 data = dataDictBean.getBeInterestedIn();
                 new DownDialog(this).setData(data)
                         .setOnMediaItemClickListener(R.id.layout_who, this).show();
+                break;
+            case R.id.layout_wish:
+                data = dataDictBean.getContactObject();
+                new DownDialog(this).setData(data)
+                        .setOnMediaItemClickListener(R.id.layout_wish, this).show();
                 break;
             case R.id.layout_life:
                 data = dataDictBean.getLifeStyle();
@@ -531,6 +540,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
             case R.id.layout_who:
                 who = value;
                 tvWho.setText(dataDictBean.getBeInterestedIn().get(who));
+                break;
+            case R.id.layout_wish:
+                wish = value;
+                tvWish.setText(dataDictBean.getContactObject().get(wish));
                 break;
             case R.id.layout_life:
                 life = value;

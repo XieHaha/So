@@ -58,13 +58,15 @@ public class MessageFragment extends BaseFragment {
             @Override
             public boolean onConversationPortraitClick(Context context,
                                                        Conversation.ConversationType conversationType, String targetId) {
-                try {
-                    Intent intent = new Intent(getContext(), UserInfoActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, targetId);
-                    context.startActivity(intent);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                if (TextUtils.equals(conversationType.getName(),
+                        Conversation.ConversationType.SYSTEM.getName())) {
+                    RongIM.getInstance().clearMessagesUnreadStatus(conversationType, targetId,
+                            null);
+                    return true;
                 }
+                Intent intent = new Intent(getContext(), UserInfoActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, targetId);
+                context.startActivity(intent);
                 return true;
             }
 

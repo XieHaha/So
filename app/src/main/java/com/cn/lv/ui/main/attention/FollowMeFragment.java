@@ -1,6 +1,5 @@
 package com.cn.lv.ui.main.attention;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,7 +23,7 @@ import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.ToastUtil;
 import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.lv.R;
-import com.cn.lv.ui.adapter.FollowAdapter;
+import com.cn.lv.ui.adapter.FollowMeAdapter;
 import com.cn.lv.ui.main.ChatActivity;
 import com.cn.lv.ui.main.UserInfoActivity;
 import com.cn.lv.ui.main.my.UpActivity;
@@ -45,7 +44,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.tv_none_message)
     TextView tvNoneMessage;
-    private FollowAdapter followAdapter;
+    private FollowMeAdapter followAdapter;
 
     private BaseListData<RolesBean> baseListData;
     private List<RolesBean> rolesBeans = new ArrayList<>();
@@ -102,7 +101,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
      * 适配器处理
      */
     private void initAdapter() {
-        followAdapter = new FollowAdapter(R.layout.item_follow_roles, rolesBeans);
+        followAdapter = new FollowMeAdapter(R.layout.item_follow_roles, rolesBeans);
         followAdapter.setLoadMoreView(new CustomLoadMoreView());
         followAdapter.setOnLoadMoreListener(this, recyclerView);
         followAdapter.setOnItemClickListener(this);
@@ -116,7 +115,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
     private void updateFollow(int state) {
         renewCollection(curRolesBean.getUser_id(), state);
         //本地更新
-        curRolesBean.setCollection_state(state);
+        curRolesBean.setFollow_state(state == BASE_ONE ? BASE_TWO : BASE_ONE);
         followAdapter.notifyItemChanged(curPosition);
     }
 
@@ -126,7 +125,7 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
         curPosition = position;
         Intent intent = new Intent(getContext(), UserInfoActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, rolesBeans.get(position).getUser_id());
-        startActivityForResult(intent, REQUEST_CODE_FOLLOW);
+        startActivity(intent);
     }
 
     @Override
@@ -137,10 +136,10 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 curRolesBean = rolesBeans.get(position);
                 curPosition = position;
                 int state;
-                if (curRolesBean.getCollection_state() == BASE_ONE) {
-                    state = 2;
-                } else {
+                if (curRolesBean.getFollow_state() == BASE_ONE) {
                     state = 1;
+                } else {
+                    state = 2;
                 }
                 updateFollow(state);
                 break;
@@ -197,17 +196,6 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
     public void onResponseEnd(Tasks task) {
         super.onResponseEnd(task);
         layoutRefresh.setRefreshing(false);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_FOLLOW) {
-                int state = data.getIntExtra(CommonData.KEY_PUBLIC, 2);
-                updateFollow(state);
-            }
-        }
     }
 
     /**

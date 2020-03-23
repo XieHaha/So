@@ -35,7 +35,7 @@ public class SweetApplication extends LitePalApplication {
     /**
      * 调试模式
      */
-    public final boolean debugMode = true;
+    public final boolean debugMode = false;
 
     @Override
     public void onCreate() {

@@ -132,16 +132,16 @@ public class RequestUtils {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
         params.put("requestDisplayType", type);
-        params.put("age", userInfo.getAge());
-        params.put("height", userInfo.getHeight());
-        params.put("somatotype", userInfo.getSomatotype());
-        params.put("race", userInfo.getRace());
-        params.put("education", userInfo.getEducation());
-        params.put("marriage", userInfo.getMarriage());
-        params.put("children", userInfo.getChildren());
-        params.put("smoke", userInfo.getSmoke());
-        params.put("drink", userInfo.getDrink());
-        params.put("per_page", pageSize);
+        //        params.put("age", userInfo.getAge());
+        //        params.put("height", userInfo.getHeight());
+        //        params.put("somatotype", userInfo.getSomatotype());
+        //        params.put("race", userInfo.getRace());
+        //        params.put("education", userInfo.getEducation());
+        //        params.put("marriage", userInfo.getMarriage());
+        //        params.put("children", userInfo.getChildren());
+        //        params.put("smoke", userInfo.getSmoke());
+        //        params.put("drink", userInfo.getDrink());
+        //        params.put("per_page", pageSize);
         params.put("page", page);
         RetrofitManager.getApiUrlManager(c)
                 .getHomeInfo(params)
@@ -155,7 +155,7 @@ public class RequestUtils {
         params.put("sign", sign);
         //1、关注我  2、我关注
         params.put("followType", followType);
-        params.put("per_page", pageSize);
+        //        params.put("per_page", pageSize);
         params.put("page", page);
         RetrofitManager.getApiUrlManager(c)
                 .collectionList(params)
@@ -189,7 +189,7 @@ public class RequestUtils {
                                  final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
-        params.put("per_page", pageSize);
+        //        params.put("per_page", pageSize);
         params.put("page", page);
         RetrofitManager.getApiUrlManager(c)
                 .helpsList(params)
@@ -227,7 +227,7 @@ public class RequestUtils {
                                   final ResponseListener<BaseResponse> l) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("sign", sign);
-        params.put("per_page", pageSize);
+        //        params.put("per_page", pageSize);
         params.put("page", page);
         RetrofitManager.getApiUrlManager(c)
                 .shieldList(params)
@@ -271,10 +271,9 @@ public class RequestUtils {
     public static void edit(Context c, String sign, int type, String name, File headerFile, int age,
                             int height, int weight, int bodyType, int race, int education,
                             int marriage, int child, int smoke, int drink, int job,
-                            int be_interested_in, int income, int money, int life, int who,
-                            String areaCode, String purpose, String introduction,
-                            ArrayList<File> publicFiles, ArrayList<File> privateFiles,
-                            final ResponseListener<BaseResponse> l) {
+                            int who, int income, int money, int life, int wish, String areaCode,
+                            String purpose, String introduction, ArrayList<File> publicFiles,
+                            ArrayList<File> privateFiles, final ResponseListener<BaseResponse> l) {
 
         RequestBody header = RequestBody.create(MediaType.parse("multipart/form-data"),
                 headerFile);
@@ -332,11 +331,11 @@ public class RequestUtils {
         photos.add(MultipartBody.Part.createFormData("drink", String.valueOf(drink)));
         photos.add(MultipartBody.Part.createFormData("area_code", areaCode));
         photos.add(MultipartBody.Part.createFormData("be_interested_in",
-                String.valueOf(be_interested_in)));
+                String.valueOf(who)));
         photos.add(MultipartBody.Part.createFormData("annual_income", String.valueOf(income)));
         photos.add(MultipartBody.Part.createFormData("net_assets", String.valueOf(money)));
         photos.add(MultipartBody.Part.createFormData("life_style", String.valueOf(life)));
-        photos.add(MultipartBody.Part.createFormData("contact_object", String.valueOf(who)));
+        photos.add(MultipartBody.Part.createFormData("contact_object", String.valueOf(wish)));
         photos.add(MultipartBody.Part.createFormData("making_friends_goals", purpose));
         photos.add(MultipartBody.Part.createFormData("individuality_signature", introduction));
         photos.add(headerBody);

@@ -14,6 +14,7 @@ public class RolesBean implements Serializable {
     private int usage_state;
     private int auth_state;
     private int collection_state;
+    private int follow_state;
     private String user_id;
     private String rong_cloud_user_id;
     private int attribute;
@@ -160,5 +161,13 @@ public class RolesBean implements Serializable {
 
     public void setLast_login_timestamp(long last_login_timestamp) {
         this.last_login_timestamp = last_login_timestamp;
+    }
+
+    public int getFollow_state() {
+        return follow_state;
+    }
+
+    public void setFollow_state(int follow_state) {
+        this.follow_state = follow_state;
     }
 }

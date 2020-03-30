@@ -97,7 +97,9 @@ public class MyFragment extends BaseFragment implements IChange<String> {
         tvSex.setSelected(BASE_ONE != userInfo.getSex());
         tvAge.setText(userInfo.getAge() + "岁");
         tvAddress.setText(SweetApplication.getInstance().getCity());
-        tvJob.setText(dataDictBean.getOccupationInfo().get(userInfo.getOccupation()));
+        if (dataDictBean != null) {
+            tvJob.setText(dataDictBean.getOccupationInfo().get(userInfo.getOccupation()));
+        }
         tvFollowedNum.setText(String.valueOf(userInfo.getCollection_num()));
         tvFollowNum.setText(String.valueOf(userInfo.getAttention_num()));
         tvBrowseNum.setText(String.valueOf(userInfo.getVisitor_number()));

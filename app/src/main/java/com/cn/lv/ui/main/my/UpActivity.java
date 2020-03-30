@@ -71,30 +71,39 @@ public class UpActivity extends BaseActivity implements com.cn.frame.data.PayRes
             ToastUtil.toast(this, "发生未知错误，请稍候再试");
             return;
         }
-        AdaPay.doPay(UpActivity.this, new Gson().toJson(paymentBean), payResult -> {
-            ToastUtil.toast(UpActivity.this, payResult.getResultMsg());
-            //处理支付结果
-            String code = payResult.getResultCode();
-            switch (code) {
-                case ORDER_SUCCESS:
-                    login();
-                    break;
-                case ORDER_FAILED:
-                    break;
-                case ORDER_PAYING:
-                    break;
-                case ORDER_CANCEL:
-                    break;
-                case ORDER_PARAM_ERROR:
-                    break;
-                case ORDER_NETWORK_ERROR:
-                    break;
-                case ORDER_OTHER_ERROR:
-                    break;
-                default:
-                    break;
-            }
-        });
+        if (!BaseUtils.isAliPayInstalled(this)) {
+            ToastUtil.toast(this, "无法调用支付宝，请确认是否安装支付宝！");
+            return;
+        }
+        try {
+            AdaPay.doPay(UpActivity.this, new Gson().toJson(paymentBean), payResult -> {
+                ToastUtil.toast(UpActivity.this, payResult.getResultMsg());
+                //处理支付结果
+                String code = payResult.getResultCode();
+                switch (code) {
+                    case ORDER_SUCCESS:
+                        login();
+                        break;
+                    case ORDER_FAILED:
+                        break;
+                    case ORDER_PAYING:
+                        break;
+                    case ORDER_CANCEL:
+                        break;
+                    case ORDER_PARAM_ERROR:
+                        break;
+                    case ORDER_NETWORK_ERROR:
+                        break;
+                    case ORDER_OTHER_ERROR:
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastUtil.toast(this, "发生未知错误，请稍候再试");
+        }
     }
 
     @Override

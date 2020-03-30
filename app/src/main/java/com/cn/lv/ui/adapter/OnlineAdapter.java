@@ -42,8 +42,10 @@ public class OnlineAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         tvSex.setText(BASE_ONE == item.getSex() ? R.string.txt_male : R.string.txt_female);
         tvSex.setSelected(BASE_ONE != item.getSex());
         helper.setText(R.id.tv_age, String.valueOf(item.getAge()))
-                .setText(R.id.tv_sign, item.getIndividuality_signature())
-                .setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()));
+                .setText(R.id.tv_sign, item.getIndividuality_signature());
+        if (dataDictBean != null) {
+            helper.setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()));
+        }
         int vip = item.getUsage_state();
         if (vip == BASE_ONE) {
             layout.setBackground(null);

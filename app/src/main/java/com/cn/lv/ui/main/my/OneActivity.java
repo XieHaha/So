@@ -129,29 +129,38 @@ public class OneActivity extends BaseActivity implements BaseQuickAdapter.OnItem
             ToastUtil.toast(this, "发生未知错误，请稍候再试");
             return;
         }
-        AdaPay.doPay(OneActivity.this, url, payResult -> {
-            ToastUtil.toast(OneActivity.this, payResult.getResultMsg());
-            //处理支付结果
-            String code = payResult.getResultCode();
-            switch (code) {
-                case ORDER_SUCCESS:
-                    login();
-                    break;
-                case ORDER_FAILED:
-                    break;
-                case ORDER_PAYING:
-                    break;
-                case ORDER_CANCEL:
-                    break;
-                case ORDER_PARAM_ERROR:
-                    break;
-                case ORDER_NETWORK_ERROR:
-                    break;
-                case ORDER_OTHER_ERROR:
-                    break;
-                default:
-                    break;
-            }
-        });
+        if (!BaseUtils.isAliPayInstalled(this)) {
+            ToastUtil.toast(this, "无法调用支付宝，请确认是否安装支付宝！");
+            return;
+        }
+        try {
+            AdaPay.doPay(OneActivity.this, url, payResult -> {
+                ToastUtil.toast(OneActivity.this, payResult.getResultMsg());
+                //处理支付结果
+                String code = payResult.getResultCode();
+                switch (code) {
+                    case ORDER_SUCCESS:
+                        login();
+                        break;
+                    case ORDER_FAILED:
+                        break;
+                    case ORDER_PAYING:
+                        break;
+                    case ORDER_CANCEL:
+                        break;
+                    case ORDER_PARAM_ERROR:
+                        break;
+                    case ORDER_NETWORK_ERROR:
+                        break;
+                    case ORDER_OTHER_ERROR:
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastUtil.toast(this, "发生未知错误，请稍候再试");
+        }
     }
 }

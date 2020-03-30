@@ -1,8 +1,11 @@
 package com.cn.frame.utils;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
@@ -400,5 +403,18 @@ public class BaseUtils {
             e.printStackTrace();
             return "";
         }
+    }
+
+    /**
+     * 检测是否安装支付宝
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isAliPayInstalled(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
     }
 }

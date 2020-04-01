@@ -237,8 +237,15 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 获取sign
      */
     public String signSession(String interfaceName) {
-        return RsaUtils.encryptData(BaseUtils.signSpan(this, userInfo.getMobile_number(),
-                loginBean.getSession_id(), interfaceName));
+        String phone, sessionId;
+        if (loginBean == null || userInfo == null) {
+            phone = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_ACCOUNT);
+            sessionId = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_SESSION_ID);
+        } else {
+            phone = userInfo.getMobile_number();
+            sessionId = loginBean.getSession_id();
+        }
+        return RsaUtils.encryptData(BaseUtils.signSpan(this, phone, sessionId, interfaceName));
     }
 
     /**

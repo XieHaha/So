@@ -17,6 +17,7 @@ import com.cn.frame.data.CommonData;
 import com.cn.frame.data.NormImage;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.CityBean;
+import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.PaymentBean;
 import com.cn.frame.data.bean.PicturePathBean;
 import com.cn.frame.data.bean.ProvinceBean;
@@ -127,6 +128,8 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     private int age, who, wish, life, money, income, height, weight, job, bodyType, race, education,
             marriage, child, smoke, drink, addressPro, addressCity;
 
+    private boolean isFirst;
+
     /**
      * 图片类型
      */
@@ -159,14 +162,18 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-    }
-
-    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        getUserInfo();
+        if (getIntent() != null) {
+            isFirst = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
+        }
+        if (isFirst) {
+            if (dataDictBean == null) {
+                getBasicsInfo();
+            }
+        } else {
+            getUserInfo();
+        }
         getProvinceData();
     }
 
@@ -346,6 +353,16 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     }
 
     /**
+     * 获取基础数据集合
+     */
+    private void getBasicsInfo() {
+        String phone = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_ACCOUNT);
+        String sessionId = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_SESSION_ID);
+        RequestUtils.getBasicsInfo(this, BaseUtils.signSpan(this, phone,
+                sessionId, InterfaceName.GET_BASICS_INFO), this);
+    }
+
+    /**
      * 获取省信息
      */
     private void getProvinceData() {
@@ -360,7 +377,7 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
     }
 
     /**
-     * 获取市信息
+     * 图片删除
      */
     private void pictureDel(int imageId) {
         RequestUtils.pictureDel(this, signSession(InterfaceName.PICTURE_DEL), imageId, this);
@@ -383,9 +400,14 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
      * 登录
      */
     private void login() {
+        String phone;
         String pwd = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_PWD);
-        RequestUtils.login(this, BaseUtils.signSpan(this, userInfo.getMobile_number(),
-                InterfaceName.SIGN_IN), pwd,
+        if (userInfo == null) {
+            phone = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_ACCOUNT);
+        } else {
+            phone = userInfo.getMobile_number();
+        }
+        RequestUtils.login(this, BaseUtils.signSpan(this, phone, InterfaceName.SIGN_IN), pwd,
                 String.valueOf(SweetApplication.getInstance().getLat()),
                 String.valueOf(SweetApplication.getInstance().getLng()), this);
     }
@@ -655,6 +677,10 @@ public class PersonalActivity extends BaseActivity implements OnMediaItemClickLi
                 } else {
                     deletePrivate(false);
                 }
+                break;
+            case GET_BASICS_INFO:
+                dataDictBean = (DataDictBean) response.getData();
+                SweetApplication.getInstance().setDataDictBean(dataDictBean);
                 break;
             default:
                 break;

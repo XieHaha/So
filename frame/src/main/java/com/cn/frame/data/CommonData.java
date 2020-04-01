@@ -26,6 +26,10 @@ public interface CommonData {
      */
     String KEY_LOGIN_PWD = "key_login_pwd";
     /**
+     * session
+     */
+    String KEY_LOGIN_SESSION_ID = "key_login_session_id";
+    /**
      * TITLE
      */
     String KEY_CHAT_TITLE = "key_chat_title";

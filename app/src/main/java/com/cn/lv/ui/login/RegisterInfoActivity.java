@@ -99,12 +99,12 @@ public class RegisterInfoActivity extends BaseActivity implements InfoType {
                 break;
             case INTEREST:
                 interest = interestInfoFragment.getType();
-                Intent intent = new Intent(this, RegisterAndModifyPwdActivity.class);
+                Intent intent = new Intent();
                 intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
                 intent.putExtra(CommonData.KEY_SEX, sex);
                 intent.putExtra(CommonData.KEY_WHO, who);
                 intent.putExtra(CommonData.KEY_INTEREST, interest);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
                 finish();
                 break;
             default:

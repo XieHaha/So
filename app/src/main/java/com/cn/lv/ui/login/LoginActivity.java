@@ -26,11 +26,15 @@ import com.cn.frame.utils.ToastUtil;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.main.MainActivity;
+import com.cn.lv.ui.main.my.PersonalActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
+    private static final int REQUEST_CODE_INFO = 100;
+    private static final int REQUEST_CODE_REGISTER = 200;
+    private static final int REQUEST_CODE_EDIT = 300;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_pwd)
@@ -87,6 +91,15 @@ public class LoginActivity extends BaseActivity {
         finish();
     }
 
+    /**
+     * 信息编辑
+     */
+    private void jumpEditInfo() {
+        Intent intent = new Intent(this, PersonalActivity.class);
+        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+        startActivityForResult(intent, REQUEST_CODE_EDIT);
+    }
+
 
     @OnClick({R.id.tv_forgot_pwd, R.id.tv_register, R.id.layout_login_next})
     public void onViewClicked(View view) {
@@ -95,7 +108,8 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(this, RegisterAndModifyPwdActivity.class));
                 break;
             case R.id.tv_register:
-                startActivity(new Intent(this, RegisterInfoActivity.class));
+                startActivityForResult(new Intent(this, RegisterInfoActivity.class),
+                        REQUEST_CODE_INFO);
                 break;
             case R.id.layout_login_next:
                 phone = etPhone.getText().toString().trim();
@@ -120,16 +134,51 @@ public class LoginActivity extends BaseActivity {
         super.onResponseSuccess(task, response);
         if (task == Tasks.LOGIN) {
             //存储登录信息
+            loginBean = (UserBaseBean) response.getData();
             sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_ACCOUNT, phone);
             sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_PWD, pwd);
-            loginBean = (UserBaseBean) response.getData();
+            sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_SESSION_ID,
+                    loginBean.getSession_id());
             //存储登录结果
             SweetApplication.getInstance().setLoginBean(loginBean);
             getBasicsInfo();
         } else if (task == Tasks.GET_BASICS_INFO) {
             DataDictBean bean = (DataDictBean) response.getData();
             SweetApplication.getInstance().setDataDictBean(bean);
-            jump();
+            if (TextUtils.isEmpty(loginBean.getUserInfo().getHead_portrait())
+                    || TextUtils.isEmpty(loginBean.getUserInfo().getNickname())
+                    || TextUtils.isEmpty(loginBean.getUserInfo().getIndividuality_signature())) {
+                jumpEditInfo();
+            } else {
+                jump();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_CODE_INFO:
+                Intent intent = new Intent(this, RegisterAndModifyPwdActivity.class);
+                intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+                intent.putExtra(CommonData.KEY_SEX, data.getIntExtra(CommonData.KEY_SEX, -1));
+                intent.putExtra(CommonData.KEY_WHO, data.getIntExtra(CommonData.KEY_WHO, -1));
+                intent.putExtra(CommonData.KEY_INTEREST, data.getIntExtra(CommonData.KEY_INTEREST
+                        , -1));
+                startActivityForResult(intent, REQUEST_CODE_REGISTER);
+                break;
+            case REQUEST_CODE_REGISTER:
+                jumpEditInfo();
+                break;
+            case REQUEST_CODE_EDIT:
+                jump();
+                break;
+            default:
+                break;
         }
     }
 

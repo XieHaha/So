@@ -27,6 +27,7 @@ import com.cn.frame.data.BaseNetConfig;
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
+import com.cn.frame.data.bean.UserBaseBean;
 import com.cn.frame.http.InterfaceName;
 import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.permission.Permission;
@@ -189,7 +190,6 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
                         resetPwd();
                     }
                 }
-
                 break;
             default:
                 break;
@@ -249,6 +249,13 @@ public class RegisterAndModifyPwdActivity extends BaseActivity {
                 break;
             case REGISTER:
                 ToastUtil.toast(this, response.getMsg());
+                //存储登录信息
+                UserBaseBean baseBean = (UserBaseBean) response.getData();
+                sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_ACCOUNT, phone);
+                sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_PWD, pwd);
+                sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_SESSION_ID,
+                        baseBean.getSession_id());
+                setResult(RESULT_OK);
                 finish();
                 break;
             case RESET_PWD:

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.cn.frame.data.BaseResponse;
 import com.cn.frame.data.CommonData;
@@ -121,10 +122,24 @@ public class SplashActivity extends AppCompatActivity implements ResponseListene
     }
 
     private void jump() {
-        if (loginBean == null) {
+        if (isEmpty()) {
             startLoginPage();
         } else {
             startMainPage();
+        }
+    }
+
+    private boolean isEmpty() {
+        if (loginBean == null) {
+            return true;
+        } else {
+            if (TextUtils.isEmpty(loginBean.getUserInfo().getHead_portrait())
+                    || TextUtils.isEmpty(loginBean.getUserInfo().getNickname())
+                    || TextUtils.isEmpty(loginBean.getUserInfo().getIndividuality_signature())) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

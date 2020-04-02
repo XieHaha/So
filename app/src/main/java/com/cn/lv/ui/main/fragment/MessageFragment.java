@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.cn.frame.data.CommonData;
 import com.cn.frame.ui.BaseFragment;
+import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.lv.R;
 import com.cn.lv.ui.main.UserInfoActivity;
 import com.cn.lv.ui.main.my.UpActivity;
@@ -86,7 +87,12 @@ public class MessageFragment extends BaseFragment {
             public boolean onConversationClick(Context context, View view,
                                                UIConversation conversation) {
                 if (userInfo.getIs_auth() == 1) {
-                    startActivity(new Intent(getContext(), UpActivity.class));
+                    new HintDialog(getContext()).setTitleString("提示")
+                            .setCancelBtnGone(true)
+                            .setEnterBtnTxt("确定")
+                            .setContentString("您还不是认证用户，不能发起聊天，请前往【我的】页面认证后再试！")
+                            .setOnEnterClickListener(() -> startActivity(new Intent(getContext(),
+                                    UpActivity.class))).show();
                     return true;
                 }
                 return false;

@@ -21,6 +21,7 @@ import com.cn.frame.http.retrofit.RequestUtils;
 import com.cn.frame.ui.BaseFragment;
 import com.cn.frame.utils.BaseUtils;
 import com.cn.frame.utils.ToastUtil;
+import com.cn.frame.widgets.dialog.HintDialog;
 import com.cn.frame.widgets.loadview.CustomLoadMoreView;
 import com.cn.lv.R;
 import com.cn.lv.ui.adapter.FollowMeAdapter;
@@ -145,7 +146,12 @@ public class FollowMeFragment extends BaseFragment implements BaseQuickAdapter.O
                 break;
             case R.id.iv_message:
                 if (userInfo.getIs_auth() == 1) {
-                    startActivity(new Intent(getContext(), UpActivity.class));
+                    new HintDialog(getContext()).setTitleString("提示")
+                            .setCancelBtnGone(true)
+                            .setEnterBtnTxt("确定")
+                            .setContentString("您还不是认证用户，不能发起聊天，请前往【我的】页面认证后再试！")
+                            .setOnEnterClickListener(() -> startActivity(new Intent(getContext(),
+                                    UpActivity.class))).show();
                 } else {
                     //设置当前用户信息
                     Intent intent = new Intent(getContext(), ChatActivity.class);

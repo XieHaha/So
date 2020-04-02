@@ -37,6 +37,10 @@ public class UserInfoBean implements Serializable {
     private int attention_num;
     private int life_style;
     /**
+     * 是否发送机器人消息 1、是   0、否
+     */
+    private int is_send;
+    /**
      * 1 普通  2  运营
      */
     private int attribute;
@@ -426,5 +430,13 @@ public class UserInfoBean implements Serializable {
 
     public void setShield_state(int shield_state) {
         this.shield_state = shield_state;
+    }
+
+    public int getIs_send() {
+        return is_send;
+    }
+
+    public void setIs_send(int is_send) {
+        this.is_send = is_send;
     }
 }

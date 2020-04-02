@@ -202,7 +202,12 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         switch (view.getId()) {
             case R.id.tv_message:
                 if (userInfo.getIs_auth() == 1) {
-                    startActivity(new Intent(this, UpActivity.class));
+                    new HintDialog(this).setTitleString("提示")
+                            .setCancelBtnGone(true)
+                            .setEnterBtnTxt("确定")
+                            .setContentString("您还不是认证用户，不能发起聊天，请前往【我的】页面认证后再试！")
+                            .setOnEnterClickListener(() -> startActivity(new Intent(this,
+                                    UpActivity.class))).show();
                 } else {
                     intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_TITLE, userDetailBean.getNickname());

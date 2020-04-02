@@ -406,5 +406,15 @@ public class RequestUtils {
                 .compose(RxJavaHelper.observableIO2Main(c))
                 .subscribe(new AbstractLoadViewObserver<>(c, Tasks.PICTURE_DEL, l));
     }
+
+    public static void sendRobotMsg(Context c, String sign,
+                                    final ResponseListener<BaseResponse> l) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("sign", sign);
+        RetrofitManager.getApiUrlManager(c)
+                .sendRobotMsg(params)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.PICTURE_DEL, l));
+    }
 }
 

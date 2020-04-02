@@ -100,5 +100,9 @@ public interface InterfaceName {
      * 图片删除
      */
     String PICTURE_DEL = "pictureDel";
+    /**
+     * 机器人消息
+     */
+    String SEND_ROBOT_MSG = "sendRobotMsg";
 
 }

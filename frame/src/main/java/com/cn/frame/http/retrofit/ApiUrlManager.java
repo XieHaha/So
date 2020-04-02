@@ -257,4 +257,13 @@ public interface ApiUrlManager {
     @POST("api/")
     Observable<BaseResponse<String>> pictureDel(@Body Map<String, Object> info);
 
+    /**
+     * 自动消息
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("api/")
+    Observable<BaseResponse<String>> sendRobotMsg(@Body Map<String, Object> info);
+
 }

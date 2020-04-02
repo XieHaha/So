@@ -60,7 +60,7 @@
 
     <!--登录注册-->
     <string name="txt_hello">您好</string>
-    <string name="txt_welcome">欢迎来到Sweet</string>
+    <string name="txt_welcome">欢迎来到qpqp</string>
     <string name="txt_phone">手机号码</string>
     <string name="txt_input_phone_hint">请输入有效的手机号码</string>
     <string name="txt_input_pwd">输入密码</string>

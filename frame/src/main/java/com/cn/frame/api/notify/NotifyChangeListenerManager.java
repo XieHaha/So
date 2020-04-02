@@ -33,6 +33,11 @@ public class NotifyChangeListenerManager {
         private final List<IChange<String>> mFollowListChangeListeners =
                 new CopyOnWriteArrayList<>();
         /**
+         * 关注列表
+         */
+        private final List<IChange<String>> mRobotMessageListeners =
+                new CopyOnWriteArrayList<>();
+        /**
          * 服务协议更新
          */
         private final List<IChange<String>> mProtocolChangeListeners = new CopyOnWriteArrayList<>();
@@ -84,6 +89,16 @@ public class NotifyChangeListenerManager {
                 mFollowListChangeListeners.add(listener);
             } else {
                 mFollowListChangeListeners.remove(listener);
+            }
+        }
+
+        @Override
+        public void registerRobotMessage(@NonNull IChange<String> listener,
+                                         @NonNull RegisterType registerType) {
+            if (RegisterType.REGISTER == registerType) {
+                mRobotMessageListeners.add(listener);
+            } else {
+                mRobotMessageListeners.remove(listener);
             }
         }
 
@@ -183,6 +198,24 @@ public class NotifyChangeListenerManager {
                 for (int i = 0, size = mFollowListChangeListeners.size(); i < size; i++) {
                     try {
                         final IChange<String> change = mFollowListChangeListeners.get(i);
+                        if (null != change) {
+                            change.onChange(data);
+                        }
+                    } catch (Exception e) {
+                        SweetLog.w(TAG, "notifyStatusChange error", e);
+                    }
+                }
+            }
+        }
+
+        /**
+         * 关注列表
+         */
+        public void notifyRobotMessage(final String data) {
+            synchronized (mRobotMessageListeners) {
+                for (int i = 0, size = mRobotMessageListeners.size(); i < size; i++) {
+                    try {
+                        final IChange<String> change = mRobotMessageListeners.get(i);
                         if (null != change) {
                             change.onChange(data);
                         }

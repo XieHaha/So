@@ -104,5 +104,9 @@ public enum Tasks {
      * 图片删除
      */
     PICTURE_DEL,
+    /**
+     * 机器消息
+     */
+    SEND_ROBOT,
 }
 

@@ -414,7 +414,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager(c)
                 .sendRobotMsg(params)
                 .compose(RxJavaHelper.observableIO2Main(c))
-                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.PICTURE_DEL, l));
+                .subscribe(new AbstractLoadViewObserver<>(c, Tasks.SEND_ROBOT, l));
     }
 }
 

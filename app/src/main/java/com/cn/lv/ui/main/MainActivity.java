@@ -15,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cn.frame.api.ApiManager;
+import com.cn.frame.api.notify.IChange;
+import com.cn.frame.api.notify.RegisterType;
 import com.cn.frame.data.BaseResponse;
+import com.cn.frame.data.CommonData;
 import com.cn.frame.data.Tasks;
 import com.cn.frame.data.bean.DataDictBean;
 import com.cn.frame.data.bean.UserBaseBean;
@@ -60,7 +63,7 @@ import io.rong.imlib.model.UserInfo;
 public class MainActivity extends BaseActivity
         implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener,
         RongIMClient.OnReceiveMessageListener, RongIM.OnSendMessageListener,
-        RongIMClient.ConnectionStatusListener {
+        RongIMClient.ConnectionStatusListener, IChange<String> {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     @BindView(R.id.act_main_tab1)
@@ -100,6 +103,7 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
+
     @Override
     public void beforeCreateView(@NonNull Bundle savedInstanceState) {
         super.beforeCreateView(savedInstanceState);
@@ -134,19 +138,24 @@ public class MainActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        //检查更新
-        if (!hideVersionUpdate) {
-            mVersionPresenter = new VersionPresenter(this, "");
-            mVersionPresenter.setVersionViewListener(this);
-            //            mVersionPresenter.init();
-        }
+        initRobot();
         updateSession();
         updateDataDict();
+    }
+
+    private void initRobot() {
+        boolean look = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_LOOK);
+        boolean send = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_SEND);
+        if (look && !send) {
+            initScheduledThreadRobot();
+        }
+        SweetLog.i(TAG, "look:" + look + " send:" + send);
     }
 
     @Override
     public void initListener() {
         super.initListener();
+        iNotifyChangeListenerServer.registerRobotMessage(this, RegisterType.REGISTER);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new AbstractOnPageChangeListener() {
             @Override
@@ -176,6 +185,10 @@ public class MainActivity extends BaseActivity
     private UserInfo getUserInfoById(String userId) {
         RequestUtils.getUserInfo(this, signSession(InterfaceName.GET_USER_INFO), userId, this);
         return null;
+    }
+
+    private void sendRobotMsg() {
+        RequestUtils.sendRobotMsg(this, signSession(InterfaceName.SEND_ROBOT_MSG), this);
     }
 
     /**
@@ -373,8 +386,10 @@ public class MainActivity extends BaseActivity
                         infoBean.getNickname(),
                         Uri.parse(ImageUrlUtil.addTokenToUrl(infoBean.getHead_portrait())));
                 //因为是异步任务，所以在获取到用户信息之后需要刷讯融云缓存
-                SweetLog.i(TAG, "getUserInfo success!");
                 RongIM.getInstance().refreshUserInfoCache(rongUserInfo);
+                break;
+            case SEND_ROBOT:
+                sharePreferenceUtil.putAlwaysBoolean(CommonData.KEY_SEND, true);
                 break;
             default:
                 break;
@@ -383,9 +398,17 @@ public class MainActivity extends BaseActivity
 
     private ScheduledExecutorService executorService;
     private Handler handler = new Handler(message -> {
-        //刷新
-        renewSign();
-        return true;
+        switch (message.what) {
+            case 0:
+                //刷新
+                renewSign();
+                return true;
+            case 1:
+                sendRobotMsg();
+                return true;
+            default:
+                return true;
+        }
     });
 
 
@@ -396,6 +419,10 @@ public class MainActivity extends BaseActivity
             handler.sendEmptyMessage(0);
             executorService.shutdownNow();
         }, time, time, TimeUnit.SECONDS);
+    }
+
+    private void initScheduledThreadRobot() {
+        handler.sendEmptyMessageDelayed(1, 60 * 1000);
     }
 
     @Override
@@ -486,5 +513,17 @@ public class MainActivity extends BaseActivity
     @Override
     public void onChanged(ConnectionStatus connectionStatus) {
         updateMessage();
+    }
+
+    @Override
+    public void onChange(String data) {
+        initRobot();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        iNotifyChangeListenerServer.registerRobotMessage(this, RegisterType.UNREGISTER);
     }
 }

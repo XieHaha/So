@@ -133,6 +133,12 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
             userId = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
         }
         gridViewPrivate.updateImg(images, false, false);
+
+        boolean look = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_LOOK);
+        if (!look) {
+            sharePreferenceUtil.putAlwaysBoolean(CommonData.KEY_LOOK, true);
+            NotifyChangeListenerManager.getInstance().notifyRobotMessage("");
+        }
     }
 
     @Override

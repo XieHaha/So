@@ -24,6 +24,13 @@ public interface INotifyChangeListenerServer {
      */
     void registerFollowList(@NonNull IChange<String> listener,
                             @NonNull RegisterType registerType);
+    /**
+     * 关注列表
+     *
+     * @param listener     消息状态监听器
+     * @param registerType 注册类型
+     */
+    void registerRobotMessage(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
 
     /**
      * 服务协议更新

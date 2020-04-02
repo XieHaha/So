@@ -65,4 +65,12 @@ public interface CommonData {
      * 对谁感兴趣
      */
     String KEY_INTEREST = "key_interest";
+    /**
+     * 是否发送
+     */
+    String KEY_SEND = "key_send";
+    /**
+     * 是否查看
+     */
+    String KEY_LOOK = "key_look";
 }

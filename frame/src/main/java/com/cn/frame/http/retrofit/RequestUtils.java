@@ -352,6 +352,30 @@ public class RequestUtils {
                 .subscribe(new AbstractLoadViewObserver<>(c, true, false, tasks, l));
     }
 
+    public static void edit(Context c, String sign, String name, File headerFile,
+                            final ResponseListener<BaseResponse> l) {
+
+        RequestBody header = RequestBody.create(MediaType.parse("multipart/form-data"),
+                headerFile);
+        MultipartBody.Part headerBody = null;
+        try {
+            headerBody = MultipartBody.Part.createFormData("head_portrait",
+                    URLEncoder.encode(headerFile.getName(), "UTF-8"), header);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        List<MultipartBody.Part> photos = new ArrayList<>();
+        photos.add(MultipartBody.Part.createFormData("sign", sign));
+        photos.add(MultipartBody.Part.createFormData("nickname", name));
+        photos.add(headerBody);
+
+        RetrofitManager.getApiUrlManager(c)
+                .auth(photos)
+                .compose(RxJavaHelper.observableIO2Main(c))
+                .subscribe(new AbstractLoadViewObserver<>(c, true, false, Tasks.EDIT_USER_INFO, l));
+    }
+
     public static void getProvinceData(Context c, String sign,
                                        final ResponseListener<BaseResponse> l) {
         Map<String, String> params = new HashMap<>(16);

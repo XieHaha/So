@@ -26,7 +26,6 @@ import com.cn.frame.utils.ToastUtil;
 import com.cn.lv.R;
 import com.cn.lv.SweetApplication;
 import com.cn.lv.ui.main.MainActivity;
-import com.cn.lv.ui.main.my.PersonalActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -95,7 +94,7 @@ public class LoginActivity extends BaseActivity {
      * 信息编辑
      */
     private void jumpEditInfo() {
-        Intent intent = new Intent(this, PersonalActivity.class);
+        Intent intent = new Intent(this, RegisterBaseActivity.class);
         intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
@@ -146,8 +145,7 @@ public class LoginActivity extends BaseActivity {
             DataDictBean bean = (DataDictBean) response.getData();
             SweetApplication.getInstance().setDataDictBean(bean);
             if (TextUtils.isEmpty(loginBean.getUserInfo().getHead_portrait())
-                    || TextUtils.isEmpty(loginBean.getUserInfo().getNickname())
-                    || TextUtils.isEmpty(loginBean.getUserInfo().getIndividuality_signature())) {
+                    || TextUtils.isEmpty(loginBean.getUserInfo().getNickname())) {
                 jumpEditInfo();
             } else {
                 jump();

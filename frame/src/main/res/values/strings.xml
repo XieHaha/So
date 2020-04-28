@@ -80,7 +80,7 @@
     <string name="txt_login">登录</string>
     <string name="txt_your_sex">您的性别是？</string>
     <string name="txt_sex_hint">*性别注册后不可修改请慎重选择</string>
-    <string name="txt_your_nickname">您的昵称是？</string>
+    <string name="txt_your_nickname">填写您的昵称</string>
     <string name="txt_nickname_hint">请输入昵称</string>
     <string name="txt_your_birthday">您的生日是？</string>
     <string name="txt_your_height">您的身高&#160;体重是？</string>

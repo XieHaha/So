@@ -134,8 +134,7 @@ public class SplashActivity extends AppCompatActivity implements ResponseListene
             return true;
         } else {
             if (TextUtils.isEmpty(loginBean.getUserInfo().getHead_portrait())
-                    || TextUtils.isEmpty(loginBean.getUserInfo().getNickname())
-                    || TextUtils.isEmpty(loginBean.getUserInfo().getIndividuality_signature())) {
+                    || TextUtils.isEmpty(loginBean.getUserInfo().getNickname())) {
                 return true;
             } else {
                 return false;

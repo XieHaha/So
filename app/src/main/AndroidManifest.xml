@@ -212,6 +212,7 @@
                     <!--android:scheme="rong" />-->
             </intent-filter>
         </activity>
+        <activity android:name=".ui.login.RegisterBaseActivity" />
         <!--登出-->
         <receiver
             android:name="com.cn.lv.receiver.LoginOutBroadcastReceiver"

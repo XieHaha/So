@@ -262,7 +262,12 @@ public class UserInfoActivity extends BaseActivity implements TopRightMenu.OnMen
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_USER_INFO) {
             userDetailBean = (UserInfoBean) response.getData();
-            bindData();
+            if (userDetailBean == null) {
+                ToastUtil.toast(this, "未找到用户");
+                finish();
+            } else {
+                bindData();
+            }
         } else if (task == Tasks.SHIELD_USER) {
             isBlack = !isBlack;
             ToastUtil.toast(this, response.getMsg());

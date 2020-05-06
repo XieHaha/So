@@ -74,8 +74,13 @@ public class ChatActivity extends BaseActivity implements TopRightMenu.OnMenuIte
             targetId = getIntent().getStringExtra(CommonData.KEY_CHAT_ID);
             title = getIntent().getStringExtra(CommonData.KEY_CHAT_TITLE);
             black = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
-            if (TextUtils.isEmpty(title)) {
-                title = getIntent().getData().getQueryParameter("title");
+            try {
+                if (TextUtils.isEmpty(title)) {
+                    title = getIntent().getData().getQueryParameter("title");
+                }
+            } catch (Exception e) {
+                title = "聊天";
+                e.printStackTrace();
             }
             if (TextUtils.isEmpty(targetId)) {
                 targetId = getIntent().getData().getQueryParameter("targetId");

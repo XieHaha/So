@@ -46,6 +46,12 @@ public class OnlineAdapter extends BaseQuickAdapter<RolesBean, BaseViewHolder> i
         if (dataDictBean != null) {
             helper.setText(R.id.tv_job, dataDictBean.getOccupationInfo().get(item.getOccupation()));
         }
+        ImageView ivVerify = helper.getView(R.id.iv_verify);
+        if (item.getAuth_state() == 1) {
+            ivVerify.setVisibility(View.GONE);
+        } else {
+            ivVerify.setVisibility(View.VISIBLE);
+        }
         int vip = item.getUsage_state();
         if (vip == BASE_ONE) {
             layout.setBackground(null);

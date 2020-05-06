@@ -27,7 +27,7 @@ android {
         lv {
             applicationId "com.cn.lv"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://sweet.uxuanxueche.com/\""
-            resValue "string", "APP_NAME", "\"qpqp\""
+            resValue "string", "APP_NAME", "\"91Sweet\""
         }
     }
 
